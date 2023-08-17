@@ -21,6 +21,8 @@
 - Virüs yoksa neden virüs olarak algılıyor diye düşünebilirsiniz. Windows komut dosyaları antivirüsler tarafından her zaman tehdit olarak algılanır. Katılımsız araç ile kurulum yapıp güncelleme yaptığımızda github deposundan güncel dosyaları indirip powershell komutuyla konumuna çıkarıp silip programı çalıştırıyoruz. Bu işlemi antivirüs kendi algoritması içinde değerlendirdiğinde riskli uyarısı veriyor.
 - Çalışmamım kodları açıktır. Herhangi bir şifreleme söz konusu değildir. Gönül rahatlığıyla kontrol edebilirsiniz.
 
+</details>
+
 ![Tool0](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/0.png)
 
 <details>
