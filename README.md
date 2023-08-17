@@ -4,7 +4,7 @@
 - ► Discord: https://discord.gg/7hbzSGTYeZ
 - ► Mail: ognitorenks@gmail.com
 - ► Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
-- ► Language Packs= Turkish
+- ► Desteklenen diller [Language Pack]= Turkish
 - İngilizce dil seçeneği çok yakında eklenecektir.
 
 Çalışmanın tüm hakları Hüseyin UZUNYAYLA’ya aittir. Çalışma üzerinde geliştirme, kopyalama, içeriğini değiştirmek yasaktır. Uygulamayı farklı platformlar üzerinde paylaşmak isterseniz tarafımdan izin almanız gerekmektedir.
