@@ -100,10 +100,6 @@ Windows sistemlerinde Microsoft'un önerdiği ve benim tespit ettiğim durumlar�
 Bu bölüm düzenlenmemiş bir sistemi yayınladığım performans ISO'lar gibi düzenlemektedir. Defender, Hyper-V gibi bileşenler silinmektedir. Bu bölümü kullanmak istediğinizde riskleri ve yapılması gerekenler konusunda bilgi mesajlarını göstermektedir. İşleme devam etmeniz için ikinci bir onay ister.
 Sistem üzerinde düzenleme yapacağı için bu bölümü çalıştırırken dikkatli olun. Yaptığınız işlemin geri dönüşü yoktur. Bu bölümde işlem süresi 5-7 dakika arasında sürmektedir. 
 
-<<<<<<< Updated upstream
-</details>
-=======
 ![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.png)
 
 </details>
->>>>>>> Stashed changes
