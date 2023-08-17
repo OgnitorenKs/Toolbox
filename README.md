@@ -1,4 +1,4 @@
-![Repo1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/Toolbox\Repo-SS/Title.png)
+![Repo1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/Toolbox/Repo-SS/Title.png)
 
 ### Hazırlayan: Hüseyin UZUNYAYLA / OgnitorenKs
 - ► Discord: https://discord.gg/7hbzSGTYeZ
