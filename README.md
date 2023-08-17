@@ -39,7 +39,6 @@ Bu bölümdeki programlar ücretsiz uygulamalar arasında seçilmiştir. All in 
 
 Hizmetleri ihtiyacınıza göre kapatıp açabilirsiniz. Hizmetler hakkında detaylı bilgi Toolbox içinde yer almaktadır.
 
-![Tool2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/2.png)
 ![Tool2.1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/2.1.png)
 
 </details>
@@ -48,6 +47,7 @@ Hizmetleri ihtiyacınıza göre kapatıp açabilirsiniz. Hizmetler hakkında det
 
 Sistem üzerinde bileşenlerin durumunu kontrol edebilirsiniz. İhtiyacınız olmayan bileşenleri kolayca silebilirsiniz. Toolbox içinde silinen bileşenleri geri getirme bölümü bulunmamaktadır. Bundan dolayı kaldırdığınız bileşenlere dikkat edin. Gerekli bilgiler bölüm içinde verilmiştir.
 
+![Tool2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/2.png)
 ![Tool3](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/3.png)
 
 </details>
