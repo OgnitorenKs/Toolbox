@@ -3,7 +3,7 @@
 ### Hazırlayan: Hüseyin UZUNYAYLA / OgnitorenKs
 - ► Discord: https://discord.gg/7hbzSGTYeZ
 - ► Mail: ognitorenks@gmail.com
-- ► Site: [https://ognitorenks.com.tr](https://ognitorenks.com.tr)
+- ► Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 - ► Language Packs= Turkish
 - İngilizce dil seçeneği çok yakında eklenecektir.
 
