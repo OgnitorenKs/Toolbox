@@ -1,0 +1,7 @@
+[OgnitorenKs.Toolbox]
+
+ToolboxVersion = 4.0
+
+https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/Bin/Extra/Links.txt
+https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/Toolbox.zip
+https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/ToolboxUpdate.cmd
