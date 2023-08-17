@@ -12,7 +12,14 @@
 # OGNİTORENKS TOOLBOX
 - OgnitorenKs Toolbox Windows 10 - 11 sürümlerinin x64 mimarilerinde çalışmaktadır. En güncel olan Windows sürümü ile senkronize olarak gelişmektedir.
 - Windows ekran ölçeklendirme ayarı Toolbox'ın pencere ayarını bozabilir. Sorunsuz kullanım için Toolbox'ı kullanırken ölçeklendirme kapatılmalıdır.
-- Toolbox'ı içerğinde yer alan regedit kayıtları ve NSudo yetkilendirme aracından dolayı bazı antivirüsler virüs olarak raporlayabilir.
+
+<details>
+<B><summary> 0 - Antivirüs programlarının uyarıları hakkında</B></summary>
+
+- Toolbox'ın içerğinde yer alan regedit kayıtları ve NSudo yetkilendirme aracından dolayı bazı antivirüsler virüs olarak raporlayabilir.
+- Online katılımsız kurulum ve güncelleme araçları da antivirüsler tarafından virüs olarak raporlanabilir. 
+- Virüs yoksa neden virüs olarak algılıyor diye düşünebilirsiniz. Windows komut dosyaları antivirüsler tarafından her zaman tehdit olarak algılanır. Katılımsız araç ile kurulum yapıp güncelleme yaptığımızda github deposundan güncel dosyaları indirip powershell komutuyla konumuna çıkarıp silip programı çalıştırıyoruz. Bu işlemi antivirüs kendi algoritması içinde değerlendirdiğinde riskli uyarısı veriyor.
+- Çalışmamım kodları açıktır. Herhangi bir şifreleme söz konusu değildir. Gönül rahatlığıyla kontrol edebilirsiniz.
 
 ![Tool0](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/0.png)
 
