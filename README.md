@@ -37,7 +37,7 @@ Bu bölümdeki programlar ücretsiz uygulamalar arasında seçilmiştir. All in 
 <details>
 <B><summary> 2 - Hizmet Yönetimi</B></summary>
 
-Hizmetleri ihtiyacınıza göre kapatıp açabilirsiniz. Hizmetler hakkında detaylı bilgi Toolbox içinde yer almaktadır.
+Hizmetleri ihtiyacınıza göre kapatıp açabilirsiniz. Hizmetler hakkında detaylı bilgi Toolbox içinde yer almaktadır. Kaldırılmış hizmetleri yeniden aktifleştiremezsiniz. 26 numaralı işlem Windows 11 sisteme ait hizmettir.
 
 ![Tool2.1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/2.1.png)
 
