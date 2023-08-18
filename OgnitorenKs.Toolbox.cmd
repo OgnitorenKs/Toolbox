@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0
+set Version=4.0.1
 cls
 
 :: -------------------------------------------------------------
@@ -119,7 +119,7 @@ echo    %R%[90m█  █ █    ██  █  █    █   █  █ █  █ █  
 echo    %R%[90m█  █ █ ██ █ █ █  █    █   █  █ ████ ██  █ █ █ ██   ████    %R%[90m  █   █  █ █  █ █   ███  █  █   █  %R%[0m
 echo    %R%[90m█  █ █  █ █  ██  █    █   █  █ █ █  █   █  ██ █ █     █    %R%[90m  █   █  █ █  █ █   █  █ █  █  █ █ %R%[0m
 echo    %R%[90m████ ████ █   █ ███   █   ████ █  █ ███ █   █ █  █ ████    %R%[90m  █   ████ ████ ███ ███  ████ █   █%R%[0m
-echo    %R%[90mhttps://ognitorenks.blogspot.com                                                           %R%[90m%version%%R%[0m
+echo    %R%[90mhttps://ognitorenks.blogspot.com                                                         %R%[90m%version%%R%[0m
 echo.
 echo       %R%[90m %Value2%: %Value1% ^| %Value4% ^| %Value3%%R%[0m
 Call %Dil% :Menu_1
@@ -320,13 +320,10 @@ FOR %%a in (LA2 LA3) do (set %%a=)
 echo   %R%[90m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘%R%[0m
 Call :Dil A 2 D0002&set /p Value_S=%R%[92m   !LA2!: %R%[0m
 Call :Upper "%Value_S%" Value_S 
-if %Win% EQU 11 (set Value_W=0 11)
-if %Win% EQU 10 (set Value_W=0 10)
 echo !Value_S! | Findstr /i "X" > NUL 2>&1
 	if !errorlevel! EQU 0 (set Error=X&goto Main_Menu)
+cls
 FOR %%a in (!Value_S!) do (
-	if %%a EQU E (set Value=E&set X=ON)
-	if %%a EQU D (set Value=D&set X=ON)
 	Call :Service_Management %%a
 	if %%a EQU 16 (Call :Reg01)
 )
@@ -842,10 +839,9 @@ goto :eof
 :Service_Management
 if %Win% EQU 11 (set Value_W=0 11)
 if %Win% EQU 10 (set Value_W=0 10)
-if !X! EQU ON (goto :eof)
+if %~1 EQU E (set Value=E&Call :Dil B 2 T0001&goto :eof)
+if %~1 EQU D (set Value=D&Call :Dil B 2 T0002&goto :eof)
 Call :Dil A 2 SL_%~1_
-if !Value! EQU E (Call :Dil B 2 T0001)
-if !Value! EQU D (Call :Dil B 2 T0002)
 echo %R%[96m "!LA2!" %R%[37m !LB2! %R%[0m
 FOR %%j in (!Value_W!) do (
 	FOR /F "delims=> tokens=2" %%g in ('Findstr /i "_%%j_%~1_" %Konum%\Bin\Extra\Data.cmd') do (
@@ -2186,6 +2182,9 @@ Call :DEL "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
 Call :RD "%LocalAppData%\Microsoft\Edge"
 Call :FA DELS "C:\*dge.wim"
 Call :RegAdd "HKLM\OFF_SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
+Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
+Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
+Call :RegDel "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
 :: -------------------------------------------------------------
 Call :FA DELS "C:\*winre.wim"
 :: -------------------------------------------------------------

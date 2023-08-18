@@ -4,6 +4,12 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.0.1 ►  18.08.2023</B></summary>
+
+	• "Sistem optimizasyonu" bölümüne Edge silme işlemi için yeni komutlar eklendi.
+	• Hizmet yönetimi bölümündeki kod hatası giderildi.
+
+</details>
 
 <details><B><summary> Versiyon 4.0 ►  18.08.2023 - Return</B></summary>
 
