@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.2
+set Version=4.0.3
 cls
 
 :: -------------------------------------------------------------
@@ -41,9 +41,19 @@ cd /d "%~dp0"
 FOR /F "tokens=*" %%a in ('cd') do (set Konum=%%a)
 :: Değişkenler
 set NSudo="%Konum%\Bin\NSudo.exe" -U:T -P:E -Wait -ShowWindowMode:hide cmd /c
-set Dil=%Konum%\Bin\Language\Turkish.cmd
 MD "%Konum%\Log" > NUL 2>&1
 set Error=NT
+
+:: -------------------------------------------------------------
+Findstr /i "Language_Pack" %Konum%\Settings.ini > NUL 2>&1
+	if !errorlevel! NEQ 0 (FOR /F "tokens=6" %%a in ('Dism /Online /Get-intl ^| Find /I "Default system UI language"') do (
+								if %%a EQU tr-TR (echo. >> %Konum%\Settings.ini
+												  echo Language_Pack^>Turkish^> >> %Konum%\Settings.ini
+												  set Dil=%Konum%\Bin\Language\Turkish.cmd)
+								if %%a NEQ tr-TR (echo. >> %Konum%\Settings.ini
+												  echo Language_Pack^>English^> >> %Konum%\Settings.ini
+												  set Dil=%Konum%\Bin\Language\English.cmd)))
+	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Language_Pack" %Konum%\Settings.ini') do (set Dil=%Konum%\Bin\Language\%%a.cmd))
 
 :: -------------------------------------------------------------
 :: Yönetici yetkisi
@@ -124,6 +134,7 @@ echo.
 echo       %R%[90m %Value2%: %Value1% ^| %Value4% ^| %Value3%%R%[0m
 Call %Dil% :Menu_1
 Call :Dil A 2 D0001&set /p Value_M=%R%[32m        !LA2!: %R%[0m
+Call :Upper %Value_M% Value_M
 title  OgnitorenKs Toolbox
 	if %Value_M% EQU 1 (goto Software_Installer)
 	if %Value_M% EQU 2 (goto Service_Menu)
@@ -136,6 +147,8 @@ title  OgnitorenKs Toolbox
 	if %Value_M% EQU 9 (set Error=X&Call :Cleaner)
 	if %Value_M% EQU 10 (Call :Windows_Repair)
 	if %Value_M% EQU 11 (goto Performans_Edit)
+	if %Value_M% EQU Z (goto Language_Select)
+	if %Value_M% EQU X (exit)
 	if %Error% EQU X (goto Main_Menu)
 Call :ProcessCompleted
 goto Main_Menu
@@ -989,6 +1002,29 @@ echo            %R%[90m└───────────────┘%R%[0m
 echo.
 Call :Bekle 2
 goto :eof
+
+:: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+:Language_Select
+cls
+Call :DEL %Konum%\Log\Dil
+Call :Dil A 2 B0009&echo.&echo %R%[91m !LA2! %R%[0m&echo.
+set Count=0
+FOR /F "delims=. tokens=1" %%g in ('dir /b "%Konum%\Bin\Language\*.cmd" 2^>NUL') do (
+	set /a Count+=1
+	echo Lang_!Count!_^>%%g^> >> %Konum%\Log\Dil
+	echo %R%[32m   !Count! %R%[90m- %R%[33m %%g %R%[0m
+)
+Call :Dil a 2 T0006&echo %R%[32m   X %R%[90m- %R%[37m !LA2! %R%[0m
+Call :Dil A 2 D0001&echo.&set /p Value_M=►%R%[32m !LA2!%R%[90m= %R%[0m
+Call :Upper %Value_M% Value_M
+	if %Value_M% EQU X (goto Main_Menu)
+FOR /F "delims=> tokens=2" %%g in ('Findstr /i "Lang_!Value_M!_" %Konum%\Log\Dil') do (
+	FOR /F "delims=> tokens=2" %%k in ('Findstr /i "Language_Pack" %Konum%\Settings.ini') do (
+		set Dil=%Konum%\Bin\Language\%%g.cmd
+		Call :Powershell "(Get-Content %Konum%\Settings.ini) | ForEach-Object { $_ -replace '%%k', '%%g' } | Set-Content '%Konum%\Settings.ini'"
+	)
+)
+goto Main_Menu
 
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Sistem_Bilgi

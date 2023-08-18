@@ -4,6 +4,16 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+
+<details><B><summary> Versiyon 4.0.3 ►  19.08.2023</B></summary>
+
+	• Ana menü içinde yer alan X işlemli kapatma işlevi aktifleştirildi.
+	• İngilizce dil desteği yeniden eklendi.
+	• Sistem varsayılan dilinden toolbox dili otomatik seçilecek şekilde düzenlendi. 
+	• Dil seçeneğini manuel değiştirmek için Ana menüye "Dil değiştirme" bölümü eklendi.
+
+</details>
+
 <details><B><summary> Versiyon 4.0.2 ►  18.08.2023</B></summary>
 
 	• "Sistem hakkında" bölümünde yer alan Monitör bilgileri kaldırılmıştır. Hatalar giderildikten sonra yeniden eklenecektir.
@@ -47,6 +57,13 @@
 
 </details>
 
+<details><B><summary> Versiyon 3.9 ►  09.03.2023 - DEV</B></summary>
+
+	• Toolbox yeniden yazılmaya başlandı.
+	• Detaylı hizmet yönetimi bölümü oluşturuldu.
+	• İndirme işlemleri ağırlıklı olarak Chocolatey'e üzerine aktarıldı.
+
+</details>
 
 <details><B><summary> Versiyon 3.8.1 ►  08.12.2022 - THE END</B></summary>
 
