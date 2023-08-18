@@ -4,6 +4,12 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.0.2 ►  18.08.2023</B></summary>
+
+	• "Sistem hakkında" bölümünde yer alan Monitör bilgileri kaldırılmıştır. Hatalar giderildikten sonra yeniden eklenecektir.
+
+</details>
+
 <details><B><summary> Versiyon 4.0.1 ►  18.08.2023</B></summary>
 
 	• "Sistem optimizasyonu" bölümüne Edge silme işlemi için yeni komutlar eklendi.

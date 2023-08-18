@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.1
+set Version=4.0.2
 cls
 
 :: -------------------------------------------------------------
@@ -1179,24 +1179,24 @@ FOR /F "tokens=4" %%a in ('systeminfo ^| Find "Total Physical Memory"') do (
 		echo   ►%R%[36m !LA2! !LB2!:%R%[33m %%b%R%[37m GB %R%[0m
 	)
 )
+::echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
+::Call :Powershell "Get-CimInstance -ClassName Win32_DesktopMonitor | Select-Object -Property Name | format-list" > %Konum%\Log\Monitor.txt
+::Call :Dil A 2 EE_24_&echo   %R%[35m▼ !LA2! %R%[0m
+::FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Name" %Konum%\Log\Monitor.txt 2^>NUL') do (
+::	FOR /F "delims=: tokens=2" %%b in ('Findstr /i "CurrentHorizontalResolution" %Konum%\Log\GPUAll 2^>NUL') do (
+::		FOR /F "delims=: tokens=2" %%c in ('Findstr /i "CurrentVerticalResolution" %Konum%\Log\GPUAll 2^>NUL') do (
+::			FOR /F "delims=: tokens=2" %%d in ('Findstr /i "CurrentRefreshRate" %Konum%\Log\GPUAll 2^>NUL') do (
+::				Call :Dil A 2 EE_8_
+::				Call :Dil B 2 EE_9_
+::				Call :Dil C 2 EE_25_
+::				Call :Dil D 2 EE_26_
+::				echo   ►%R%[36m !LA2!-!LB2!:%R%[33m%%a %R%[90m│%R%[36m !LD2!:%R%[33m%%d %R%[37mHZ %R%[90m│%R%[36m !LC2!:%R%[33m%%b %R%[36mx%R%[33m%%c %R%[0m
+::			)
+::		)
+::	)
+::)
 echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
 Call :PowerShell "Get-CimInstance -ClassName win32_videocontroller | Select-Object -Property Name,CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate,AdapterRAM,DriverDate,DriverVersion | Format-List" > %Konum%\Log\GPUAll
-Call :Powershell "Get-CimInstance -ClassName Win32_DesktopMonitor | Select-Object -Property Name | format-list" > %Konum%\Log\Monitor.txt
-Call :Dil A 2 EE_24_&echo   %R%[35m▼ !LA2! %R%[0m
-FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Name" %Konum%\Log\Monitor.txt 2^>NUL') do (
-	FOR /F "delims=: tokens=2" %%b in ('Findstr /i "CurrentHorizontalResolution" %Konum%\Log\GPUAll 2^>NUL') do (
-		FOR /F "delims=: tokens=2" %%c in ('Findstr /i "CurrentVerticalResolution" %Konum%\Log\GPUAll 2^>NUL') do (
-			FOR /F "delims=: tokens=2" %%d in ('Findstr /i "CurrentRefreshRate" %Konum%\Log\GPUAll 2^>NUL') do (
-				Call :Dil A 2 EE_8_
-				Call :Dil B 2 EE_9_
-				Call :Dil C 2 EE_25_
-				Call :Dil D 2 EE_26_
-				echo   ►%R%[36m !LA2!-!LB2!:%R%[33m%%a %R%[90m│%R%[36m !LD2!:%R%[33m%%d %R%[37mHZ %R%[90m│%R%[36m !LC2!:%R%[33m%%b %R%[36mx%R%[33m%%c %R%[0m
-			)
-		)
-	)
-)
-echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
 DEL /F /Q /A "%Konum%\Log\GPUDetail" > NUL 2>&1
 set Count=0
 FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Name" %Konum%\Log\GPUAll 2^>NUL') do (
