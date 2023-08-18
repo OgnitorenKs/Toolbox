@@ -52,7 +52,7 @@ You can check the status of components on the system. You can easily delete comp
 
 </details>
 <details>
-</B><summary> 4 - PC timed shutdown</B></summary>
+<B><summary> 4 - PC timed shutdown</B></summary>
 
 In this section you need to enter the shutdown time in minutes. It will inform you if there is a shutdown process. When you dial this section again, it gives you the option to close the shutdown you have done.
 
@@ -61,7 +61,7 @@ In this section you need to enter the shutdown time in minutes. It will inform y
 
 </details>
 <details>
-</B><summary> 5 - Ping meter</B></summary>
+<B><summary> 5 - Ping meter</B></summary>
 
 Shows the ping time of specific pages and DNS addresses. You can also measure the ping of a different page.
 
