@@ -30,6 +30,7 @@ All rights of the work belong to Hüseyin UZUNYAYLA. It is forbidden to develop,
 <B><summary> 1 - Application Installer</B></summary>
 
 The programs in this section are selected among free applications. The All in One Runtimes section includes C++ 2005-2022 / Java / XNA Framework / OpenAL / DirectX. Other programs are detailed by categories.
+- When installing some programs, we may need to install without administrator authorization. We do this authorization process with NSudo. If the program does not install, there is a problem with the UAC settings. To solve this, activate the setting in the 'Control Panel' ► 'UAC' section and restart the system. After the system is turned on, you can turn off 'UAC'.
 
 ![Tool1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/1.png)
 

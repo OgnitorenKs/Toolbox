@@ -28,7 +28,8 @@
 <details>
 <B><summary> 1 - Uygulama Yükleyici</B></summary>
 
-Bu bölümdeki programlar ücretsiz uygulamalar arasında seçilmiştir. All in One Runtimes bölümü içinde C++ 2005-2022 / Java / XNA Framework / OpenAL / DirectX yer almaktadır. Diğer programlar kategorilere ayrılarak detaylandırılmıştır.
+Bu bölümdeki programlar ücretsiz uygulamalar arasında seçilmiştir. All in One Runtimes bölümü içinde C++ 2005-2022 / Java / XNA Framework / OpenAL / DirectX yer almaktadır. Diğer programlar kategorilere ayrılarak detaylandırılmıştır. 
+- Bazı programları yüklerken yönetici yetkisi olmadan yükleme işlemi yapmamız gerekebiliyor.Bu yetki işlemini NSudo ile yapıyoruz. Program yüklenmez ise UAC ayarlarında bir sorun vardır. Bunu çözmek için 'Denetim masası' ► 'UAC' bölümününde ayarı aktifleştirin ve sistemi yeniden başlatın. Sistem açıldıktan sonra 'UAC' kapatabilirsiniz.
 
 ![Tool1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/1.png)
 
