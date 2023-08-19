@@ -104,7 +104,7 @@ FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Toolbox.Update." %Konum%\Setting
 										  Call :Dil A 2 T0024&echo %R%[33m !LA2! %R%[90m=%R%[37m %%b %R%[0m
 										  Call :Bekle 5
 										  Call :Link 3&Call :PSDownload "%Temp%\ToolboxUpdate.cmd"
-										  Call :Powershell "Start-Process '%Temp%\ToolboxUpdate.cmd' -Verb Runas"
+										  Call :Powershell "Start-Process '%Temp%\ToolboxUpdate.cmd'"
 										  exit)
 		)
 	)
