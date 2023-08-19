@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.3
+set Version=4.0.4
 cls
 
 :: -------------------------------------------------------------
@@ -88,7 +88,7 @@ FOR /F "skip=2 delims=. tokens=3" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Wi
 	if !Win! EQU 10 if %%a GEQ 19045 (goto Kontrol)
 	if !Win! EQU 11 if %%a GEQ 22621 (goto Kontrol)
 )
-Call :Dil A 2 Error_8&cls&echo.&echo %R%[91m !LA2! %R%[0m
+Call :Dil A 2 Error_8&cls&echo.&echo %R%[91m !LA2! %R%[0m&Call :Bekle 7&exit
 
 :: -------------------------------------------------------------
 :Kontrol
@@ -481,7 +481,7 @@ Call :Upper !Value_M! Value_M
 	if %Value_M% EQU 11 (slmgr /xpr)
 	if %Value_M% EQU 12 (slmgr /upk)
 	if %Value_M% EQU 13 (slmgr /rearm)
-	if %Value_M% EQU X (goto Main_Menu)
+	if %Value_M% EQU X (set Error=X&goto Main_Menu)
 Call :ProcessCompleted
 goto User_Licence_Manager
 

@@ -5,6 +5,13 @@
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
 
+<details><B><summary> Versiyon 4.0.4 ►  19.08.2023</B></summary>
+
+	• "Lisans-Kullanıcı yönetimi" bölümü ana menüye dönüşteki işlem başarılı mesajının çıkması engellendi.
+	• 22H2 altı sürümlerde Toolbox'ın açılma sorunu giderildi.
+
+</details>
+
 <details><B><summary> Versiyon 4.0.3 ►  19.08.2023</B></summary>
 
 	• Ana menü içinde yer alan X işlemli kapatma işlevi aktifleştirildi.
