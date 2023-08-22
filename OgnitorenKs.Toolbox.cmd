@@ -1014,7 +1014,7 @@ FOR /F "delims=. tokens=1" %%g in ('dir /b "%Konum%\Bin\Language\*.cmd" 2^>NUL')
 	echo Lang_!Count!_^>%%g^> >> %Konum%\Log\Dil
 	echo %R%[32m   !Count! %R%[90m- %R%[33m %%g %R%[0m
 )
-Call :Dil a 2 T0006&echo %R%[32m   X %R%[90m- %R%[37m !LA2! %R%[0m
+Call :Dil A 2 T0006&echo %R%[32m   X %R%[90m- %R%[37m !LA2! %R%[0m
 Call :Dil A 2 D0001&echo.&set /p Value_M=►%R%[32m !LA2!%R%[90m= %R%[0m
 Call :Upper %Value_M% Value_M
 	if %Value_M% EQU X (goto Main_Menu)
