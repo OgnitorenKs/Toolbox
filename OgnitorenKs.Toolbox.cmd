@@ -208,7 +208,6 @@ FOR %%a in (%Value_M%) do (
 	if %%a EQU 29 (Call :Winget KDE.Krita)
 	if %%a EQU 30 (Call :Winget GIMP.GIMP)
 	if %%a EQU 31 (Call :Winget sylikc.JPEGView
-				   MD "%ProgramFiles%\7-Zip" > NUL 2>&1
 				   set AppRoad=%programfiles%\JPEGView\JPEGView.exe
 				   set AppIcon=%programfiles%\JPEGView\JPEGView.exe
 				   set AppKey=JPEGView
@@ -248,6 +247,7 @@ FOR %%a in (%Value_M%) do (
 	if %%a EQU 61 (Call :Winget IObit.IObitUnlocker)
 	if %%a EQU 62 (Call :Winget RevoUninstaller.RevoUninstaller)
 	if %%a EQU 63 (Call :Winget 7zip.7zip
+				   MD "%ProgramFiles%\7-Zip" > NUL 2>&1
 				   move "%Konum%\Bin\Icon\7-zipp.ico" "%programfiles%\7-Zip" > NUL 2>&1
 				   set AppRoad=%programfiles%\7-Zip\7zFM.exe
 				   set AppIcon=%programfiles%\7-Zip\7-zipp.ico
