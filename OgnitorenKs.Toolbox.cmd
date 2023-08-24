@@ -208,6 +208,7 @@ FOR %%a in (%Value_M%) do (
 	if %%a EQU 29 (Call :Winget KDE.Krita)
 	if %%a EQU 30 (Call :Winget GIMP.GIMP)
 	if %%a EQU 31 (Call :Winget sylikc.JPEGView
+				   MD "%ProgramFiles%\7-Zip" > NUL 2>&1
 				   set AppRoad=%programfiles%\JPEGView\JPEGView.exe
 				   set AppIcon=%programfiles%\JPEGView\JPEGView.exe
 				   set AppKey=JPEGView
