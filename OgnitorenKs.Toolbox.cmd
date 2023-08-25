@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.4
+set Version=4.0.5
 cls
 
 :: -------------------------------------------------------------
@@ -175,6 +175,8 @@ echo %Value_M% | Findstr /i "X" > NUL 2>&1
 Call :Dil A 2 T0003
 echo %Value_M% | Findstr /i "81" > NUL 2>&1
 	if !errorlevel! EQU 0 (winget upgrade --all --uninstall-previous)
+echo %Value_M% | Findstr /i "80" > NUL 2>&1
+	if !errorlevel! EQU 0 (Call :Link 2&start !Link!)
 FOR %%a in (%Value_M%) do (
 	cls&echo.&echo  ►%R%[92m !LA2!:%R%[0m %Value_M%
 	if %%a EQU 1 (Call :AIO.Runtimes)
@@ -248,7 +250,7 @@ FOR %%a in (%Value_M%) do (
 	if %%a EQU 62 (Call :Winget RevoUninstaller.RevoUninstaller)
 	if %%a EQU 63 (Call :Winget 7zip.7zip
 				   MD "%ProgramFiles%\7-Zip" > NUL 2>&1
-				   move "%Konum%\Bin\Icon\7-zipp.ico" "%programfiles%\7-Zip" > NUL 2>&1
+				   Copy /y "%Konum%\Bin\Icon\7-zipp.ico" "%programfiles%\7-Zip" > NUL 2>&1
 				   set AppRoad=%programfiles%\7-Zip\7zFM.exe
 				   set AppIcon=%programfiles%\7-Zip\7-zipp.ico
 				   set AppKey=7-Zip
@@ -260,9 +262,10 @@ FOR %%a in (%Value_M%) do (
 	if %%a EQU 67 (Call :Winget voidtools.Everything)
 	if %%a EQU 68 (Call :Winget LogMeIn.Hamachi)
 	if %%a EQU 69 (Call :Winget GlassWire.GlassWire)
-	if %%a EQU 70 (Call :Winget Stremio.Stremio)
-	if %%a EQU 71 (Call :Winget Flow-Launcher.Flow-Launcher)
-	if %%a EQU 72 (Call :Winget Cloudflare.Warp)
+	if %%a EQU 70 (Call :Winget Safing.Portmaster)
+	if %%a EQU 71 (Call :Winget Stremio.Stremio)
+	if %%a EQU 72 (Call :Winget Flow-Launcher.Flow-Launcher)
+	if %%a EQU 73 (Call :Winget Cloudflare.Warp)
 )
 goto Software_Installer
 
@@ -807,6 +810,7 @@ FOR %%g in (!Default!) do (
 	reg add "HKCR\.%%g" /f /ve /t REG_SZ /d "%AppKey%.%%g" > NUL 2>&1
 	reg add "HKCR\%AppKey%.%%g\DefaultIcon" /f /ve /t REG_SZ /d "%AppIcon%" > NUL 2>&1
 	reg add "HKCR\%AppKey%.%%g\shell\open\command" /f /ve /t REG_SZ /d "\"%AppRoad%\" \"%%1\"" > NUL 2>&1
+)
 goto :eof
 
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■

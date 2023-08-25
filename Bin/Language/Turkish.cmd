@@ -21,6 +21,7 @@ goto :eof
 :Menu_2
 set ogniogniogniogniognio=%R%[90m ▼
 echo.
+echo   %R%[90m Microsoft Store ile 'Uygulama Yükleyici'yi güncellemeyi unutmayın%R%[0m
 echo   %R%[90m┌──────────────────────────────┬──────────────────────────────┬──────────────────────────────┐%R%[0m
 echo   %R%[90m│%R%[32m  1%R%[90m-%R%[33m All in One Runtimes      %R%[90m│%R%[32m 28%R%[90m-%R%[33m Shoutcut                 %R%[90m│%R%[32m 55%R%[90m-%R%[33m Git                      %R%[90m│%R%[0m
 echo   %R%[90m│%ogniogniogniogniognio% Mesaj                      %R%[90m│%R%[32m 39%R%[90m-%R%[33m Krita                    %R%[90m│%R%[32m 56%R%[90m-%R%[33m Node.JS                  %R%[90m│%R%[0m
@@ -40,17 +41,17 @@ echo   %R%[90m│%ogniogniogniogniognio% Tarayıcı                   %R%[90m│
 echo   %R%[90m│%R%[32m 13%R%[90m-%R%[36m Chromium [Sync]          %R%[90m│%R%[32m 42%R%[90m-%R%[36m Spotify                  %R%[90m│%R%[32m 67%R%[90m-%R%[36m Everything               %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 14%R%[90m-%R%[36m Chromium [UnSync]        %R%[90m│%ogniogniogniogniognio% İndirme Araçları           %R%[90m│%R%[32m 68%R%[90m-%R%[36m Hamachi                  %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 15%R%[90m-%R%[36m Google Chrome            %R%[90m│%R%[32m 43%R%[90m-%R%[33m Free Download Manager    %R%[90m│%R%[32m 69%R%[90m-%R%[36m Glasswire                %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%R%[32m 70%R%[90m-%R%[36m Stremio                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%R%[32m 45%R%[90m-%R%[33m JDownloader 2            %R%[90m│%R%[32m 71%R%[90m-%R%[36m Flow Launcher            %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%R%[32m 46%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m 72%R%[90m-%R%[36m CloudFlare WARP          %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%R%[32m 70%R%[90m-%R%[36m PortMaster               %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%R%[32m 45%R%[90m-%R%[33m JDownloader 2            %R%[90m│%R%[32m 71%R%[90m-%R%[36m Stremio                  %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%R%[32m 46%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m 72%R%[90m-%R%[36m Flow Launcher            %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m 73%R%[90m-%R%[36m CloudFlare WARP          %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m DuckDuckGo               %R%[90m│%R%[32m 47%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 21%R%[90m-%R%[36m Opera                    %R%[90m│%R%[32m 48%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 22%R%[90m-%R%[36m Opera-GX                 %R%[90m│%R%[32m 49%R%[90m-%R%[36m Adobe Reader             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 23%R%[90m-%R%[36m Mozilla Firefox          %R%[90m│%R%[32m 50%R%[90m-%R%[36m PDF X-Change Editor      %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 24%R%[90m-%R%[36m LibreWolf                %R%[90m│%R%[32m 51%R%[90m-%R%[36m Calibre                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 25%R%[90m-%R%[36m Tor                      %R%[90m│%ogniogniogniogniognio% Geliştirme                 %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%ogniogniogniogniognio% Multimedya                 %R%[90m│%R%[32m 52%R%[90m-%R%[33m Notepad++                %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%ogniogniogniogniognio% Multimedya                 %R%[90m│%R%[32m 52%R%[90m-%R%[33m Notepad++                %R%[90m│%R%[32m 80%R%[90m-%R%[37m Microsoft Store güncelle %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 26%R%[90m-%R%[33m Kdenlive                 %R%[90m│%R%[32m 53%R%[90m-%R%[33m Visual Studio Code       %R%[90m│%R%[32m 81%R%[90m-%R%[37m Uygulamaları güncelle    %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 27%R%[90m-%R%[33m Openshot                 %R%[90m│%R%[32m 54%R%[90m-%R%[33m Github                   %R%[90m│%R%[32m  X%R%[90m-%R%[37m Menu                     %R%[90m│%R%[0m
 echo   %R%[90m└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘%R%[0m

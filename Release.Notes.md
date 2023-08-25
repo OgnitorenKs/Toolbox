@@ -4,6 +4,14 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.0.5 ►  26.08.2023</B></summary>
+
+	• 7-Zip kurulum hatası giderildi. (Yapımcısı Winget sistemine eklediği kurulum setupta programfiles içine 7-Zip klasörü açamıyormuş)
+	• Uygulama yükleyici bölümüne Microsoft Store ile Uygulama yükleyiciyi güncelleyin uyarısı ekledim. Ayrıca 80 numaralı işlem ile Microsoft Store'un güncelleme ekranını açmasını sağladım.
+	• Varsayılan uygulama ekleme bölümündeki eksik kod hatası giderildi.
+	• Uygulama yükleyici bölümüne 'PortMaster' uygulaması eklendi.
+
+</details>
 
 <details><B><summary> Versiyon 4.0.4 ►  19.08.2023</B></summary>
 
