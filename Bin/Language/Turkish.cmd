@@ -120,6 +120,7 @@ T0031>Sfc /Scannow komutu çalışıyor>
 T0032>WinSxS Temizleniyor>
 T0033>'DISM /Online /Cleanup-Image /RestoreHealth' komutu çalışıyor>
 T0034>Genel ayarlar ve DLL dosyaları onarılıyor>
+T0035>WMI ile alınan sistem verilerinde hata payı olabilir>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>

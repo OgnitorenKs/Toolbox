@@ -120,6 +120,7 @@ T0031>Sfc /Scannow command running>
 T0032>WinSxS Cleanup>
 T0033>'DISM /Online /Cleanup-Image /RestoreHealth' command running>
 T0034>General settings and repairing DLL files>
+T0035>System data received via WMI may have a margin of error>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>

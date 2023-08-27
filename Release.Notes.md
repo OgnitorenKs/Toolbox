@@ -4,6 +4,14 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.0.7 ►  27.08.2023</B></summary>
+
+	• "Uygulama yükleyici" bölümünde çoklu seçimde "All in One Runtimes" seçiminden sonra oluşan bilgilendirme mesajındaki hata giderildi.
+	• "Sistem hakkında" bölümüne Windows yönetim araçlarından alınan verilerden hata payı olabileğiyle ilgili bilgilendirici metin eklendi.
+		• "Sistem hakkında" bölümünden ana menüye dönüşte silinen log kayıtlarından kaynaklı hatalı bilgilendirme mesaj sorunu giderildi.
+
+</details>
+
 <details><B><summary> Versiyon 4.0.6 ►  27.08.2023</B></summary>
 
 	• Sistem temizleyici bölümüne olay günlüğü temizleme komutları eklendi.

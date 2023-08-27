@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.6
+set Version=4.0.7
 mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
@@ -47,6 +47,11 @@ MD "%Konum%\Log" > NUL 2>&1
 set Error=NT
 
 :: -------------------------------------------------------------
+:: Yönetici yetkisi
+reg query "HKU\S-1-5-19" > NUL 2>&1
+	if !errorlevel! NEQ 0 (Call :Powershell "Start-Process '%Konum%\OgnitorenKs.Toolbox.cmd' -Verb Runas"&exit)
+
+:: -------------------------------------------------------------
 Findstr /i "Language_Pack" %Konum%\Settings.ini > NUL 2>&1
 	if !errorlevel! NEQ 0 (FOR /F "tokens=6" %%a in ('Dism /Online /Get-intl ^| Find /I "Default system UI language"') do (
 								if %%a EQU tr-TR (echo. >> %Konum%\Settings.ini
@@ -56,11 +61,6 @@ Findstr /i "Language_Pack" %Konum%\Settings.ini > NUL 2>&1
 												  echo Language_Pack^>English^> >> %Konum%\Settings.ini
 												  set Dil=%Konum%\Bin\Language\English.cmd)))
 	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Language_Pack" %Konum%\Settings.ini') do (set Dil=%Konum%\Bin\Language\%%a.cmd))
-
-:: -------------------------------------------------------------
-:: Yönetici yetkisi
-reg query "HKU\S-1-5-19" > NUL 2>&1
-	if !errorlevel! NEQ 0 (Call :Powershell "Start-Process '%Konum%\OgnitorenKs.Toolbox.cmd' -Verb Runas"&exit)
 
 :: -------------------------------------------------------------
 :: Boşluk ve Türkçe karakter kontrolü
@@ -174,11 +174,11 @@ Call :Dil A 2 D0002&set /p Value_M=%R%[32m  !LA2! %R%[90mx,y: %R%[0m
 Call :Upper %Value_M% Value_M
 echo %Value_M% | Findstr /i "X" > NUL 2>&1
 	if !errorlevel! EQU 0 (goto Main_Menu)
-Call :Dil A 2 T0003
 echo %Value_M% | Findstr /i "81" > NUL 2>&1
 	if !errorlevel! EQU 0 (winget upgrade --all --uninstall-previous)
 echo %Value_M% | Findstr /i "80" > NUL 2>&1
 	if !errorlevel! EQU 0 (Call :Link 2&start !Link!)
+Call :Dil A 2 T0003
 FOR %%a in (%Value_M%) do (
 	cls&echo.&echo  ►%R%[92m !LA2!:%R%[0m %Value_M%
 	if %%a EQU 1 (Call :AIO.Runtimes)
@@ -273,22 +273,22 @@ goto Software_Installer
 
 :: -------------------------------------------------------------
 :AIO.Runtimes
-cls&Call :Dil A 2 T0018&echo %R%[32m !LA2! %R%[0m
+cls&Call :Dil B 2 T0018&echo %R%[32m !LB2! %R%[0m
 Dism /Online /Get-Capabilities /format:table > %Konum%\Log\Capabilities
 Dism /Online /Get-Features /format:table > %Konum%\Log\Features
 FOR /F "tokens=3" %%g in ('Findstr /C:"NetFX3~~~~" %Konum%\Log\Capabilities') do (
 	echo %%g | Findstr /C:"Installed" > NUL 2>&1
-		if !errorlevel! NEQ 0 (Call :Dil A 2 T0019&echo %R%[92m !LA2! %R%[0m
+		if !errorlevel! NEQ 0 (Call :Dil B 2 T0019&echo %R%[92m !LB2! %R%[0m
 							   Dism /Online /Enable-Feature /Featurename:NetFx3 /All /NoRestart)
 )
 FOR /F "tokens=3" %%g in ('findstr /C:"IIS-ASPNET45" %Konum%\Log\Features') do (
 	echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-		if !errorlevel! NEQ 0 (Call :Dil A 2 T0020&echo %R%[92m !LA2! %R%[0m
+		if !errorlevel! NEQ 0 (Call :Dil B 2 T0020&echo %R%[92m !LB2! %R%[0m
 							   Dism /Online /Enable-Feature /FeatureName:IIS-ASPNET45 /All /NoRestart)
 )
 FOR /F "tokens=3" %%g in ('findstr /C:"DirectPlay" %Konum%\Log\Features') do (
 	echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-		if !errorlevel! NEQ 0 (Call :Dil A 2 T0021&echo %R%[92m !LA2! %R%[0m
+		if !errorlevel! NEQ 0 (Call :Dil B 2 T0021&echo %R%[92m !LB2! %R%[0m
 							   Dism /Online /Enable-Feature /FeatureName:DirectPlay /All /NoRestart)
 )
 FOR %%g in (
@@ -311,7 +311,7 @@ Microsoft.DotNet.DesktopRuntime.6
 Microsoft.DotNet.DesktopRuntime.7
 Microsoft.DirectX
 ) do (
-	cls&Call :Dil A 2 T0018&echo %R%[32m !LA2! %R%[0m&Call :Winget %%g
+	cls&Call :Dil B 2 T0018&echo %R%[32m !LB2! %R%[0m&Call :Winget %%g
 )
 FOR %%g in (Capabilities Features) do (Call :DEL %Konum%\Log\%%g)
 goto :eof
@@ -924,7 +924,7 @@ FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	FOR /F "tokens=8 delims='\'" %%k in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages" /f "%%g" 2^>NUL') do (
 		reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages" /f "%%k" > NUL 2>&1
-			if !errorlevel! EQU 0 (Dism /Online /Remove-Package /PackageName:%%k /NoRestart)
+			if !errorlevel! EQU 0 (Dism /Online /Remove-Package /PackageName:%%k /NoRestart /Quiet)
 	)
 )
 goto :eof
@@ -933,7 +933,7 @@ goto :eof
 :Remove_Capability
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	Findstr /i "%%g" %Konum%\Log\C_Capabilities > NUL 2>&1
-		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart))													
+		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart /Quiet))													
 )
 goto :eof
 
@@ -941,7 +941,7 @@ goto :eof
 :Remove_Package
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	Findstr /i "%%g" %Konum%\Log\C_Packages > NUL 2>&1
-		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Packages') do (Dism /Online /Remove-Package /PackageName:%%k /NoRestart))
+		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Packages') do (Dism /Online /Remove-Package /PackageName:%%k /NoRestart /Quiet))
 )
 goto :eof
 
@@ -1060,6 +1060,7 @@ goto Main_Menu
 mode con cols=140 lines=50
 Call :Date&Call :Time
 Call :Dil A 2 B0004&echo.&echo %R%[91m !LA2! %R%[90m[ %DateDay% - %Time% ] %R%[0m
+Call :Dil A 2 Error_0_&Call :Dil B 2 T0035&echo %R%[90m !LA2!= !LB2! %R%[0m 
 echo  %R%[90m┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐%R%[0m
 Call :Powershell "Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object -Property Caption,InstallDate,OSArchitecture,RegisteredUser,CSName | format-list" > %Konum%\Log\OS.txt
 FOR /F "tokens=3" %%a in ('Findstr /i "CSName" %Konum%\Log\OS.txt 2^>NUL') do (
@@ -1244,22 +1245,6 @@ FOR /F "tokens=4" %%a in ('systeminfo ^| Find "Total Physical Memory"') do (
 		echo   ►%R%[36m !LA2! !LB2!:%R%[33m %%b%R%[37m GB %R%[0m
 	)
 )
-::echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
-::Call :Powershell "Get-CimInstance -ClassName Win32_DesktopMonitor | Select-Object -Property Name | format-list" > %Konum%\Log\Monitor.txt
-::Call :Dil A 2 EE_24_&echo   %R%[35m▼ !LA2! %R%[0m
-::FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Name" %Konum%\Log\Monitor.txt 2^>NUL') do (
-::	FOR /F "delims=: tokens=2" %%b in ('Findstr /i "CurrentHorizontalResolution" %Konum%\Log\GPUAll 2^>NUL') do (
-::		FOR /F "delims=: tokens=2" %%c in ('Findstr /i "CurrentVerticalResolution" %Konum%\Log\GPUAll 2^>NUL') do (
-::			FOR /F "delims=: tokens=2" %%d in ('Findstr /i "CurrentRefreshRate" %Konum%\Log\GPUAll 2^>NUL') do (
-::				Call :Dil A 2 EE_8_
-::				Call :Dil B 2 EE_9_
-::				Call :Dil C 2 EE_25_
-::				Call :Dil D 2 EE_26_
-::				echo   ►%R%[36m !LA2!-!LB2!:%R%[33m%%a %R%[90m│%R%[36m !LD2!:%R%[33m%%d %R%[37mHZ %R%[90m│%R%[36m !LC2!:%R%[33m%%b %R%[36mx%R%[33m%%c %R%[0m
-::			)
-::		)
-::	)
-::)
 echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
 Call :PowerShell "Get-CimInstance -ClassName win32_videocontroller | Select-Object -Property Name,CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate,AdapterRAM,DriverDate,DriverVersion | Format-List" > %Konum%\Log\GPUAll
 DEL /F /Q /A "%Konum%\Log\GPUDetail" > NUL 2>&1
@@ -1312,6 +1297,7 @@ echo  %R%[90m└─────────────────────�
 Call :Dil A 2 T0028&echo %R%[92m !LA2! %R%[0m
 FOR %%a in (LA2 LB2 LC2 LD2 LE2 LF2 Value Value1 Value2 Value_R Uzunluk1 DateDay DateYear Time) do (set %%a=)
 DEL /F /Q /A %Konum%\Log\* > NUL 2>&1
+Call :Powershell "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,InstallDate,OSArchitecture,RegisteredUser,CSName | FL" > %Konum%\Log\OS
 pause > NUL
 goto Main_Menu
 
