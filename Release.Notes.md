@@ -4,6 +4,12 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.0.6 ►  27.08.2023</B></summary>
+
+	• Sistem temizleyici bölümüne olay günlüğü temizleme komutları eklendi.
+	• İlk açılıştaki komut ekranında boş siyah ekran görünmemesi için OgnitorenKs Toolbox yazısı eklendi.
+	
+</details>
 <details><B><summary> Versiyon 4.0.5 ►  26.08.2023</B></summary>
 
 	• 7-Zip kurulum hatası giderildi. (Yapımcısı Winget sistemine eklediği kurulum setupta programfiles içine 7-Zip klasörü açamıyormuş)

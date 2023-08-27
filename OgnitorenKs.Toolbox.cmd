@@ -28,13 +28,15 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.5
-cls
+set Version=4.0.6
+mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
 :: Renklendirm için gerekli
 FOR /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E#&echo on&for %%b in (1) do rem"') do (set R=%%b)
 
+:: -------------------------------------------------------------
+Call :Ogni_Label
 :: -------------------------------------------------------------
 :: Toolbox konumunu değişkene tanımlar
 cd /d "%~dp0"
@@ -600,6 +602,9 @@ chcp 65001 > NUL
 ipconfig /flushdns > NUL 2>&1
 ipconfig /release > NUL 2>&1
 ipconfig /renew > NUL 2>&1
+::
+FOR /F "tokens=*" %%g in ('wevtutil.exe el') do (wevtutil.exe cl "%%g" > NUL 2>&1)
+::
 goto :eof
 
 :: -------------------------------------------------------------
@@ -1008,6 +1013,25 @@ echo.
 Call :Bekle 2
 goto :eof
 
+:: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+:Ogni_Label
+echo. 
+echo.
+echo.
+echo.
+echo.
+echo                       %R%[33m████ ████ █   █ ███ █████ ████ ████ ███ █   █ █  █ ████%R%[0m
+echo                       %R%[33m█  █ █    ██  █  █    █   █  █ █  █ █   ██  █ █ █  █   %R%[0m
+echo                       %R%[33m█  █ █ ██ █ █ █  █    █   █  █ ████ ██  █ █ █ ██   ████%R%[0m
+echo                       %R%[33m█  █ █  █ █  ██  █    █   █  █ █ █  █   █  ██ █ █     █%R%[0m
+echo                       %R%[33m████ ████ █   █ ███   █   ████ █  █ ███ █   █ █  █ ████%R%[0m
+echo.
+echo                                %R%[37m█████ ████ ████ █   ███  ████ █   █%R%[0m
+echo                                %R%[37m  █   █  █ █  █ █   █  █ █  █  █ █ %R%[0m
+echo                                %R%[37m  █   █  █ █  █ █   ███  █  █   █  %R%[0m
+echo                                %R%[37m  █   █  █ █  █ █   █  █ █  █  █ █ %R%[0m
+echo                                %R%[37m  █   ████ ████ ███ ███  ████ █   █%R%[0m
+goto :eof
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Language_Select
 cls
