@@ -63,11 +63,12 @@ Error_0_>Warning>
 Error_1_>ERROR! Turkish character detected in folder path>
 Error_2_>ERROR! Space detected in folder path>
 Error_3_>ERROR! Your system architecture is not x64>
-Error_4_>ERRORROR! Chocolatey application not found>
+Error_4_>ERROR! Chocolatey application not found>
 Error_5_>Winget not found>
 Error_6_>Microsoft Store not installed>
 Error_7_>Toolbox works on Windows 10/11 systems>
 Error_8_>Toolbox works on current versions of Windows>
+Error_9_>You cannot use the app installer without an internet connection>
 ::███████████████████████████████████████████████████████████████████
 D0001>Process>
 D0002>Multiprocessing>

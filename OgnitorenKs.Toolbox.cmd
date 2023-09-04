@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.7
+set Version=4.0.8
 mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
@@ -86,11 +86,11 @@ FOR /F "tokens=5" %%a in ('Findstr /i "Caption" %Konum%\Log\OS') do set Win=%%a
 echo %Win% | Findstr /i "." > NUL 2>&1
 	if !errorlevel! EQU 0 (FOR /F "delims=. tokens=1" %%a in ('echo %Win%') do (if %%a LSS 10 (cls&Call :Dil A 2 Error_7_&echo %R%[31m !LA2! %R%[0m&Call :Bekle 5&exit)))
 	if !errorlevel! NEQ 0 (if %Win% LSS 10 (cls&Call :Dil A 2 Error_7_&echo %R%[31m !LA2! %R%[0m&Call :Bekle 5&exit))
-FOR /F "skip=2 delims=. tokens=3" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version"') do (
-	if !Win! EQU 10 if %%a GEQ 19045 (goto Kontrol)
-	if !Win! EQU 11 if %%a GEQ 22621 (goto Kontrol)
-)
-Call :Dil A 2 Error_8&cls&echo.&echo %R%[91m !LA2! %R%[0m&Call :Bekle 7&exit
+::FOR /F "skip=2 delims=. tokens=3" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version"') do (
+::	if !Win! EQU 10 if %%a GEQ 19045 (goto Kontrol)
+::	if !Win! EQU 11 if %%a GEQ 22621 (goto Kontrol)
+::)
+::Call :Dil A 2 Error_8&cls&echo.&echo %R%[91m !LA2! %R%[0m&Call :Bekle 7&exit
 
 :: -------------------------------------------------------------
 :Kontrol
@@ -158,7 +158,7 @@ goto Main_Menu
 :: -------------------------------------------------------------
 :Software_Installer
 Call :Check_Internet
-if %Internet% EQU Offline (goto Main_Menu)
+if %Internet% EQU Offline (Call :Dil A 2 Error_9_&cls&echo.&echo %R%[31m !LA2! %R%[0m&Call :Bekle 4&goto Main_Menu)
 mode con cols=98 lines=38
 Call :Powershell "Get-AppxPackage -AllUsers" > %Konum%\Log\Appx
 Findstr /i "Microsoft.WindowsStore_8wekyb3d8bbwe" %Konum%\Log\Appx > NUL 2>&1
@@ -1073,13 +1073,13 @@ FOR /F "tokens=3" %%a in ('Findstr /i "CSName" %Konum%\Log\OS.txt 2^>NUL') do (
 )
 echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
 Call :Powershell "Get-CimInstance -ClassName Win32_TimeZone | Select-Object -Property Caption | format-list" > %Konum%\Log\utc.txt
+Call :Dil A 2 EE_6_
 FOR /F "tokens=5" %%a in ('Findstr /i "Caption" %Konum%\Log\OS.txt 2^>NUL') do (
 	FOR /F "delims=:1 tokens=3" %%b in ('Findstr /i "Caption" %Konum%\Log\OS.txt 2^>NUL') do (
 		FOR /F "tokens=3" %%c in ('Findstr /i "OSArchitecture" %Konum%\Log\OS.txt 2^>NUL') do (
 			FOR /F "skip=2 delims=. tokens=3" %%d in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do (
 				FOR /F "skip=2 delims=. tokens=4" %%e in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do (
 					FOR /F "skip=2 tokens=3" %%f in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "DisplayVersion" 2^>NUL') do (
-						Call :Dil A 2 EE_6_
 						echo   ►%R%[36m !LA2!:%R%[33m Windows %%a%%b %R%[90m│%R%[33m x%%c %R%[90m│%R%[33m %%f %R%[90m│%R%[33m %%d.%%e %R%[0m
 					)
 				)
@@ -1092,11 +1092,11 @@ bcdedit > %Konum%\Log\Bcdedit.txt
 Findstr /i "winload.efi" %Konum%\Log\Bcdedit.txt > NUL 2>&1
 	if !errorlevel! EQU 0 (set Value=UEFI-GPT)
 	if !errorlevel! NEQ 0 (set Value=BIOS-MBR)
+Call :Dil A 2 EE_3_
+Call :Dil B 2 EE_4_
+Call :Dil C 2 EE_5_
 FOR /F "tokens=3" %%a in ('Findstr /i "InstallDate" %Konum%\Log\OS.txt 2^>NUL') do (
 	FOR /F "delims=(: tokens=3" %%b in ('Findstr /i "Caption" %Konum%\Log\utc.txt 2^>NUL') do (
-		Call :Dil A 2 EE_3_
-		Call :Dil B 2 EE_4_
-		Call :Dil C 2 EE_5_
 		echo   ►%R%[36m !LA2!:%R%[33m %%a %R%[90m│%R%[36m !LB2!:%R%[33m !Value! %R%[90m│%R%[36m !LC2!:%R%[33m %%b %R%[0m
 	)
 )
@@ -1104,15 +1104,15 @@ echo  %R%[90m├─────────────────────�
 Call :Powershell "Get-CimInstance -ClassName Win32_computerSystem | Select-Object -Property Name,Model,Manufacturer,PrimaryOwnerName,TotalPhysicalMemory | format-list" > %Konum%\Log\ComputerSystem.txt
 Call :Powershell "Get-CimInstance -ClassName Win32_BIOS | Select-Object -Property Name | format-list" > %Konum%\Log\Bios.txt
 Call :Powershell "Get-CimInstance -ClassName Win32_Processor | Select-Object -Property Name,CurrentClockSpeed,SocketDesignation,L2CacheSize,L3CacheSize,NumberOfCores,NumberOfLogicalProcessors | format-list" > %Konum%\Log\CPU.txt
+Call :Dil A 2 EE_7_
+Call :Dil B 2 EE_8_
+Call :Dil C 2 EE_9_
+Call :Dil D 2 EE_10_
+Call :Dil E 2 EE_11_
 FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Manufacturer" %Konum%\Log\ComputerSystem.txt 2^>NUL') do (
 	FOR /F "tokens=2 delims=':'" %%b in ('Findstr /i "Model" %Konum%\Log\ComputerSystem.txt 2^>NUL') do (
 		FOR /F "tokens=2 delims=':'" %%c in ('Findstr /i "SocketDesignation" %Konum%\Log\CPU.txt 2^>NUL') do (
 			FOR /F "tokens=2 delims=':'" %%d in ('Findstr /i "Name" %Konum%\Log\Bios.txt 2^>NUL') do (
-				Call :Dil A 2 EE_7_
-				Call :Dil B 2 EE_8_
-				Call :Dil C 2 EE_9_
-				Call :Dil D 2 EE_10_
-				Call :Dil E 2 EE_11_
 				echo   %R%[35m▼ !LA2! %R%[0m
 				echo   ►%R%[36m !LB2!:%R%[33m%%a %R%[0m
 				echo   ►%R%[36m !LC2!:%R%[33m%%b %R%[90m│%R%[36m !LD2!:%R%[33m%%c %R%[90m│%R%[36m !LE2!:%R%[33m%%d %R%[0m 
@@ -1121,18 +1121,18 @@ FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Manufacturer" %Konum%\Log\Comput
 	)
 )
 echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
+Call :Dil A 2 EE_12_
+Call :Dil B 2 EE_8_
+Call :Dil C 2 EE_9_
+Call :Dil D 2 EE_13_
+Call :Dil E 2 EE_14_
+Call :Dil F 2 EE_15_
 FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Name" %Konum%\Log\CPU.txt 2^>NUL') do (
 	FOR /F "delims=: tokens=2" %%b in ('Findstr /i "NumberOfCores" %Konum%\Log\CPU.txt 2^>NUL') do (
 		FOR /F "delims=: tokens=2" %%c in ('Findstr /i "NumberOfLogicalProcessors" %Konum%\Log\CPU.txt 2^>NUL') do (
 			FOR /F "delims=: tokens=2" %%d in ('Findstr /i "L2CacheSize" %Konum%\Log\CPU.txt 2^>NUL') do (
 				FOR /F "delims=: tokens=2" %%e in ('Findstr /i "L3CacheSize" %Konum%\Log\CPU.txt 2^>NUL') do (
 					FOR /F "delims=: tokens=2" %%f in ('Findstr /i "CurrentClockSpeed" %Konum%\Log\CPU.txt 2^>NUL') do (
-						Call :Dil A 2 EE_12_
-						Call :Dil B 2 EE_8_
-						Call :Dil C 2 EE_9_
-						Call :Dil D 2 EE_13_
-						Call :Dil E 2 EE_14_
-						Call :Dil F 2 EE_15_
 						echo   %R%[35m▼ !LA2! %R%[0m
 						echo   ►%R%[36m !LB2!-!LC2!:%R%[33m%%a %R%[0m
 						echo   ►%R%[36m !LD2!:%R%[33m%%b %R%[90m│%R%[36m !LE2!:%R%[33m%%c %R%[90m│%R%[36m L2:%R%[33m%%d%R%[37m KB %R%[90m│%R%[36m L3:%R%[33m%%e%R%[37m KB %R%[90m│%R%[36m !LF2!:%R%[33m%%f%R%[37m MHZ %R%[0m
@@ -1166,13 +1166,13 @@ FOR /F "tokens=3" %%a in ('Findstr /i "Size" %Konum%\Log\DiskDetailAll 2^>NUL') 
 	echo  Boyut_!Count!_^>%%a^> >> %Konum%\Log\DiskDetail
 )
 Call :Dil A 2 EE_16_&echo   %R%[35m▼ !LA2! %R%[0m
+Call :Dil A 2 EE_9_
+Call :Dil B 2 EE_17_
 FOR /L %%a in (1,1,!Count!) do (
 	FOR /F "delims=> tokens=2" %%b in ('Findstr /i "TYPE_%%a_" %Konum%\Log\DiskDetail 2^>NUL') do (
 		FOR /F "delims=> tokens=2" %%c in ('Findstr /i "Brand_%%a_" %Konum%\Log\DiskDetail 2^>NUL') do (
 			FOR /F "delims=> tokens=2" %%d in ('Findstr /i "Model_%%a_" %Konum%\Log\DiskDetail 2^>NUL') do (
 				FOR /F "delims=> tokens=2" %%e in ('Findstr /i "Boyut_%%a_" %Konum%\Log\DiskDetail 2^>NUL') do (
-					Call :Dil A 2 EE_9_
-					Call :Dil B 2 EE_17_
 					set Value1=%%b
 					set Value2=%%e
 					Call :Uzunluk 1 !Value2!
@@ -1214,17 +1214,17 @@ FOR /F "tokens=3" %%a in ('Findstr /i "SMBIOSMemoryType" %Konum%\Log\RamDetailAl
 	echo Type_!Count!_^>%%a^> >> %Konum%\Log\RamDetail
 )
 Call :Dil A 2 EE_18_&echo   %R%[35m▼ !LA2! %R%[0m
+Call :Dil A 2 EE_8_
+Call :Dil B 2 EE_9_
+Call :Dil C 2 EE_17_
+Call :Dil D 2 EE_15_
+Call :Dil E 2 EE_10_
 FOR /L %%a in (1,1,!Count!) do (
 	FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Brand_%%a_" %Konum%\Log\RamDetail 2^>NUL') do (
 		FOR /F "delims=> tokens=2" %%c in ('Findstr /i "Model_%%a_" %Konum%\Log\RamDetail 2^>NUL') do (
 			FOR /F "delims=> tokens=2" %%d in ('Findstr /i "Boyut_%%a_" %Konum%\Log\RamDetail 2^>NUL') do (
 				FOR /F "delims=> tokens=2" %%e in ('Findstr /i "Speed_%%a_" %Konum%\Log\RamDetail 2^>NUL') do (
 					FOR /F "delims=> tokens=2" %%f in ('Findstr /i "Type_%%a_" %Konum%\Log\RamDetail 2^>NUL') do (
-						Call :Dil A 2 EE_8_
-						Call :Dil B 2 EE_9_
-						Call :Dil C 2 EE_17_
-						Call :Dil D 2 EE_15_
-						Call :Dil E 2 EE_10_
 						Call :Ram_Type "%%f"
 						set Value=%%d
 						Call :Uzunluk 1 !Value!
@@ -1238,10 +1238,10 @@ FOR /L %%a in (1,1,!Count!) do (
 		)
 	)
 )
+Call :Dil A 2 EE_19_
+Call :Dil B 2 EE_18_
 FOR /F "tokens=4" %%a in ('systeminfo ^| Find "Total Physical Memory"') do (
 	FOR /F "delims=. tokens=1" %%b in ('echo %%a') do (
-		Call :Dil A 2 EE_19_
-		Call :Dil B 2 EE_18_
 		echo   ►%R%[36m !LA2! !LB2!:%R%[33m %%b%R%[37m GB %R%[0m
 	)
 )
@@ -1269,16 +1269,16 @@ FOR /F "tokens=3" %%a in ('Findstr /i "DriverVersion" %Konum%\Log\GPUAll 2^>NUL'
 	echo DriverVersion_!Count!_^>%%a^> >> %Konum%\Log\GPUDetail
 )
 Call :Dil A 2 EE_20_&echo   %R%[35m▼ !LA2! %R%[0m
+Call :Dil A 2 EE_21_
+Call :Dil B 2 EE_22_
+Call :Dil C 2 EE_8_
+Call :Dil D 2 EE_9_
+Call :Dil E 2 EE_23_
 FOR /L %%a in (1,1,!Count!) do (
 	FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Name_%%a_" %Konum%\Log\GPUDetail 2^>NUL') do (
 		FOR /F "delims=> tokens=2" %%c in ('Findstr /i "RAM_%%a_" %Konum%\Log\GPUDetail 2^>NUL') do (
 			FOR /F "delims=> tokens=2" %%d in ('Findstr /i "DriverDate_%%a_" %Konum%\Log\GPUDetail 2^>NUL') do (
 				FOR /F "delims=> tokens=2" %%e in ('Findstr /i "DriverVersion_%%a_" %Konum%\Log\GPUDetail 2^>NUL') do (
-					Call :Dil A 2 EE_21_
-					Call :Dil B 2 EE_22_
-					Call :Dil C 2 EE_8_
-					Call :Dil D 2 EE_9_
-					Call :Dil E 2 EE_23_
 					set Value=%%c
 					Call :Uzunluk 1 !Value!
 					if !Uzunluk1! EQU 7 (set Value=!Value:~0,1!%R%[37m MB)
@@ -1635,7 +1635,7 @@ Call :RegAdd "HKU\%CUS%\Software\Microsoft\Windows\CurrentVersion\Search" "Backg
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" "BackgroundAppGlobalToggle" REG_DWORD 0
 Call :RegAdd "HKU\%CUS%\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" "GlobalUserDisabled" REG_DWORD 1
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" "GlobalUserDisabled" REG_DWORD 1
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" "LetAppsRunInBackground" REG_DWORD 2
+:: Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" "LetAppsRunInBackground" REG_DWORD 2
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat" "DisableInventory" REG_DWORD 1
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\MediaPlayer\Preferences" "UsageTracking" REG_DWORD 0 
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" "DoNotShowFeedbackNotifications" REG_DWORD 1
@@ -1667,8 +1667,8 @@ Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" "HideA
 Call :RegAdd "HKU\%CUS%\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoRecentDocsHistory" REG_DWORD 1
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoRecentDocsHistory" REG_DWORD 1
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" "ReportBootOk" REG_SZ 0
-Call :RegAdd "HKLM\SOFTWARE\Classes\CLSID\{323CA680-C24D-4099-B94D-446DD2D7249E}\ShellFolder" "Attributes" REG_DWORD 2696937728
-Call :RegAdd "HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\{323CA680-C24D-4099-B94D-446DD2D7249E}\ShellFolder" "Attributes" REG_DWORD 2696937728
+Call :RegAdd "HKCR\CLSID\{323CA680-C24D-4099-B94D-446DD2D7249E}\ShellFolder" "Attributes" REG_DWORD 2696937728
+Call :RegAdd "HKCR\WOW6432Node\CLSID\{323CA680-C24D-4099-B94D-446DD2D7249E}\ShellFolder" "Attributes" REG_DWORD 2696937728
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\KDC\Parameters" "EmitLILI" REG_DWORD 0 
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" "HideRecentJumplists" REG_DWORD 1
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" "DisableCloudOptimizedContent" REG_DWORD 1 
@@ -1804,9 +1804,9 @@ Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation" "Allow
 if %Win% EQU 11 (Reg add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" /v "ConfigureStartPins" /t REG_SZ /d "{\"pinnedList\": [{}]}" /f > NUL 2>&1
 				 Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" "ConfigureStartPins_ProviderSet" REG_DWORD "0"
 )
-Call :RegDel "HKLM\SOFTWARE\Classes\cmdfile\shell\print"
-Call :RegDel "HKLM\SOFTWARE\Classes\batfile\shell\print"
-Call :RegDel "HKLM\SOFTWARE\Classes\regfile\shell\print"
+Call :RegDel "HKCR\cmdfile\shell\print"
+Call :RegDel "HKCR\batfile\shell\print"
+Call :RegDel "HKCR\regfile\shell\print"
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "ShowCloudFilesInQuickAccess" REG_DWORD 0
 Call :RegAdd "HKU\%CUS%\Software\Microsoft\Windows\CurrentVersion\Explorer" "ShowCloudFilesInQuickAccess" REG_DWORD 0
 Call :RegAdd "HKCU\SOFTWARE\Microsoft\TabletTip\1.7" "EnableAutocorrection" REG_DWORD 0
@@ -1972,9 +1972,9 @@ Call :RegAdd "HKU\%CUS%\Software\Classes\Local Settings\Software\Microsoft\Windo
 Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "PreventOverride" REG_DWORD 0
 Call :RegAdd "HKU\%CUS%\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "Enabledv9" REG_DWORD 0
 Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "Enabledv9" REG_DWORD 0
-Call :RegDel "HKLM\SOFTWARE\Classes\Drive\shellex\ContextMenuHandlers\EPP"
-Call :RegDel "HKLM\SOFTWARE\Classes\Directory\shellex\ContextMenuHandlers\EPP"
-Call :RegDel "HKLM\SOFTWARE\Classes\*\shellex\ContextMenuHandlers\EPP"
+Call :RegDel "HKCR\Drive\shellex\ContextMenuHandlers\EPP"
+Call :RegDel "HKCR\Directory\shellex\ContextMenuHandlers\EPP"
+Call :RegDel "HKCR\*\shellex\ContextMenuHandlers\EPP"
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" "DisableTailoredExperiencesWithDiagnosticData" REG_DWORD 1
 Call :RegAdd "HKU\%CUS%\Software\Microsoft\Windows\CurrentVersion\Privacy" "TailoredExperiencesWithDiagnosticDataEnabled" REG_DWORD 0
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy" "TailoredExperiencesWithDiagnosticDataEnabled" REG_DWORD 0

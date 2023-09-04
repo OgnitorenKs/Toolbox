@@ -68,6 +68,7 @@ Error_5_>Winget bulunamadı>
 Error_6_>Microsoft Store yüklü değil>
 Error_7_>Toolbox, Windows 10/11 sistemlerde çalışmaktadır>
 Error_8_>Toolbox, Windows güncel sürümlerinde çalışmaktadır>
+Error_9_>İnternet bağlantısı olmadan uygulama yükleyiciyi kullanamazsınız>
 ::███████████████████████████████████████████████████████████████████
 D0001>İşlem>
 D0002>Çoklu işlem>

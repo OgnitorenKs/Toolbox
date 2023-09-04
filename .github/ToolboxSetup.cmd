@@ -35,8 +35,6 @@ echo oLink.Save
 ) > %Temp%\OgnitorenKs.Shortcut.vbs
 cscript "%Temp%\OgnitorenKs.Shortcut.vbs" > NUL 2>&1
 DEL /F /Q /A "%Temp%\OgnitorenKs.Shortcut.vbs" > NUL 2>&1
-
-:: Settings.ini içine güncelleme tarihi yazılır.
 cls&Call :Panel "[■■■■■■■■■■■■■■■■■■■■COMPLETE■■■■■■■■■■■■■■■■■■■■]" "%R%[92m   Installing OgnitorenKs Toolbox...%R%[0m"
 :: Güncel Toolbox açılır.
 Call :Powershell "Start-Process 'C:\OgnitorenKs.Toolbox\OgnitorenKs.Toolbox.cmd' -Verb Runas"
@@ -70,5 +68,3 @@ chcp 437 > NUL 2>&1
 Powershell -command %*
 chcp 65001 > NUL 2>&1
 goto :eof
-
-
