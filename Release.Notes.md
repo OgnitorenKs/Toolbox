@@ -6,43 +6,52 @@
 
 
 <details><B><summary> Versiyon 4.0.8 ►  04.09.2023</B></summary>
+
 	• Uygulama yükleyici bölümündeki internet kontrol bölümüne bilgi mesajı eklendi. Artık internet bağlantısı olmadığı durumlar için bilgi mesajı verip ana menüye dönecek.
 	• Playbook bölümündeki bazı regedit komutları düzenlendi. 
 	• Toolbox artık Win10-11 tüm sürümlerde çalışabilecek. Sınırlamalar kaldırıldı.
 
 </details><details><B><summary> Versiyon 4.0.7 ►  27.08.2023</B></summary>
+
 	• "Uygulama yükleyici" bölümünde çoklu seçimde "All in One Runtimes" seçiminden sonra oluşan bilgilendirme mesajındaki hata giderildi.
 	• "Sistem hakkında" bölümüne Windows yönetim araçlarından alınan verilerden hata payı olabileğiyle ilgili bilgilendirici metin eklendi.
 		• "Sistem hakkında" bölümünden ana menüye dönüşte silinen log kayıtlarından kaynaklı hatalı bilgilendirme mesaj sorunu giderildi.
 
 </details><details><B><summary> Versiyon 4.0.6 ►  27.08.2023</B></summary>
+
 	• Sistem temizleyici bölümüne olay günlüğü temizleme komutları eklendi.
 	• İlk açılıştaki komut ekranında boş siyah ekran görünmemesi için OgnitorenKs Toolbox yazısı eklendi.
 
 </details><details><B><summary> Versiyon 4.0.5 ►  26.08.2023</B></summary>
+
 	• 7-Zip kurulum hatası giderildi. (Yapımcısı Winget sistemine eklediği kurulum setupta programfiles içine 7-Zip klasörü açamıyormuş)
 	• Uygulama yükleyici bölümüne Microsoft Store ile Uygulama yükleyiciyi güncelleyin uyarısı ekledim. Ayrıca 80 numaralı işlem ile Microsoft Store'un güncelleme ekranını açmasını sağladım.
 	• Varsayılan uygulama ekleme bölümündeki eksik kod hatası giderildi.
 	• Uygulama yükleyici bölümüne 'PortMaster' uygulaması eklendi.
 
 </details><details><B><summary> Versiyon 4.0.4 ►  19.08.2023</B></summary>
+
 	• "Lisans-Kullanıcı yönetimi" bölümü ana menüye dönüşteki işlem başarılı mesajının çıkması engellendi.
 	• 22H2 altı sürümlerde Toolbox'ın açılma sorunu giderildi.
 
 </details><details><B><summary> Versiyon 4.0.3 ►  19.08.2023</B></summary>
+
 	• Ana menü içinde yer alan X işlemli kapatma işlevi aktifleştirildi.
 	• İngilizce dil desteği yeniden eklendi.
 	• Sistem varsayılan dilinden toolbox dili otomatik seçilecek şekilde düzenlendi. 
 	• Dil seçeneğini manuel değiştirmek için Ana menüye "Dil değiştirme" bölümü eklendi.
 
 </details><details><B><summary> Versiyon 4.0.2 ►  18.08.2023</B></summary>
+
 	• "Sistem hakkında" bölümünde yer alan Monitör bilgileri kaldırılmıştır. Hatalar giderildikten sonra yeniden eklenecektir.
 
 </details><details><B><summary> Versiyon 4.0.1 ►  18.08.2023</B></summary>
+
 	• "Sistem optimizasyonu" bölümüne Edge silme işlemi için yeni komutlar eklendi.
 	• Hizmet yönetimi bölümündeki kod hatası giderildi.
 
 </details><details><B><summary> Versiyon 4.0 ►  18.08.2023 - Return</B></summary>
+
 	• Toolbox tamamen yeniden yazıldı. Bütün bölümleri optimize edildi.
 	• Uygulama indirme listesi güncellendi. Uygulamaları tek tıkla güncelleme işlemi eklendi.
 	• Hizmetleri yönet bölümünden hizmetler dışında işlemler kaldırıldı.
@@ -70,14 +79,17 @@
 	• 7-zip ve Jpegview gibi programlar kurulurken varsayılan olarak ayarlanacak şekilde düzenlendi.
 
 </details><details><B><summary> Versiyon 3.9 ►  09.03.2023 - DEV</B></summary>
+
 	• Toolbox yeniden yazılmaya başlandı.
 	• Detaylı hizmet yönetimi bölümü oluşturuldu.
 	• İndirme işlemleri ağırlıklı olarak Chocolatey'e üzerine aktarıldı.
 
 </details><details><B><summary> Versiyon 3.8.1 ►  08.12.2022 - THE END</B></summary>
+
 	• Genel olarak son düzenlemeler yapılıp, bir kaç bug giderildi.
 
 </details><details><B><summary> Versiyon 3.8 ►  29.11.2022 - THE END</B></summary>
+
 	• Çoklu dil desteği için altyapı oluşturuldu.
 		• Dil seçimini sistem açılışınd otomatik yapmaktadır. Açıldıktan sonra bu "Dil ayarları" bölümünden değiştirilebilir.
 	• Araçlar katılımsız bölümü kaldırıldı.
@@ -97,10 +109,12 @@
 	• Hizmet yönetimi bölümüne ilk açılışta yedekleme komutları eklendi.
 
 </details><details><B><summary> Versiyon 3.7.1 ►  06.10.2022</B></summary>
+
 	• Kaldırılamayan uygulamalar bölümünde Python komutları düzenlendi.
 	• Katılımsız program / ayar ekle > klavye - mouse optimizasyonu bölümündeki kod hatası giderildi.
 
 </details><details><B><summary> Versiyon 3.7 ►  01.10.2022</B></summary>
+
 	• x64 sistem uyarısı eklendi.
 	• Yönetici yetki uyarısı kaldırıldı. Düzenlenen komutlar ile doğrudan yönetici yetkisi alınacak.
 	• Dağınık tarih verileri optimize edildi.
