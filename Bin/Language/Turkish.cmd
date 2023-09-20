@@ -251,10 +251,10 @@ OG_7_>Son ayarlar yapılıyor>
 WW_0_>Uyarılar ve Yönlendirmeler>
 WW_1_>Antivirüs programı yüklü ise devre dışı bırakınız>
 WW_2_>Açılan ekrandan defender koruma ayarlarını kapalı hale getirin>
-WW_3_>Kullanıcı hesabı denetimi [UAC] ayarını kapalı hale getirin>
-WW_4_>Yapılan testlerde herhangi bir hata veya veri kaybı gözlenmemiştir>
-WW_5_>Ancak donanım farklılığından kaynaklı sorunlar oluşabilir>
-WW_6_>Veri kaybı yaşamamak için işlem öncesi önemli verilerinizi yedekleyin>
-WW_7_>İşlem bittikten sonra sistem yeniden başlatılacak>
-WW_8_>Sistem açıldıktan sonra Toolbox -'Sistem temizliği' bölümünü çalıştırın>
-WW_9_>İşleme devam etmek için>Ana menü için>
+WW_3_>Veri kaybı yaşamamak için işlem öncesi önemli verilerinizi yedekleyin>
+WW_4_>Sistem üzerinde birçok bileşen kaldırılıp ayarlar değiştirilecektir>
+WW_5_>Detaylar için>https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html>
+WW_6_>İşlem bittikten sonra sistem yeniden başlatılacak>
+WW_7_>Sistem açıldıktan sonra Toolbox -'Sistem temizliği' bölümünü çalıştırın>
+WW_8_>İşleme devam etmek istiyor musunuz?>
+WW_9_>İşleme devam etmek istediğinize emin misiniz?>

@@ -139,16 +139,16 @@ SL_13_>Location> >
 SL_14_>Miracast>Wireless screen sharing │ Need: Settings ► Devices>
 SL_15_>Flow>Network data sharing>
 SL_16_>Fast Fetch-Start>Need: HDD>
-SL_17_>Windows Search>Indexing service │ May be required for streaming service>
+SL_17_>Windows Search>Indexing service │ May be required for flow service>
 SL_18_>Quick User Switch>Need: Blizzard>
-SL_19_>Type Cache>Need: HDD>
+SL_19_>Font Cache>Need: HDD>
 SL_20_>Windows Insider> >
 SL_21_>Biometric>Need: Fingerprint │ HelloFace>
 SL_22_>Disk Defragmentation>Need: SSD│HDD>
 SL_23_>Router>Near devices>
 SL_24_>Smart Card>Need: Chip card reader [not SD card]>
 SL_25_>Enterprise application> >
-SL_26_>Now Executing Session Manager>Need: Notification area media player>
+SL_26_>Now Playing Session Manager>Need: Notification area media player>
 SL_27_>Graphics performance monitoring>Need: Game mode>
 SL_28_>Game DVR and Broadcast User>Need: Xbox screen recording>
 ::███████████████████████████████████████████████████████████████████
@@ -250,11 +250,11 @@ OG_6_>Deleting unnecessary files>
 OG_7_>Final adjustments being made>
 WW_0_>Warnings and Guidance>
 WW_1_>Disable antivirus program if installed>
-WW_2_>On the screen that opens, turn off the defender protection settings>
-WW_3_>Turn off the user account control [UAC] setting>
-WW_4_>No errors or data loss were observed in the tests performed>
-WW_5_>But problems may occur due to hardware differences>
-WW_6_>Backup your important data before processing to avoid data loss>
-WW_7_>The system will reboot after the process is finished>
-WW_8_>Run Toolbox -'System cleanup' after system boot>
-WW_9_>To continue processing>For main menu>
+WW_2_>Switch the defender protection settings off from the screen that opens>
+WW_3_>Back up your important data before the process to avoid data loss>
+WW_4_>Many components on the system will be removed and settings will be changed>
+WW_5_>For details>https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html>
+WW_6_>After the process is finished, the system will reboot>
+WW_7_>After the system boots up, run Toolbox -'System cleaning'>
+WW_8_>Do you want to continue the process?>
+WW_9_>Are you sure you want to continue the process?>

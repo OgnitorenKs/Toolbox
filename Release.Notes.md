@@ -4,8 +4,17 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.0.9 ►  21.09.2023</B></summary>
 
-<details><B><summary> Versiyon 4.0.8 ►  04.09.2023</B></summary>
+	• İngilizce dil dosyasında iyileştirmeler yapıldı.
+	• "Windows-Market onar" bölümünde düzenleme yapıldı.
+	• "Sistem optimizasyonu [Playbook]" bölümünde düzenlemeler yapıldı.
+		• Market uygulamalarını kaldırırken temel programları silmeyecek şekilde düzenlendi.
+		• Uyarı ekranı sadeleştirildi. Sistem düzenlemesi hakkında bilgilendirme ve yönlendirmeler eklendi.
+		• İlk onaydan sonra ikinci bir uyarı ekranı daha eklendi. Uyarı ekranını mutlaka okuyun. 
+		• Sistem üzerinde yapılan değişikliklerde düzenleme yapıldı. Güncelleme bölümü optimize edildi. Hatalı komutlar düzeltildi.
+	
+</details><details><B><summary> Versiyon 4.0.8 ►  04.09.2023</B></summary>
 
 	• Uygulama yükleyici bölümündeki internet kontrol bölümüne bilgi mesajı eklendi. Artık internet bağlantısı olmadığı durumlar için bilgi mesajı verip ana menüye dönecek.
 	• Playbook bölümündeki bazı regedit komutları düzenlendi. 
