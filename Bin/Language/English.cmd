@@ -131,9 +131,9 @@ SL_5_>Pen and Touch> >
 SL_6_>Bitlocker Drive Encryption> >
 SL_7_>Tariffed Networks>Quota manager for limited internet>
 SL_8_>IP Assistant [IPV6]> >
-SL_9_>Mobile Hotspot>Internet sharing>
+SL_9_>Mobile Hotspot>Internet sharing │ Need: Miracast>
 SL_10_>Radio and Airplane Mode> >
-SL_11_>Windows Connect Now [WPS]> >
+SL_11_>Windows Connect Now [WPS]>Need: WiFi>
 SL_12_>Wifi> >
 SL_13_>Location> >
 SL_14_>Miracast>Wireless screen sharing │ Need: Settings ► Devices>
@@ -248,6 +248,9 @@ OG_4_>Editing regedit records>
 OG_5_>Editing task scheduler>
 OG_6_>Deleting unnecessary files>
 OG_7_>Final adjustments being made>
+OG_8_>Microsoft Defender is being removed>
+OG_9_>Microsoft Edge is being removed>
+OG_10_>Configuring special settings>
 WW_0_>Warnings and Guidance>
 WW_1_>Disable antivirus program if installed>
 WW_2_>Switch the defender protection settings off from the screen that opens>
@@ -256,5 +259,6 @@ WW_4_>Many components on the system will be removed and settings will be changed
 WW_5_>For details>https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html>
 WW_6_>After the process is finished, the system will reboot>
 WW_7_>After the system boots up, run Toolbox -'System cleaning'>
-WW_8_>Do you want to continue the process?>
-WW_9_>Are you sure you want to continue the process?>
+WW_8_>To customise the operations, you need to access and edit the following file path>
+WW_9_>Do you want to continue the process?>
+WW_10_>Are you sure you want to continue the process?>

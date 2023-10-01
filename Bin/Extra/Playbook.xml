@@ -1,0 +1,51 @@
+<!-- 
+       ██████   ██████   ██    ██ ████ ████████  ██████  ████████  ████████ ██    ██ ██    ██  ██████
+      ██    ██ ██    ██  ███   ██  ██     ██    ██    ██ ██     ██ ██       ███   ██ ██   ██  ██    █
+      ██    ██ ██        ████  ██  ██     ██    ██    ██ ██     ██ ██       ████  ██ ██  ██   ██
+      ██    ██ ██   ████ ██ ██ ██  ██     ██    ██    ██ ████████  ██████   ██ ██ ██ █████      ██████ 
+      ██    ██ ██    ██  ██  ████  ██     ██    ██    ██ ██   ██   ██       ██  ████ ██  ██         ██
+      ██    ██ ██    ██  ██   ███  ██     ██    ██    ██ ██    ██  ██       ██   ███ ██   ██  ██    ██
+       ██████   ██████   ██    ██ ████    ██     ██████  ██     ██ ████████ ██    ██ ██    ██  ██████ 
+	   
+	   
+► 0 = Varsayılan
+► 1 = Uygula
+--->
+<!-- ███████████████████████████████████████████████████████████████████ --->
+Ayar_1_= 1 ► Microsoft Defender kaldır
+Ayar_2_= 1 ► Microsoft Edge ve EdgeWebView2 kaldır
+Ayar_3_= 1 ► Başlat menüsü pinlerini kaldır
+Ayar_4_= 1 ► Windows Search kapat
+Ayar_5_= 1 ► Animasyonları ve saydamlığı kapat
+Ayar_6_= 1 ► Windows Tema ayarlarını değiştir [Siyah başlat menüsü, beyaz dosya gezgini]
+Ayar_7_= 1 ► Masaüstü simgelerini ekle [Ağ hariç]
+Ayar_8_= 1 ► OneDrive kaldır
+Ayar_9_= 1 ► Winre.wim [Kurtarma alanı] kaldır
+Ayar_10_= 1 ► Başlat menüsü arama simgesini gizle
+Ayar_11_= 1 ► Karma gerçeklik kaldır
+<!-- ███████████████████████████████████████████████████████████████████ --->
+_OG_App= 549981C3F5F10 [Cortana]
+_OG_App= BingWeather
+_OG_App= BingNews
+_OG_App= Family
+_OG_App= QuickAssist
+_OG_App= teams
+_OG_App= Skype
+_OG_App= WindowsMaps
+_OG_App= Todos
+_OG_App= PowerAutomateDesktop
+_OG_App= MicrosoftStickyNotes
+_OG_App= Office
+_OG_App= Microsoft3DViewer
+_OG_App= RawImageExtension
+_OG_App= WebpImageExtension
+_OG_App= WebMediaExtensions
+_OG_App= VP9VideoExtensions
+_OG_App= HEIFImageExtension
+_OG_App= WindowsFeedbackHub
+_OG_App= Getstarted
+_OG_App= GetHelp
+_OG_App= Clipchamp
+_OG_App= solitairecollection
+_OG_App= MixedReality
+_OG_App= Wallet

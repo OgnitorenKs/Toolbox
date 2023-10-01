@@ -131,9 +131,9 @@ SL_5_>Kalem ve Dokunmatik> >
 SL_6_>Bitlocker Sürücü Şifreleme> >
 SL_7_>Tarifeli Ağlar>Sınırlı internetler için kota yönetici>
 SL_8_>IP Yardımcısı [IPV6]> >
-SL_9_>Mobil Etkin Nokta>İnternet paylaşımı>
+SL_9_>Mobil Etkin Nokta>İnternet paylaşımı │ İhtiyaç: Miracast>
 SL_10_>Radyo ve Uçak Modu> >
-SL_11_>Windows Şimdi Bağlan [WPS]> >
+SL_11_>Windows Şimdi Bağlan [WPS]>İhtiyaç: WiFi>
 SL_12_>Wifi> >
 SL_13_>Konum> >
 SL_14_>Miracast>Kablosuz ekran paylaşımı │ İhtiyaç: Ayarlar ► Cihazlar>
@@ -248,6 +248,9 @@ OG_4_>Regedit kayıtları düzenleniyor>
 OG_5_>Görev zamanlayıcısı düzenleniyor>
 OG_6_>Gereksiz dosyalar siliniyor>
 OG_7_>Son ayarlar yapılıyor>
+OG_8_>Microsoft Defender kaldırılıyor>
+OG_9_>Microsoft Edge kaldırılıyor>
+OG_10_>Özel ayarlar yapılandırılıyor>
 WW_0_>Uyarılar ve Yönlendirmeler>
 WW_1_>Antivirüs programı yüklü ise devre dışı bırakınız>
 WW_2_>Açılan ekrandan defender koruma ayarlarını kapalı hale getirin>
@@ -256,5 +259,6 @@ WW_4_>Sistem üzerinde birçok bileşen kaldırılıp ayarlar değiştirilecekti
 WW_5_>Detaylar için>https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html>
 WW_6_>İşlem bittikten sonra sistem yeniden başlatılacak>
 WW_7_>Sistem açıldıktan sonra Toolbox -'Sistem temizliği' bölümünü çalıştırın>
-WW_8_>İşleme devam etmek istiyor musunuz?>
-WW_9_>İşleme devam etmek istediğinize emin misiniz?>
+WW_8_>İşlemleri özelleştirmek için aşağıdaki dosya yoluna ulaşıp düzenlemeniz gerekmektedir>
+WW_9_>İşleme devam etmek istiyor musunuz?>
+WW_10_>İşleme devam etmek istediğinize emin misiniz?>

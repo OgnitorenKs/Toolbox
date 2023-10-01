@@ -4,7 +4,15 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.0.9 ►  21.09.2023</B></summary>
+<details><B><summary> Versiyon 4.1.0 ►  01.09.2023</B></summary>
+
+	• 'Hizmetleri Yönet' bölümüne yeni açıklayıcı bilgiler eklendi.
+	• "Sistem optimizasyonu [Playbook]" bölümüne seçmeli ayarlar eklendi. Artık işlem öncesi belli başlı ayarları seçip işleme devam edebilirsiniz.
+		• Ayrıca bazı hatalar giderildi. Birkaç basit ekleme ile optimizasyon arttırıldı.
+	• "Uygulama yükleyici" bölümünde Winget ile uygulamaları toplu güncelleme komutunda eski sürümleri sil parametresi kaldırıldı. Uygulamaların altyapısı bu parametreye uygun değil.
+	
+
+</details><details><B><summary> Versiyon 4.0.9 ►  21.09.2023</B></summary>
 
 	• İngilizce dil dosyasında iyileştirmeler yapıldı.
 	• "Windows-Market onar" bölümünde düzenleme yapıldı.

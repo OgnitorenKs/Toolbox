@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.0.9
+set Version=4.1.0
 mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
@@ -175,7 +175,7 @@ Call :Upper %Value_M% Value_M
 echo %Value_M% | Findstr /i "X" > NUL 2>&1
 	if !errorlevel! EQU 0 (goto Main_Menu)
 echo %Value_M% | Findstr /i "81" > NUL 2>&1
-	if !errorlevel! EQU 0 (winget upgrade --all --uninstall-previous)
+	if !errorlevel! EQU 0 (winget upgrade --all)
 echo %Value_M% | Findstr /i "80" > NUL 2>&1
 	if !errorlevel! EQU 0 (Call :Link 2&start !Link!)
 Call :Dil A 2 T0003
@@ -788,6 +788,14 @@ schtasks /Delete /TN "%~1" /F > NUL 2>&1
 goto :eof
 
 :: -------------------------------------------------------------
+:Playbook_Reader
+Findstr /i "%~1" %Konum%\Bin\Extra\Playbook.xml > NUL 2>&1
+	if %errorlevel% NEQ 0 (set Playbook=1&goto :eof)
+FOR /F "tokens=2" %%z in ('Findstr /i "%~1" %Konum%\Bin\Extra\Playbook.xml') do (set Playbook=%%z)
+goto :eof
+
+
+:: -------------------------------------------------------------
 :Check_Internet
 set Internet=Offline
 FOR %%a in (
@@ -929,7 +937,7 @@ goto :eof
 :Remove_Capability
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	Findstr /i "%%g" %Konum%\Log\C_Capabilities > NUL 2>&1
-		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart /Quiet))													
+		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1))													
 )
 goto :eof
 
@@ -937,7 +945,7 @@ goto :eof
 :Remove_Package
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	Findstr /i "%%g" %Konum%\Log\C_Packages > NUL 2>&1
-		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Packages') do (Dism /Online /Remove-Package /PackageName:%%k /NoRestart /Quiet))
+		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Packages') do (Dism /Online /Remove-Package /PackageName:%%k /NoRestart > NUL 2>&1))
 )
 goto :eof
 
@@ -1311,13 +1319,16 @@ Call :Dil A 2 WW_5_&Call :Dil A 3 WW_5_&echo %R%[33m !LA2!;%R%[37m !LA3! %R%[0m
 echo.
 Call :Dil A 2 WW_6_&echo %R%[33m !LA2! %R%[0m
 Call :Dil A 2 WW_7_&echo %R%[33m !LA2! %R%[0m
+echo.
+Call :Dil A 2 WW_8_&echo %R%[33m !LA2! %R%[0m
+echo %R%[37m ► "%Konum%\Bin\Extra\Playbook.xml" %R%[0m
 :: UAC kapat
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "ConsentPromptBehaviorAdmin" REG_DWORD 0
 Call :Powershell "Start-Process 'windowsdefender://ThreatSettings'"
-Call :Dil A 2 WW_8_&echo.&set /p Value_MM=►%R%[32m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
+Call :Dil A 2 WW_9_&echo.&set /p Value_MM=►%R%[32m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
 Call :Upper %Value_M% Value_M
 	if %Value_M% EQU N (set Error=X&goto Main_Menu)
-	if %Value_M% NEQ N (Call :Dil A 2 WW_9_&echo.&set /p Value_MM=►%R%[31m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
+	if %Value_M% NEQ N (Call :Dil A 2 WW_10_&echo.&set /p Value_MM=►%R%[31m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
 						Call :Upper !Value_MM! Value_MM
 						if !Value_MM! EQU N (set Error=X&goto Main_Menu))
 set Value_M=
@@ -1325,19 +1336,272 @@ set Value_MM=
 :: -------------------------------------------------------------
 cls
 FOR /F "tokens=6" %%a in ('Dism /online /Get-intl ^| Find /I "Default system UI language"') do (
-	if %%a EQU tr-TR (powercfg -list ^| findstr /C:"Nihai" > NUL 2>&1
+	if %%a EQU tr-TR (powercfg -list | Findstr /i "Nihai" > NUL 2>&1
 						if !errorlevel! NEQ 0 (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
-											   FOR /F "tokens=4" %%b in ('powercfg -list ^| findstr /C:"Nihai"') do (powercfg -setactive %%b))
+											   FOR /F "tokens=4" %%b in ('powercfg -list ^| Findstr /i "Nihai"') do (powercfg -setactive %%b))
 	)
 )
+
+:: -------------------------------------------------------------
+:: Defender 
+Call :Playbook_Reader Ayar_1_
+	if %Playbook% EQU 1 (Call :Dil A 2 OG_8_&cls&echo ►%R%[32m !LA2! %R%[0m
+						 Call :Read_Features "OGNI_3_"
+						 Call :Remove_!Value_C! "OGNI_3_"
+						 Taskkill /f /im smartscreen.exe > NUL 2>&1
+						 FOR %%a in (
+						 "%windir%\System32\CompatTelRunner.exe"
+						 "%windir%\System32\drivers\MsSecFlt.sys"
+						 "%windir%\System32\drivers\WdBoot.sys"
+						 "%windir%\System32\drivers\WdFilter.sys"
+						 "%windir%\System32\drivers\WdNisDrv.sys"
+						 "%windir%\System32\smartscreen.exe"
+						 "%windir%\System32\securityhealthhost.exe"
+						 "%windir%\System32\securityhealthservice.exe"
+						 "%windir%\System32\securityhealthsystray.exe"
+						 "%windir%\System32\SgrmBroker.exe"
+						 ) do (
+							%NSudo% DEL /F /Q /A %%a
+						)
+						 FOR %%a in (
+						 "%programfiles%\Windows Defender Advanced Threat Protection"
+						 "%programfiles%\Windows Defender"
+						 "%programfiles%\Windows Security"
+						 "%programfiles(x86)%\Windows Security"
+						 "%programfiles(x86)%\Windows Defender"
+						 "%programfiles(x86)%\Windows Defender Advanced Threat Protection"
+						 "%programdata%\Microsoft\Windows Security Health"
+						 "%programdata%\Microsoft\Windows Defender Advanced Threat Protection"
+						 "%programdata%\Microsoft\Windows Defender"
+						 "%windir%\SystemApps\Microsoft.Windows.SecHealthUI_cw5n1h2txyewy"
+						 ) do (
+							Call :RD %%a
+						)
+						 FOR %%a in (
+						 "%LocalAppData%\Packages\*.SecHealthUI_*"
+						 ) do (
+							Call :FA RD %%a
+						)
+						 FOR %%a in (
+						 SecurityHealthService
+						 Sense
+						 SgrmBroker
+						 WdNisSvc
+						 WinDefend
+						 wscsvc
+						 WdNisDrv
+						 WdFilter
+						 WdBoot
+						 SgrmAgent
+						 MsSecFlt
+						 webthreatdefsvc
+						 webthreatdefusersvc
+						 ) do (
+						 	reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%a" > NUL 2>&1
+						 		if !errorlevel! EQU 0 (%NSudo% sc delete %%a)
+						 )
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" "DisableNotifications" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" "DisableEnhancedNotifications" REG_DWORD "1"
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows Security Health\State" "AccountProtection_MicrosoftAccount_Disconnected" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender" "DisableAntiSpyware" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender" "DisableAntiVirus" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\Features" "TamperProtection" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\Features" "TamperProtectionSource" REG_DWORD "2"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\Signature Updates" "FirstAuGracePeriod" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\UX Configuration" "DisablePrivacyMode" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" "SecurityHealth" REG_BINARY "030000000000000000000000"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MRT" "DontOfferThroughWUAU" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MRT" "DontReportInfectionInformation" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" "HideSystray" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" "DisableAntiSpyware" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" "PUAProtection" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" "RandomizRheduleTaskTimes" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions" "DisableAutoExclusions" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" "MpEnablePus" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Quarantine" "LocalSettingOverridePurgeItemsAfterDelay" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Quarantine" "PurgeItemsAfterDelay" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableBehaviorMonitoring" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableIOAVProtection" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableScanOnRealtimeEnable" REG_DWORD 1
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableOnAccessProtection" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableRealtimeMonitoring" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableRoutinelyTakingAction" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisablRanOnRealtimeEnable" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisablRriptScanning" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation" "Scan_ScheduleDay" REG_DWORD "8"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation" "Scan_ScheduleTime" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "AdditionalActionTimeOut" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "CriticalFailureTimeOut" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "DisableEnhancedNotifications" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "DisableGenericRePorts" REG_DWORD 1
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "NonCriticalTimeOut" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "AvgCPULoadFactor" REG_DWORD "10"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableArchivRanning" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableCatchupFullScan" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableCatchupQuickScan" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableRemovableDrivRanning" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableRestorePoint" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisablRanningMappedNetworkDrivesForFullScan" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisablRanningNetworkFiles" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "PurgeItemsAfterDelay" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScanOnlyIfIdle" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScanParameters" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScheduleDay" REG_DWORD 8
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScheduleTime" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "DisableUpdateOnStartupWithoutEngine" REG_DWORD 1
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "ScheduleDay" REG_DWORD 8
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "ScheduleTime" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "SignatureUpdateCatchupInterval" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SpyNet" "DisableBlockAtFirstSeen" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "LocalSettingOverrideSpynetReporting" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "SpyNetReporting" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "SpyNetReportingLocation" REG_MULTI_SZ "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "SubmitSamplRonsent" REG_DWORD "2"
+						 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\WMI\Autologger\DefenderApiLogger" "Start" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\WMI\Autologger\DefenderApiLogger" "Start" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\WMI\Autologger\DefenderAuditLogger" "Start" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\WMI\Autologger\DefenderAuditLogger" "Start" REG_DWORD "0"
+						 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "SecurityHealth"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "HidRAHealth" REG_DWORD "1"
+						 Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\CI\Policy" "VerifiedAndReputablePolicyState" REG_DWORD 0
+						 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\CI\Policy" "VerifiedAndReputablePolicyState" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "EnableWebContentEvaluation" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "PreventOverride" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Policies\Microsoft\Edge" "SmartScreenEnabled" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Security Health\State" "AppAndBrowser_StoreAppsSmartScreenOff" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "SmartScreenEnabled" REG_SZ "Off"
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "SmartScreenEnabled" REG_SZ "Off"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\PhishingFilter" "EnabledV9" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\PhishingFilter" "PreventOverride" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" "EnabledV9" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" "PreventOverride" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "EnableSmartScreen" REG_DWORD "0"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen" "ConfigureAppInstallControl" REG_SZ "Anywhere"
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen" "ConfigureAppInstallControlEnabled" REG_DWORD "0"
+						 Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "PreventOverride" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "Enabledv9" REG_DWORD 0
+						 Call :RegDel "HKCR\Drive\shellex\ContextMenuHandlers\EPP"
+						 Call :RegDel "HKCR\Directory\shellex\ContextMenuHandlers\EPP"
+						 Call :RegDel "HKCR\*\shellex\ContextMenuHandlers\EPP"
+)
+:: Edge
+Call :Playbook_Reader Ayar_2_
+	if %Playbook% EQU 1 (Call :Dil A 2 OG_9_&cls&echo ►%R%[32m !LA2! %R%[0m
+						 Taskkill /f /im "msedge.exe" > NUL 2>&1
+						 FOR %%a in ('Dir /AD /B "%programfiles(x86)%\Microsoft\Edge\Application\*" 2^>NUL') do (
+						 dir /b "%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer" > NUL 2>&1
+						 	if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer\setup.exe" --uninstall --system-level --force-uninstall)
+						 )
+						 FOR %%a in ('Dir /AD /B "%programfiles(x86)%\Microsoft\EdgeWebView\Application\*" 2^>NUL') do (
+						 dir /b "%programfiles(x86)%\Microsoft\EdgeWebView\Application\%%a\Installer" > NUL 2>&1
+						 	if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\EdgeWebView\Application\%%a\Installer\setup.exe" --uninstall --msedgewebview --system-level --force-uninstall)
+						 )	
+						 Call :RD "%programfiles(x86)%\Microsoft"
+						 Call :DEL "C:\Users\%username%\Desktop\edge.lnk"
+						 Call :DEL "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
+						 Call :RD "%LocalAppData%\Microsoft\Edge"
+						 Call :FA DELS "C:\*dge.wim"
+						 Call :RegAdd "HKLM\OFF_SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
+						 Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
+						 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
+						 Call :RegDel "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
+						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\EdgeUpdate" "DoNotUpdateToEdgeWithChromium" REG_DWORD 1
+)
+Call :Dil A 2 OG_10_&cls&echo ►%R%[32m !LA2! %R%[0m
+:: Başlat menüsü pinlerini kaldır
+Call :Playbook_Reader Ayar_3_
+	if %Playbook% EQU 1 (Call :DEL "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\*.bin"
+)
+:: Windows Search kapat
+Call :Playbook_Reader Ayar_4_
+	if %Playbook% EQU 1 (reg query "HKLM\SYSTEM\CurrentControlSet\Services\WSearch" > NUL 2>&1
+							if !errorlevel! EQU 0 (%NSudo% sc config WSearch start= disabled)
+)
+:: Animasyon ve saydamlığı kapat
+Call :Playbook_Reader Ayar_5_
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" "VisualFXSetting" REG_DWORD 3
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "UserPreferencesMask" REG_BINARY "9012038010000000"
+						 Call :RegAdd "HKCU\Control Panel\Desktop\WindowMetrics" "MinAnimate" REG_SZ 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarAnimations" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "EnableAeroPeek" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "AlwaysHibernateThumbnails" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewAlphaSelect" REG_DWORD 0
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "DragFullWindows" REG_SZ 0
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "FontSmoothing" REG_SZ 2
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewShadow" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "ShellState" REG_BINARY "240000003E28000000000000000000000000000001000000130000000000000062000000"
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" "EnableTransparency" REG_DWORD 0
+)
+:: Tema ayarı
+Call :Playbook_Reader Ayar_6_
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" "SystemUsesLightTheme" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "AccentColor2" REG_DWORD 0xff6b5c51
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationColor" REG_DWORD 0xc4515c6b
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationColorBalance" REG_DWORD 0x59
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationAfterglow" REG_DWORD 0xc4515c6b
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationAfterglowBalance" REG_DWORD 0xa
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationBlurBalance" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "EnableWindowColorization" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationGlassAttribute" REG_DWORD 1
+)
+:: Masaüstü simgeleri
+Call :Playbook_Reader Ayar_7_
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{59031a47-3f72-44a7-89c5-5595fe6b30ee}" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" REG_DWORD 0
+)
+:: Onedrive kaldır
+Call :Playbook_Reader Ayar_8_
+	if %Playbook% EQU 1 (FOR %%a in (
+						 "%Windir%\System32\OneDriveSetup.exe"
+						 "%Windir%\SysWOW64\OneDriveSetup.exe"
+						 ) do (
+						 	%%a /uninstall > NUL 2>&1
+						 )
+						 Call :Read_Features "OGNI_2_"
+						 Call :Remove_!Value_C! "OGNI_2_"
+						 Call :FA RDS "C:\*onedrive*"
+						 Call :FA DELS "C:\*onedrive*"
+						 Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup"
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280811Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280810Enabled" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive" "DisableFileSyncNGSC" REG_DWORD 1
+)
+:: Kurtarma alanını kaldır
+Call :Playbook_Reader Ayar_9_
+	if %Playbook% EQU 1 (Call :FA DELS "C:\*winre.wim"
+)
+:: Başlat menüsü arama simgesini gizle
+Call :Playbook_Reader Ayar_10_
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SearchboxTaskbarMode" REG_DWORD 0
+)
+:: 
+Call :Playbook_Reader Ayar_11_
+	if %Playbook% EQU 1 (Call :Read_Features "COM_21_"
+						 Call :Remove_!Value_C! "COM_%%a_"
+						 FOR %%a in (
+						 SharedRealitySvc
+						 VacSvc
+						 perceptionsimulation
+						 spectrum
+						 MixedRealityOpenXRSvc
+						 SpatialGraphFilter
+						 ) do (
+						 	reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%a" > NUL 2>&1
+						 		if !errorlevel! EQU 0 (%NSudo% sc delete %%a)
+						)
+
+)
+
+	
 :: -------------------------------------------------------------
 cls
 Call :Dil A 2 OG_1_&echo ►%R%[32m !LA2! %R%[0m
-FOR /L %%a in (1,1,3) do (
+FOR %%a in (1) do (
 	Call :Read_Features "OGNI_%%a_"
 	Call :Remove_!Value_C! "OGNI_%%a_"
 )
-FOR %%a in (1 2 4 5 6 8 9 14 18 20 21 22 30 38 45) do (
+FOR %%a in (1 2 4 5 6 8 9 14 18 20 22 30 38 45) do (
 	Call :Read_Features "COM_%%a_"
 	Call :Remove_!Value_C! "COM_%%a_"
 )
@@ -1355,19 +1619,6 @@ FOR %%a in (
 DiagTrack
 dmwappushservice
 diagnosticshub.standartcollector.service
-SecurityHealthService
-Sense
-SgrmBroker
-WdNisSvc
-WinDefend
-wscsvc
-WdNisDrv
-WdFilter
-WdBoot
-SgrmAgent
-MsSecFlt
-webthreatdefsvc
-webthreatdefusersvc
 PimIndexMaintenanceSvc
 PenService
 RetailDemo
@@ -1377,11 +1628,6 @@ RetailDemo
 )
 :: -------------------------------------------------------------
 :: Kapatılacak hizmetler
-:: VSS
-:: wbengine
-:: SDRSVC
-:: swprv
-:: fhsvc
 FOR %%a in (
 diagsvc
 InventorySvc
@@ -1393,18 +1639,11 @@ DPS
 WdiServiceHost
 WdiSystemHost
 Themes
-SharedRealitySvc
-spectrum
-perceptionsimulation
-VacSvc
-MixedRealityOpenXRSvc
 WerSvc
 wisvc
-WSearch
 SEMgrSvc
 TroubleshootingSvc
 MapsBroker
-Spooler
 TabletInputService
 DusmSvc
 WalletService
@@ -1424,43 +1663,11 @@ StorSvc
 :: -------------------------------------------------------------
 :: Kaldırılacak uygulamalar
 cls&Call :Dil A 2 OG_3_&echo ►%R%[32m !LA2! %R%[0m
-:: Windows.Photos
-:: Paint
-:: StickyNotes
-:: ZuneVideo
-:: ZuneMusic
-:: WindowsTerminal
-FOR %%a in (
-549981C3F5F10
-BingWeather
-BingNews
-ScoobeSystemSettingEnabled
-Family
-QuickAssist
-teams
-Skype
-WindowsMaps
-Todos
-PowerAutomateDesktop
-MicrosoftStickyNotes
-Office
-Microsoft3DViewer
-RawImageExtension
-WebpImageExtension
-WebMediaExtensions
-VP9VideoExtensions
-HEIFImageExtension
-WindowsFeedbackHub
-Getstarted
-GetHelp
-Clipchamp
-solitairecollection
-MixedReality
-Wallet
-) do (
+FOR /F "tokens=2" %%a in ('Findstr /i "_OG_App=" %Konum%\Bin\Extra\Playbook.xml 2^>NUL') do (
 	Call :Powershell "Get-AppXPackage -AllUsers *%%a* | Remove-AppxPackage"
 	Call :FA RD "%programfiles%\WindowsApps\*%%a*"
 )
+
 :: -------------------------------------------------------------
 cls&Call :Dil A 2 OG_4_&echo ►%R%[32m !LA2! %R%[0m
 Call :CurrentUserName
@@ -1481,17 +1688,6 @@ Call :RegAdd "HKCU\Control Panel\Mouse" "MouseHoverTime" REG_DWORD 100
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "LinkResolveIgnoreLinkInfo" REG_DWORD 1
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoResolveSearch" REG_DWORD 1
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoResolveTrack" REG_DWORD 1
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" "VisualFXSetting" REG_DWORD 3
-Call :RegAdd "HKCU\Control Panel\Desktop" "UserPreferencesMask" REG_BINARY "9012038010000000"
-Call :RegAdd "HKCU\Control Panel\Desktop\WindowMetrics" "MinAnimate" REG_SZ 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarAnimations" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "EnableAeroPeek" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "AlwaysHibernateThumbnails" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewAlphaSelect" REG_DWORD 0
-Call :RegAdd "HKCU\Control Panel\Desktop" "DragFullWindows" REG_SZ 0
-Call :RegAdd "HKCU\Control Panel\Desktop" "FontSmoothing" REG_SZ 2
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewShadow" REG_DWORD 1
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "ShellState" REG_BINARY "240000003E28000000000000000000000000000001000000130000000000000062000000"
 Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
 Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMin" REG_DWORD 0
 Call :RegAdd "HKLM\SYSTEM\ControlSet002\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
@@ -1509,15 +1705,6 @@ Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" "EnableFee
 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" "ShellFeedsTaskbarViewMode" REG_DWORD 2
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" "AllowTelemetry" REG_DWORD 0
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" "AllowTelemetry" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" "SystemUsesLightTheme" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "AccentColor2" REG_DWORD 0xff6b5c51
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationColor" REG_DWORD 0xc4515c6b
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationColorBalance" REG_DWORD 0x59
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationAfterglow" REG_DWORD 0xc4515c6b
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationAfterglowBalance" REG_DWORD 0xa
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationBlurBalance" REG_DWORD 1
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "EnableWindowColorization" REG_DWORD 1
-Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationGlassAttribute" REG_DWORD 1
 :: Ayarlar uygulamasında önerilen içeriği kapat
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338393Enabled" REG_DWORD 0
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-353694Enabled" REG_DWORD 0
@@ -1576,7 +1763,6 @@ Call :RegAdd "HKCU\System\GameConfigStore" "GameDVR_Enabled" REG_SZ "0"
 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" "HiberbootEnabled" REG_DWORD 0
 Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\Power" "HibernateEnabled" REG_DWORD "0"
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" "ShowHibernateOption" REG_DWORD 0
-Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" "EnableTransparency" REG_DWORD 0
 Call :RegAdd "HKCU\Control Panel\Accessibility\StickyKeys" "Flags" REG_SZ 506
 Call :RegAdd "HKCU\Control Panel\Accessibility\ToggleKeys" "Flags" REG_SZ "58"
 Call :RegAdd "HKCU\Control Panel\Accessibility\Keyboard Response" "Flags" REG_SZ "122"
@@ -1694,9 +1880,6 @@ Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationS
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "HideFileExt" REG_DWORD 0
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowSuperHidden" REG_DWORD 1
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" "DisableAutoplay" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{59031a47-3f72-44a7-89c5-5595fe6b30ee}" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" REG_DWORD 0
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing" "EnableLog" REG_DWORD 0
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing" "EnableDpxLog" REG_DWORD 0
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SideBySide\Configuration" "DisableComponentBackups" REG_DWORD 1
@@ -1731,7 +1914,6 @@ Call :RegAdd "HKCU\SOFTWARE\Microsoft\TabletTip\1.7" "EnableSpellchecking" REG_D
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SmartGlass" "UserAuthPolicy" REG_DWORD 0
 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings" "IsDeviceSearchHistoryEnabled" REG_DWORD 0
 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" "PeopleBand" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SearchboxTaskbarMode" REG_DWORD 0
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowTaskViewButton" REG_DWORD 0
 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" "ShellFeedsTaskbarViewMode" REG_DWORD 2
 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarDa" REG_DWORD 0
@@ -1769,10 +1951,6 @@ Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\C
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\DataCollection" "AllowTelemetry" REG_DWORD 0
 Call :RegAdd "HKCU\Policies\Microsoft\Windows\DataCollection" "AllowTelemetry" REG_DWORD 0
 Call :RegAdd "HKCU\Policies\Microsoft\Assistance\Client\1.0" "NoExplicitFeedback" REG_DWORD 1
-Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup"
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280811Enabled" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280810Enabled" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive" "DisableFileSyncNGSC" REG_DWORD 1
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{C295FBBA-FD47-46ac-8BEE-B1715EC634E5}" "DownloadToolsEnabled" REG_DWORD 0
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{C295FBBA-FD47-46ac-8BEE-B1715EC634E5}" "ScenarioExecutionEnabled" REG_DWORD 0
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Messenger\Client" "PreventAutoRun" REG_DWORD 1
@@ -1781,89 +1959,6 @@ Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\Remote Assistance" "fAllowToGetH
 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" "fAllowToGetHelp" REG_DWORD 0
 Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\Remote Assistance" "fAllowFullControl" REG_DWORD 0
 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" "fAllowFullControl" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" "DisableNotifications" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" "DisableEnhancedNotifications" REG_DWORD "1"
-Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows Security Health\State" "AccountProtection_MicrosoftAccount_Disconnected" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender" "DisableAntiSpyware" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender" "DisableAntiVirus" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\Features" "TamperProtection" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\Features" "TamperProtectionSource" REG_DWORD "2"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\Signature Updates" "FirstAuGracePeriod" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\UX Configuration" "DisablePrivacyMode" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" "SecurityHealth" REG_BINARY "030000000000000000000000"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MRT" "DontOfferThroughWUAU" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MRT" "DontReportInfectionInformation" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" "HideSystray" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" "DisableAntiSpyware" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" "PUAProtection" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" "RandomizRheduleTaskTimes" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions" "DisableAutoExclusions" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" "MpEnablePus" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Quarantine" "LocalSettingOverridePurgeItemsAfterDelay" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Quarantine" "PurgeItemsAfterDelay" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableBehaviorMonitoring" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableIOAVProtection" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableScanOnRealtimeEnable" REG_DWORD 1
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableOnAccessProtection" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableRealtimeMonitoring" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisableRoutinelyTakingAction" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisablRanOnRealtimeEnable" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" "DisablRriptScanning" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation" "Scan_ScheduleDay" REG_DWORD "8"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation" "Scan_ScheduleTime" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "AdditionalActionTimeOut" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "CriticalFailureTimeOut" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "DisableEnhancedNotifications" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "DisableGenericRePorts" REG_DWORD 1
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" "NonCriticalTimeOut" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "AvgCPULoadFactor" REG_DWORD "10"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableArchivRanning" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableCatchupFullScan" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableCatchupQuickScan" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableRemovableDrivRanning" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisableRestorePoint" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisablRanningMappedNetworkDrivesForFullScan" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "DisablRanningNetworkFiles" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "PurgeItemsAfterDelay" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScanOnlyIfIdle" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScanParameters" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScheduleDay" REG_DWORD 8
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" "ScheduleTime" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "DisableUpdateOnStartupWithoutEngine" REG_DWORD 1
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "ScheduleDay" REG_DWORD 8
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "ScheduleTime" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" "SignatureUpdateCatchupInterval" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SpyNet" "DisableBlockAtFirstSeen" REG_DWORD "1"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "LocalSettingOverrideSpynetReporting" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "SpyNetReporting" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "SpyNetReportingLocation" REG_MULTI_SZ "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" "SubmitSamplRonsent" REG_DWORD "2"
-Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\WMI\Autologger\DefenderApiLogger" "Start" REG_DWORD "0"
-Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\WMI\Autologger\DefenderApiLogger" "Start" REG_DWORD "0"
-Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\WMI\Autologger\DefenderAuditLogger" "Start" REG_DWORD "0"
-Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\WMI\Autologger\DefenderAuditLogger" "Start" REG_DWORD "0"
-Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "SecurityHealth"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "HidRAHealth" REG_DWORD "1"
-Call :RegAdd "HKLM\SYSTEM\ControlSet001\Control\CI\Policy" "VerifiedAndReputablePolicyState" REG_DWORD 0
-Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\CI\Policy" "VerifiedAndReputablePolicyState" REG_DWORD 0
-Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "EnableWebContentEvaluation" REG_DWORD 0
-Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "PreventOverride" REG_DWORD 0
-Call :RegAdd "HKCU\SOFTWARE\Policies\Microsoft\Edge" "SmartScreenEnabled" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Security Health\State" "AppAndBrowser_StoreAppsSmartScreenOff" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "SmartScreenEnabled" REG_SZ "Off"
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "SmartScreenEnabled" REG_SZ "Off"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\PhishingFilter" "EnabledV9" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\PhishingFilter" "PreventOverride" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" "EnabledV9" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" "PreventOverride" REG_DWORD 0
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "EnableSmartScreen" REG_DWORD "0"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen" "ConfigureAppInstallControl" REG_SZ "Anywhere"
-Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen" "ConfigureAppInstallControlEnabled" REG_DWORD "0"
-Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "PreventOverride" REG_DWORD 0
-Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "Enabledv9" REG_DWORD 0
-Call :RegDel "HKCR\Drive\shellex\ContextMenuHandlers\EPP"
-Call :RegDel "HKCR\Directory\shellex\ContextMenuHandlers\EPP"
-Call :RegDel "HKCR\*\shellex\ContextMenuHandlers\EPP"
 Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell" "BagMRU Size" REG_DWORD "0x4e20"
 Call :RegKey "HKCU\Software\Microsoft\Internet Explorer\LowRegistry\Audio\PolicyConfig\PropertyStore"
 Call :Powershell "Get-PhysicalDisk | Select-Object -Property MediaType| Format-Table" > %Konum%\Log\SSD
@@ -1967,21 +2062,7 @@ FOR %%a in (
 )
 :: -------------------------------------------------------------
 cls&Call :Dil A 2 OG_6_&echo ►%R%[32m !LA2! %R%[0m
-Taskkill /f /im smartscreen.exe > NUL 2>&1
-FOR %%a in (
-"%windir%\System32\CompatTelRunner.exe"
-"%windir%\System32\drivers\MsSecFlt.sys"
-"%windir%\System32\drivers\WdBoot.sys"
-"%windir%\System32\drivers\WdFilter.sys"
-"%windir%\System32\drivers\WdNisDrv.sys"
-"%windir%\System32\smartscreen.exe"
-"%windir%\System32\securityhealthhost.exe"
-"%windir%\System32\securityhealthservice.exe"
-"%windir%\System32\securityhealthsystray.exe"
-"%windir%\System32\SgrmBroker.exe"
-) do (
-	%NSudo% DEL /F /Q /A %%a
-)
+
 :: -------------------------------------------------------------
 FOR %%a in (
 "%windir%\*.log"
@@ -1999,16 +2080,6 @@ FOR %%a in (
 )
 :: -------------------------------------------------------------
 FOR %%a in (
-"%programfiles%\Windows Defender Advanced Threat Protection"
-"%programfiles%\Windows Defender"
-"%programfiles%\Windows Security"
-"%programfiles(x86)%\Windows Security"
-"%programfiles(x86)%\Windows Defender"
-"%programfiles(x86)%\Windows Defender Advanced Threat Protection"
-"%programdata%\Microsoft\Windows Security Health"
-"%programdata%\Microsoft\Windows Defender Advanced Threat Protection"
-"%programdata%\Microsoft\Windows Defender"
-"%windir%\SystemApps\Microsoft.Windows.SecHealthUI_cw5n1h2txyewy"
 "%windir%\WinSxS\Temp"
 "%windir%\WinSxS\Backup"
 "%windir%\Containers"
@@ -2023,36 +2094,7 @@ FOR %%a in (
 ) do (
 	Call :FA RD %%a
 )
-:: -------------------------------------------------------------
-FOR %%a in (
-"%Windir%\System32\OneDriveSetup.exe"
-"%Windir%\SysWOW64\OneDriveSetup.exe"
-) do (
-	%%a /uninstall > NUL 2>&1
-)
-Call :FA RDS "C:\*onedrive*"
-Call :FA DELS "C:\*onedrive*"
-:: -------------------------------------------------------------
-:: Taskkill /f /im "msedge.exe" > NUL 2>&1
-:: FOR %%a in ('Dir /AD /B "%programfiles(x86)%\Microsoft\Edge\Application\*" 2^>NUL') do (
-:: 	dir /b "%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer" > NUL 2>&1
-:: 		if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer\setup.exe" --uninstall --system-level --force-uninstall)
-:: )
-:: FOR %%a in ('Dir /AD /B "%programfiles(x86)%\Microsoft\EdgeWebView\Application\*" 2^>NUL') do (
-:: 	dir /b "%programfiles(x86)%\Microsoft\EdgeWebView\Application\%%a\Installer" > NUL 2>&1
-:: 		if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\EdgeWebView\Application\%%a\Installer\setup.exe" --uninstall --msedgewebview --system-level --force-uninstall)
-:: )	
-:: Call :RD "%programfiles(x86)%\Microsoft"
-:: Call :DEL "C:\Users\%username%\Desktop\edge.lnk"
-:: Call :DEL "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
-:: Call :RD "%LocalAppData%\Microsoft\Edge"
-:: Call :FA DELS "C:\*dge.wim"
-:: Call :RegAdd "HKLM\OFF_SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
-:: Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
-:: Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
-:: Call :RegDel "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
-:: -------------------------------------------------------------
-:: Call :FA DELS "C:\*winre.wim"
+
 :: -------------------------------------------------------------
 cls&Call :Dil A 2 OG_7_&echo ►%R%[32m !LA2! %R%[0m
 bcdedit /set {current} recoveryenabled no > NUL
