@@ -4,7 +4,11 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.1.0 ►  01.09.2023</B></summary>
+<details><B><summary> Versiyon 4.1.1 ►  04.10.2023</B></summary>
+
+	• Sistem optimizasyonu [Playbook] bölümünde düzenlemeler yapıldı. 
+
+</details><details><B><summary> Versiyon 4.1.0 ►  01.10.2023</B></summary>
 
 	• 'Hizmetleri Yönet' bölümüne yeni açıklayıcı bilgiler eklendi.
 	• "Sistem optimizasyonu [Playbook]" bölümüne seçmeli ayarlar eklendi. Artık işlem öncesi belli başlı ayarları seçip işleme devam edebilirsiniz.

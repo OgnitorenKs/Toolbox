@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.1.0
+set Version=4.1.1
 mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
@@ -928,7 +928,7 @@ FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	FOR /F "tokens=8 delims='\'" %%k in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages" /f "%%g" 2^>NUL') do (
 		reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages" /f "%%k" > NUL 2>&1
-			if !errorlevel! EQU 0 (Dism /Online /Remove-Package /PackageName:%%k /NoRestart /Quiet)
+			if !errorlevel! EQU 0 (Dism /Online /Remove-Package /PackageName:%%k /NoRestart > NUL 2>&1)
 	)
 )
 goto :eof
@@ -1498,6 +1498,7 @@ Call :Playbook_Reader Ayar_2_
 						 )	
 						 Call :RD "%programfiles(x86)%\Microsoft"
 						 Call :DEL "C:\Users\%username%\Desktop\edge.lnk"
+						 Call :DEL "C:\Users\Public\Desktop\Microsoft Edge.lnk"
 						 Call :DEL "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
 						 Call :RD "%LocalAppData%\Microsoft\Edge"
 						 Call :FA DELS "C:\*dge.wim"
@@ -1510,7 +1511,9 @@ Call :Playbook_Reader Ayar_2_
 Call :Dil A 2 OG_10_&cls&echo ►%R%[32m !LA2! %R%[0m
 :: Başlat menüsü pinlerini kaldır
 Call :Playbook_Reader Ayar_3_
-	if %Playbook% EQU 1 (Call :DEL "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\*.bin"
+	if %Playbook% EQU 1 (FOR /F "tokens=*" %%a in ('dir /b "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\*.bin"') do (
+							Call :DEL "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\%%a"
+						)
 )
 :: Windows Search kapat
 Call :Playbook_Reader Ayar_4_
@@ -1575,10 +1578,10 @@ Call :Playbook_Reader Ayar_9_
 Call :Playbook_Reader Ayar_10_
 	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SearchboxTaskbarMode" REG_DWORD 0
 )
-:: 
+:: Karma gerçeklik
 Call :Playbook_Reader Ayar_11_
 	if %Playbook% EQU 1 (Call :Read_Features "COM_21_"
-						 Call :Remove_!Value_C! "COM_%%a_"
+						 Call :Remove_!Value_C! "COM_21_"
 						 FOR %%a in (
 						 SharedRealitySvc
 						 VacSvc
@@ -1590,9 +1593,11 @@ Call :Playbook_Reader Ayar_11_
 						 	reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%a" > NUL 2>&1
 						 		if !errorlevel! EQU 0 (%NSudo% sc delete %%a)
 						)
-
 )
-
+:: Görev çubuğu sabit öğeleri kaldırır
+Call :Playbook_Reader Ayar_12_
+	if %Playbook% EQU 1 (Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband"
+)
 	
 :: -------------------------------------------------------------
 cls
@@ -1601,7 +1606,7 @@ FOR %%a in (1) do (
 	Call :Read_Features "OGNI_%%a_"
 	Call :Remove_!Value_C! "OGNI_%%a_"
 )
-FOR %%a in (1 2 4 5 6 8 9 14 18 20 22 30 38 45) do (
+FOR %%a in (8 9 14 18 20 22 30 38 45) do (
 	Call :Read_Features "COM_%%a_"
 	Call :Remove_!Value_C! "COM_%%a_"
 )
