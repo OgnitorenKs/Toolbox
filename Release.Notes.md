@@ -4,7 +4,17 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.1.1 ►  04.10.2023</B></summary>
+<details><B><summary> Versiyon 4.1.2 ►  23.11.2023</B></summary>
+
+	• "Sistem temizliği" bölümüne '%LocalAppData%' dizininde yer alan 'tw-' isimli boş klasörleri silme komutu eklendi.
+	• "Hizmet Yönetimi" bölümü kontrol kodları revize edildi.
+		• Hizmet gruplarını; (Kaldırılmış: Kırmızı renk █) │ (Açık: Yeşil renk♦) │ (Kapalı: Gri renk █ │ (Kısmen açık/kapalı hizmet var= Açık Mavi renk ♦) │ (Kısmen Açık/Eksik hizmet var= Kırmızı renk ♦) │ (Kısmen Açık/Eksik ve Kapalı hizmet var= Mor Renk ♦)
+		• Sistem geri yükleme hizmet olarak kapatma bölümü eklendi.
+	• İnternet kontrol adresleri azaltıldı.
+	• İngilizce dil bölümünde iyileştirmeler yapıldı. 
+	
+
+</details><details><B><summary> Versiyon 4.1.1 ►  04.10.2023</B></summary>
 
 	• Sistem optimizasyonu [Playbook] bölümünde düzenlemeler yapıldı. 
 

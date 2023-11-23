@@ -96,7 +96,7 @@ T0006>Main Menu>
 T0007>Deletes only>
 T0008>removing>
 T0009>You can type the site address you want to measure ping>
-T0010>>
+T0010>On>Off>Removed>Partly open>Closed service>Incomplete service>Incomplete and closed service>
 T0011>>
 T0012>>
 T0013>>
@@ -145,16 +145,17 @@ SL_19_>Font Cache>Need: HDD>
 SL_20_>Windows Insider> >
 SL_21_>Biometric>Need: Fingerprint │ HelloFace>
 SL_22_>Disk Defragmentation>Need: SSD│HDD>
-SL_23_>Router>Near devices>
-SL_24_>Smart Card>Need: Chip card reader [not SD card]>
+SL_23_>Router>Near devices [Smart home devices]>
+SL_24_>Smart Card>Need: Chip card reader [Not SD card]>
 SL_25_>Enterprise application> >
 SL_26_>Now Playing Session Manager>Need: Notification area media player>
 SL_27_>Graphics performance monitoring>Need: Game mode>
 SL_28_>Game DVR and Broadcast User>Need: Xbox screen recording>
+SL_29_>System Restore> >
 ::███████████████████████████████████████████████████████████████████
 SR_1_>Fax> >
 SR_2_>Wordpad>Windows built-in office application>
-SR_3_>Notebook> >
+SR_3_>Notepad> >
 SR_4_>Step Recorder>Records your actions with screenshots and actions>
 SR_5_>Powershell-ISE>Powershell code editor>
 SR_6_>Math expression recognizer>Need: TabletPC>
@@ -170,7 +171,7 @@ SR_15_>TFTP>Junk file transfer protocol>
 SR_16_>Telnet>Device-to-device remote connection>
 SR_17_>TCP/IP>Computer-to-computer data communication protocol>
 SR_18_>TIFF IFilter>Tagged Image File Format>
-SR_19_>System evaluation tool [WinSat]> >
+SR_19_>Windows System Assessment Tool [WinSat]> >
 SR_20_>RetailDemo>Retail demonstration │ Restricted mode used in display products>
 SR_21_>Mixed Reality>Need: Virtual reality [VR]>
 SR_22_>Customer experience improvement program [CEIP]>Telemetry

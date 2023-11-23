@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.1.1
+set Version=4.1.2
 mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
@@ -212,8 +212,8 @@ FOR %%a in (%Value_M%) do (
 	if %%a EQU 29 (Call :Winget KDE.Krita)
 	if %%a EQU 30 (Call :Winget GIMP.GIMP)
 	if %%a EQU 31 (Call :Winget sylikc.JPEGView
-				   set AppRoad=%programfiles%\JPEGView\JPEGView.exe
-				   set AppIcon=%programfiles%\JPEGView\JPEGView.exe
+				   set AppRoad="%programfiles%\JPEGView\JPEGView.exe"
+				   set AppIcon="%programfiles%\JPEGView\JPEGView.exe"
 				   set AppKey=JPEGView
 				   set Default=bmp jpg jpeg png gif tiff webp tga jxl heif heic avif wdp hdp jxr dng crw cr2 nef nrw arw sr2 orf rw2 raf x3f pef mrw kdc dcr wic
 				   Call :Default_App
@@ -318,16 +318,26 @@ goto :eof
 
 :: -------------------------------------------------------------
 :Service_Menu
-mode con cols=130 lines=36
+mode con cols=130 lines=39
+Call :DEL "%Konum%\Log\Services.txt"
 echo.
 Call :Dil A 2 B0001
 Call :Dil B 2 T0004
 Call :Dil B 3 T0004
 Call :Dil C 2 T0005
 echo %R%[91m  ► !LA2! %R%[90m [ E: !LB2! │ D: !LB3! │ !LC2!: E,1,4,5,D,6,10,14 ]%R%[0m
-FOR %%a in (LA2 LB2 LB3 LC2) do (set %%a=)
+Call :Dil A 2 T0010
+Call :Dil A 3 T0010
+Call :Dil A 4 T0010
+Call :Dil A 5 T0010
+Call :Dil A 6 T0010
+Call :Dil A 7 T0010
+Call :Dil A 8 T0010
+echo %R%[92m  ♦%R%[90m = !LA2! │ █ = !LA3! │%R%[91m █%R%[90m = !LA4! │%R%[96m ♦%R%[90m = !LA5! [!LA6!]%R%[0m 
+echo %R%[91m  ♦%R%[90m = !LA5! [!LA7!] │%R%[95m ♦%R%[90m = !LA5! [!LA8!]%R%[0m 
+FOR %%a in (LA2 LA3 LA4 LA5 LA6 LA7 LA8 LB2 LB3 LC2) do (set %%a=)
 echo   %R%[90m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐%R%[0m
-FOR /L %%a in (1,1,28) do (
+FOR /L %%a in (1,1,29) do (
 	Call :Dil A 2 SL_%%a_
 	Call :Dil A 3 SL_%%a_
 	Call :Service_Check %%a
@@ -344,8 +354,8 @@ echo !Value_S! | Findstr /i "X" > NUL 2>&1
 cls
 FOR %%a in (!Value_S!) do (
 	Call :Service_Management %%a
-	if %%a EQU 16 (Call :Reg01)
-	if %%a EQU 16 (Call :Reg01)
+	if %%a EQU 16 (Call :SS_16)
+	if %%a EQU 29 (Call :SS_29)
 )
 goto Service_Menu
 
@@ -555,6 +565,8 @@ Call :DEL "%AppData%\Microsoft\Windows\Recent\CustomDestinations\*"
 :: Clear main telemetry file
 Call :DEL "%ProgramData%\Microsoft\Diagnosis\ETLLogs\AutoLogger\*.etl"
 ::
+FOR /F %%a in ('dir /b %LocalAppData%\tw-*.tmp') do (Call :RD "%LocalAppData%\%%a")
+::
 Call :DEL "%SystemRoot%\DtcInstall.log"
 Call :DEL "%SystemRoot%\comsetup.log"
 Call :DEL "%SystemRoot%\PFRO.log"
@@ -719,6 +731,8 @@ goto :eof
 :: -------------------------------------------------------------
 :FA
 :: %~1: İşlem yapılacak konum  %~2: Aranacak değer
+:: 'RDS' ve 'DELS' derin arama yöntemidir. Alt klasörleri de arar bulduğu seçenekleri siler.
+:: 'RD' ve 'DEL' parametrelerinde hedef belirtmek gerekiyor. Doğrudan silmeleri buraya yönlendirme.
 if %~1 EQU RD (FOR /F "tokens=*" %%g in ('Dir /AD /B "%~2" 2^>NUL') do (Call :RD "%~dp2%%g"))
 if %~1 EQU DEL (FOR /F "tokens=*" %%g in ('Dir /A-D /B "%~2" 2^>NUL') do (Call :DEL "%~dp2%%g"))
 if %~1 EQU RDS (FOR /F "tokens=*" %%g in ('Dir /AD /B /S "%~2" 2^>NUL') do (Call :RD "%%g"))
@@ -799,11 +813,8 @@ goto :eof
 :Check_Internet
 set Internet=Offline
 FOR %%a in (
-1.1.1.1
-8.8.8.8
-www.google.com
+ognitorenks.blogspot.com
 www.bing.com
-www.msn.com
 ) do (
 	ping -n 1 %%a -w 1000 > NUL
 		if !errorlevel! EQU 0 (set Internet=Online)
@@ -838,22 +849,58 @@ goto :eof
 :Service_Check
 :: Hizmetleri kontrol eder
 set X=NT
+set XT=NT
+set XS=NT
+echo -------------------------------------------- >> %Konum%\Log\Services.txt
 if %Win% EQU 11 (set Value_W=0 11)
 if %Win% EQU 10 (set Value_W=0 10)
-FOR %%j in (!Value_W!) do (
-	FOR /F "delims=> tokens=2" %%g in ('Findstr /i "_%%j_%~1_" %Konum%\Bin\Extra\Data.cmd') do (
-		set Check=%R%[91m█%R%[0m
-		reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%g" /v "Start" > NUL 2>&1
-			if !errorlevel! EQU 0 (FOR /F "skip=1 delims=x tokens=2" %%j in ('reg query "HKLM\System\CurrentControlSet\Services\%%g" /v "Start" 2^>NUL') do (
-																				if %%j EQU 4 (if !X! NEQ ON (set Check=%R%[90m█%R%[0m))
-																				if %%j EQU 3 (set X=ON&set Check=%R%[92m♦%R%[0m)
-																				if %%j EQU 2 (set X=ON&set Check=%R%[92m♦%R%[0m)
-																				if %%j EQU 1 (set X=ON&set Check=%R%[92m♦%R%[0m)
-																				if %%j EQU 0 (set X=ON&set Check=%R%[92m♦%R%[0m)
-			)
-		)
+FOR %%g in (!Value_W!) do (
+	FOR /F "delims=> tokens=2" %%h in ('Findstr /i "_%%g_%~1_" %Konum%\Bin\Extra\Data.cmd') do (
+		reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%h" /v "Start" > NUL 2>&1
+			if !errorlevel! EQU 0 (FOR /F "skip=2 delims=x tokens=2" %%j in ('reg query "HKLM\System\CurrentControlSet\Services\%%h" /v "Start" 2^>NUL') do (
+																			  echo [%%h] ► [%%j] >> %Konum%\Log\Services.txt
+																			  if %%j EQU 4 (if !X! EQU ON (set XS=Off&set Check=%R%[96m♦%R%[0m)
+																							if !X! EQU NT (set XS=Off&set Check=%R%[90m█%R%[0m)
+																						   )
+																			  if %%j EQU 3 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
+																											  if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
+																											 )
+																							if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
+																											  if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
+																											 )
+																						   )
+																			  if %%j EQU 2 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
+																											  if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
+																											 )
+																							if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
+																											  if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
+																											 )
+																						   )
+																			  if %%j EQU 1 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
+																											  if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
+																											 )
+																							if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
+																											  if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
+																											 )
+																						   )
+																			  if %%j EQU 0 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
+																											  if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
+																											 )
+																							if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
+																											  if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
+																											 )
+																						   )
+																			)
+								 )
+			if !errorlevel! NEQ 0 (echo [%%h] ► [Not Found] >> %Konum%\Log\Services.txt
+								   if !X! EQU ON (set XT=Lost&set Check=%R%[91m♦%R%[0m)
+								   if !X! EQU NT (set XT=Lost&set Check=%R%[91m█%R%[0m)
+								  )
 	)
 )
+set X=
+set XT=
+set XS=
 goto :eof
 :: ► Regedit çalışma değerleri 
 ::	• 0 = Ön yükleme (Boot)
@@ -875,13 +922,15 @@ FOR %%j in (!Value_W!) do (
 		FOR /F "delims=> tokens=5" %%k in ('Findstr /i "_%%j_%~1_" %Konum%\Bin\Extra\Data.cmd') do (
 			reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%g" /v "Start" > NUL 2>&1
 				if !errorlevel! EQU 0 (if !Value! EQU E (Call :SC %%g %%k
-														 Call :NET start %%g)
+														 Call :NET start %%g
+														)
 									   if !Value! EQU D (Call :SC %%g disabled
-														 Call :NET stop %%g)
+														 Call :NET stop %%g
+														)
 			)
 		)
 	)
-)	
+)
 goto :eof
 
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -937,7 +986,7 @@ goto :eof
 :Remove_Capability
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	Findstr /i "%%g" %Konum%\Log\C_Capabilities > NUL 2>&1
-		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1))													
+		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1))											
 )
 goto :eof
 
@@ -1502,7 +1551,7 @@ Call :Playbook_Reader Ayar_2_
 						 Call :DEL "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
 						 Call :RD "%LocalAppData%\Microsoft\Edge"
 						 Call :FA DELS "C:\*dge.wim"
-						 Call :RegAdd "HKLM\OFF_SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
+						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
 						 Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
 						 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
 						 Call :RegDel "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
@@ -1511,9 +1560,7 @@ Call :Playbook_Reader Ayar_2_
 Call :Dil A 2 OG_10_&cls&echo ►%R%[32m !LA2! %R%[0m
 :: Başlat menüsü pinlerini kaldır
 Call :Playbook_Reader Ayar_3_
-	if %Playbook% EQU 1 (FOR /F "tokens=*" %%a in ('dir /b "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\*.bin"') do (
-							Call :DEL "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\%%a"
-						)
+	if %Playbook% EQU 1 (Call :RD "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState")
 )
 :: Windows Search kapat
 Call :Playbook_Reader Ayar_4_
@@ -1987,7 +2034,7 @@ Findstr /i "SSD" %Konum%\Log\SSD > NUL 2>&1
 						   Call :RegAdd "HKLM\SOFTWARE\Microsoft\Wbem\CIMOM" "Logging" REG_SZ 0
 						   Call :RegAdd "HKLM\System\CurrentControlSet\Control\FileSystem" "NtfsDisable8dot3NameCreation" REG_DWORD 1
 						   Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Policies" "DisableDeleteNotification" REG_DWORD 0
-						   fsutil behavior set disabledeletenotify NTFS 0 >nul 2>&1
+						   fsutil behavior set disabledeletenotify NTFS 0 > NUL 2>&1
 						   Call :SC "FontCache" "disabled"
 						   Call :SC "FontCache3.0.0.0" "disabled"
 						   Call :SC "defragsvc" "auto"
@@ -2093,7 +2140,6 @@ FOR %%a in (
 )
 :: -------------------------------------------------------------
 FOR %%a in (
-"%LocalAppData%\Packages\*.SecHealthUI_*"
 "%Windir%\CbsTemp\*"
 "%windir%\Logs\*"
 ) do (
@@ -2125,9 +2171,42 @@ gpupdate /force > NUL 2>&1
 shutdown -r -f -t 5
 goto Main_Menu
 
-:Reg01
+:SS_16
 if !Value! EQU E (set VR=1)
 if !Value! EQU D (set VR=0)
 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\Power" "HibernateEnabled" REG_DWORD !VR!
 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" "HiberbootEnabled" REG_DWORD !VR!
+goto :eof
+
+:SS_29
+if !Value! EQU D (Call :RegDel "HKLM\SOFTWARE\Classes\AllFilesystemObjects\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\AllFilesystemObjects\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\Directory\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\Directory\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\Drive\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\Drive\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegDel "HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\FileHistory" "Disabled" REG_DWORD 1
+				  schtasks /change /TN "\Microsoft\Windows\SystemRestore\SR" /DISABLE > NUL 2>&1
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableConfig" REG_DWORD "1"
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableSR" REG_DWORD "1"
+)
+if !Value! EQU D (Call :RegKey "HKLM\SOFTWARE\Classes\AllFilesystemObjects\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\AllFilesystemObjects\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\Directory\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\Directory\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\Drive\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\Drive\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegKey "HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\FileHistory" "Disabled" REG_DWORD 0
+				  schtasks /change /TN "\Microsoft\Windows\SystemRestore\SR" /ENABLE > NUL 2>&1
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableConfig" REG_DWORD "0"
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableSR" REG_DWORD "0"
+)
 goto :eof

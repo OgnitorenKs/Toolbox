@@ -9,8 +9,8 @@ _0_2_>TapiSrv>Telefon>3>Demand>
 _0_2_>PhoneSvc>Telefon>3>Demand>
 :: Yazıcı - Baskı
 _0_3_>Spooler>Yazdırma Biriktiricisi>2>Auto>
-_0_3_>PrintWorkflowUserSvc>3>Demand>
-_11_3_>McpManagementService>Evrensel Yazdırma Yönetimi Hizmeti>3>Demand>
+_0_3_>PrintWorkflowUserSvc>PrintWorkflowUserSvc>3>Demand>
+_0_3_>McpManagementService>Evrensel Yazdırma Yönetimi Hizmeti>3>Demand>
 _0_3_>PrintNotify>Yazıcı Uzantıları ve Bildirimleri>3>Demand>
 :: Tarayıcı ve Kamera
 _0_4_>FrameServer>Windows Kamera Çerçeve Sunucusu>3>Demand>
@@ -95,6 +95,12 @@ _0_26_>NPSMSvc>Şimdi Yürütülüyor Oturum Yöneticisi>3>Demand>
 _0_27_>GraphicsPerfSvc>Grafik perfromansı izleme>3>Demand>
 :: Oyun DVR kayıt hizmeti
 _0_28_>BcastDVRUserService>Oyun DVR ve Yayın Kullanıcı Hizmeti>3>Demand>
+:: Sistem geri yükleme
+_0_29_>SDRSVC>Windows Yedekleme>3>Demand>
+_0_29_>VSS>Birim Gölge Kopyası>3>Demand>
+_0_29_>swprv>Microsoft Yazılımı Gölge Kopya Sağlayıcısı>3>Demand>
+_0_29_>wbengine>Blok Düzeyinde Yedekleme Motoru Hizmeti>3>Demand>
+_0_29_>fhsvc>Dosya Geçmişi Hizmeti>3>Demand>
 
 :: ██████████████████████████████████████████████████████████████████
 

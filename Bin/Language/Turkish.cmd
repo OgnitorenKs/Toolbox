@@ -96,7 +96,7 @@ T0006>Ana Menü>
 T0007>Yalnızca silme işlemi yapar>
 T0008>kaldırılıyor>
 T0009>Ping ölçümü yapmak istediğiniz site adresini yazabilirsiniz>
-T0010>>
+T0010>Açık>Kapalı>Kaldırılmış>Kısmen açık>Kapalı hizmet var>Eksik hizmet var>Eksik ve kapalı hizmet var>
 T0011>>
 T0012>>
 T0013>>
@@ -145,12 +145,13 @@ SL_19_>Yazı Tipi Önbelliği>İhtiyaç: HDD>
 SL_20_>Windows Insider> >
 SL_21_>Biyometrik>İhtiyaç: Parmak izi │ HelloFace>
 SL_22_>Disk Birleştirme>İhtiyaç: SSD│HDD>
-SL_23_>Yönlendirici>Yakındaki cihazlar>
+SL_23_>Yönlendirici>Yakındaki cihazlar [Akıllı ev cihazları]>
 SL_24_>Akıllı Kart>İhtiyaç: Çipli kart okuyucu [SDkart değil]>
 SL_25_>Kurumsal uygulama> >
 SL_26_>Şimdi Yürütülüyor Oturum Yöneticisi>İhtiyaç: Bildirim alanı medya oynatıcı>
 SL_27_>Grafik perfromansı izleme>İhtiyaç: Oyun modu>
 SL_28_>Oyun DVR ve Yayın Kullanıcı>İhtiyaç: Xbox ekran kayıt>
+SL_29_>Sistem Geri Yükleme> >
 ::███████████████████████████████████████████████████████████████████
 SR_1_>Fax> >
 SR_2_>Wordpad>Windows yerleşik office uygulaması>
