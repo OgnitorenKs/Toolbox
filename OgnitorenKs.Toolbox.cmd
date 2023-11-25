@@ -28,7 +28,7 @@ echo off
 chcp 65001 > NUL 2>&1
 setlocal enabledelayedexpansion
 title  OgnitorenKs Toolbox
-set Version=4.1.2
+set Version=4.1.3
 mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
@@ -919,15 +919,14 @@ Call :Dil A 2 SL_%~1_
 echo %R%[96m "!LA2!" %R%[37m !LB2! %R%[0m
 FOR %%j in (!Value_W!) do (
 	FOR /F "delims=> tokens=2" %%g in ('Findstr /i "_%%j_%~1_" %Konum%\Bin\Extra\Data.cmd') do (
-		FOR /F "delims=> tokens=5" %%k in ('Findstr /i "_%%j_%~1_" %Konum%\Bin\Extra\Data.cmd') do (
-			reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%g" /v "Start" > NUL 2>&1
-				if !errorlevel! EQU 0 (if !Value! EQU E (Call :SC %%g %%k
-														 Call :NET start %%g
-														)
-									   if !Value! EQU D (Call :SC %%g disabled
-														 Call :NET stop %%g
-														)
-			)
+		reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%g" /v "Start" > NUL 2>&1
+			if !errorlevel! EQU 0 (if !Value! EQU E (FOR /F "delims=> tokens=5" %%k in ('Findstr /i "%%g" %Konum%\Bin\Extra\Data.cmd') do (Call :SC %%g %%k&Call :NET start %%g)
+													 FOR /F "delims=> tokens=4" %%h in ('Findstr /i "%%g" %Konum%\Bin\Extra\Data.cmd') do (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%%g" "Start" REG_DWORD "%%h")
+													)
+								   if !Value! EQU D (Call :SC %%g disabled
+													 Call :NET stop %%g
+													 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%%g" "Start" REG_DWORD 4
+													)
 		)
 	)
 )
@@ -1000,6 +999,7 @@ goto :eof
 
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Ram_Type
+set Value_R=Unkown
 if %~1 EQU 0 (set Value_R=Unkown)
 if %~1 EQU 1 (set Value_R=Other)
 if %~1 EQU 2 (set Value_R=DRAM)
@@ -1026,6 +1026,7 @@ if %~1 EQU 22 (set Value_R=DDR2 FB-DIMM)
 if %~1 EQU 24 (set Value_R=DDR3)
 if %~1 EQU 25 (set Value_R=FBD2)
 if %~1 EQU 26 (set Value_R=DDR4)
+if %~1 EQU 27 (set Value_R=DDR5)
 goto :eof
 
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -1379,7 +1380,8 @@ Call :Upper %Value_M% Value_M
 	if %Value_M% EQU N (set Error=X&goto Main_Menu)
 	if %Value_M% NEQ N (Call :Dil A 2 WW_10_&echo.&set /p Value_MM=►%R%[31m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
 						Call :Upper !Value_MM! Value_MM
-						if !Value_MM! EQU N (set Error=X&goto Main_Menu))
+						if !Value_MM! EQU N (set Error=X&goto Main_Menu)
+					   )
 set Value_M=
 set Value_MM=
 :: -------------------------------------------------------------
@@ -1387,7 +1389,8 @@ cls
 FOR /F "tokens=6" %%a in ('Dism /online /Get-intl ^| Find /I "Default system UI language"') do (
 	if %%a EQU tr-TR (powercfg -list | Findstr /i "Nihai" > NUL 2>&1
 						if !errorlevel! NEQ 0 (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
-											   FOR /F "tokens=4" %%b in ('powercfg -list ^| Findstr /i "Nihai"') do (powercfg -setactive %%b))
+											   FOR /F "tokens=4" %%b in ('powercfg -list ^| Findstr /i "Nihai"') do (powercfg -setactive %%b)
+											  )
 	)
 )
 
@@ -1644,6 +1647,11 @@ Call :Playbook_Reader Ayar_11_
 :: Görev çubuğu sabit öğeleri kaldırır
 Call :Playbook_Reader Ayar_12_
 	if %Playbook% EQU 1 (Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband"
+)
+:: Yeni mouse simgesini yükler
+Call :Playbook_Reader Ayar_13_
+	if %Playbook% EQU 1 (Call :Powershell "Expand-Archive -Force '%Konum%\Bin\Mouse.zip' '%Temp%\MouseLightPerf'"
+						 RunDll32 advpack.dll,LaunchINFSection %Temp%\MouseLightPerf\Install.inf,DefaultInstall
 )
 	
 :: -------------------------------------------------------------
@@ -2038,7 +2046,8 @@ Findstr /i "SSD" %Konum%\Log\SSD > NUL 2>&1
 						   Call :SC "FontCache" "disabled"
 						   Call :SC "FontCache3.0.0.0" "disabled"
 						   Call :SC "defragsvc" "auto"
-						   Call :SC "WSearch" "disabled")
+						   Call :SC "WSearch" "disabled"
+						  )
 	if !errorlevel! NEQ 0 (Call :RegAdd "HKLM\System\CurrentControlSet\Control\Power" "HibernateEnabled" REG_DWORD 1
 						   Call :RegAdd "HKLM\System\CurrentControlSet\Control\Power" "HibernateEnabledDefault" REG_DWORD 1
 						   Call :RegAdd "HKLM\System\CurrentControlSet\Control\Power" "HiberbootEnabled" REG_DWORD 1
@@ -2048,7 +2057,8 @@ Findstr /i "SSD" %Konum%\Log\SSD > NUL 2>&1
 						   fsutil behavior set disabledeletenotify NTFS 1 > NUL 2>&1
 						   Call :SC "FontCache" "auto"
 						   Call :SC "FontCache3.0.0.0" "demand"
-						   Call :SC "SysMain" "auto")
+						   Call :SC "SysMain" "auto"
+						  )
 DEL /F /Q /A "%Konum%\Log\SSD" > NUL 2>&1
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "SettingsPageVisibility" REG_SZ "hide:windowsdefender;maps;windowsinsider;family-group;pen"
 :: Dosya Gezgini arama kutusundaki son arama girişlerinin görüntülenmesini kapatın
@@ -2161,9 +2171,6 @@ FOR /F "tokens=4" %%a in ('systeminfo ^| find "Total Physical Memory"') do (
 )
 Call :RegAdd "HKLM\System\CurrentControlSet\Control" "SvcHostSplitThresholdInKB" REG_DWORD "0x%RAM%"
 :: -------------------------------------------------------------
-Call :Powershell "Expand-Archive -Force '%Konum%\Bin\Mouse.zip' '%Temp%\MouseLightPerf'"
-RunDll32 advpack.dll,LaunchINFSection %Temp%\MouseLightPerf\Install.inf,DefaultInstall
-:: -------------------------------------------------------------
 net stop wuauserv > NUL 2>&1
 Call :RD "%windir%\SoftwareDistribution"
 net start wuauserv > NUL 2>&1
@@ -2171,6 +2178,7 @@ gpupdate /force > NUL 2>&1
 shutdown -r -f -t 5
 goto Main_Menu
 
+:: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :SS_16
 if !Value! EQU E (set VR=1)
 if !Value! EQU D (set VR=0)

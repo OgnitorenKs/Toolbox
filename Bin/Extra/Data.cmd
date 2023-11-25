@@ -38,7 +38,7 @@ _0_10_>RMSvc>Radyo yönetimi ve uçak modu>3>Demand>
 _0_11_>wcncsvc>Windows Şimdi Bağlan / WPS>3>Demand>
 :: WIFI
 _0_12_>WwanSvc>WWAN Otomatik Yapılandırma>3>Demand>
-_0_12_>WlanSvc>Kablosuz Yerel Ağ Otomatik Yapılandırma>3>Demand>
+_0_12_>WlanSvc>Kablosuz Yerel Ağ Otomatik Yapılandırma>2>Auto>
 _0_12_>vwifibus>Sanal Kablosuz Veri Yolu>3>Demand>
 _0_12_>NativeWifiP>Yerel Filtresi>3>Demand>
 _0_12_>Ndisuio>NDIS Kullanıcı Modu G/Ç Protokolü>3>Demand>

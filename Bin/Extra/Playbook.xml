@@ -14,16 +14,17 @@
 <!-- ███████████████████████████████████████████████████████████████████ --->
 Ayar_1_= 1 ► Microsoft Defender kaldır
 Ayar_2_= 1 ► Microsoft Edge ve EdgeWebView2 kaldır
-Ayar_3_= 0 ► Başlat menüsü sabitlenmiş öğeleri kaldır
+Ayar_3_= 1 ► Başlat menüsü sabitlenmiş öğeleri kaldır
 Ayar_4_= 1 ► Windows Search kapat
 Ayar_5_= 1 ► Animasyonları ve saydamlığı kapat
 Ayar_6_= 1 ► Windows Tema ayarlarını değiştir [Siyah başlat menüsü, beyaz dosya gezgini]
-Ayar_7_= 0 ► Masaüstü simgelerini ekle [Ağ hariç]
+Ayar_7_= 1 ► Masaüstü simgelerini ekle [Ağ hariç]
 Ayar_8_= 1 ► OneDrive kaldır
 Ayar_9_= 1 ► Winre.wim [Kurtarma alanı] kaldır
 Ayar_10_= 1 ► Başlat menüsü arama simgesini gizle
 Ayar_11_= 1 ► Karma gerçeklik kaldır
-Ayar_12_= 0 ► Görev çubuğu sabit öğeleri kaldır
+Ayar_12_= 1 ► Görev çubuğu sabit öğeleri kaldır
+Ayar_13_= 1 ► Yeni mouse simgesini yükler
 <!-- ███████████████████████████████████████████████████████████████████ --->
 _OG_App= 549981C3F5F10 [Cortana]
 _OG_App= BingWeather

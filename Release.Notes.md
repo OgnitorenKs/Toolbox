@@ -4,7 +4,18 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.1.2 ►  23.11.2023</B></summary>
+<details><B><summary> Versiyon 4.1.3 ►  26.11.2023</B></summary>
+
+	• "Hizmet Yönetimi" bölümündeki değişiklikler;
+		• Wifi hizmet grubu çalışma değerleri güncellendi.
+		• Hizmetleri aç/kapat yapmayı sağlayan kodlar optimize edildi. Döngü hatası giderildi.
+			• Sc config komutlarına ek olarak regedit üzerinden açıp kapatmayı sağlayacak komutlar eklendi.
+	• "Sistem optimizasyonu [Playbook]" bölümündeki değişiklikler;
+		• Yeni mouse simgesini yükleme opsiyonel hale getirildi. Playbook.ini dosyası üzerinden kullanıcı yükleyip yüklememe durumunu ayarlayabilecek.
+	• "Sistem Hakkında" bölümündeki değişiklikler;
+		• DDR5 ram tip numarası eklendi.
+	
+</details><B><summary> Versiyon 4.1.2 ►  23.11.2023</B></summary>
 
 	• "Sistem temizliği" bölümüne '%LocalAppData%' dizininde yer alan 'tw-' isimli boş klasörleri silme komutu eklendi.
 	• "Hizmet Yönetimi" bölümü kontrol kodları revize edildi.
