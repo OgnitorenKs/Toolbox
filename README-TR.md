@@ -8,7 +8,6 @@
 
 Çalışmanın tüm hakları Hüseyin UZUNYAYLA’ya aittir. Çalışma üzerinde geliştirme, kopyalama, içeriğini değiştirmek yasaktır. Uygulamayı farklı platformlar üzerinde paylaşmak isterseniz tarafımdan izin almanız gerekmektedir.
 
-#  Uygulamaya güvenmiyorsanız lütfen kullanmayın
 # OGNİTORENKS TOOLBOX
 
 ![Tool0](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/0.png)
