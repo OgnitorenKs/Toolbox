@@ -9,6 +9,8 @@
 
 All rights of the work belong to Hüseyin UZUNYAYLA. It is forbidden to develop, copy, change the content of the work. If you want to share the application on different platforms, you need to get permission from me.
 
+# If you don't trust the app, please don't use it
+
 # OGNİTORENKS TOOLBOX
 
 ![Tool0](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/0.png)
