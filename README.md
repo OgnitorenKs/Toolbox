@@ -108,10 +108,8 @@ On Windows systems, it checks and applies repair options for conditions that Mic
 <details>
 <B><summary> 11 - System optimization</B></summary>
 
-This partition organizes an unedited system like the performance ISOs I have released. Components such as Defender, Hyper-V are deleted. When you want to use this partition, it shows information messages about the risks and what to do. It asks for a second confirmation to continue the process.
-Be careful when running this section as it will edit the system. The operation you have done is irreversible. The processing time in this section takes between 5-7 minutes.
-If you want to customise this section. You need to go to the Toolbox installed directory and edit the "Bin\Extra\Playbook.xml" file and continue the process after saving it.
-
+You can prepare a special pattern file for this section or you can use the pattern file I prepared and customize your Windows 10/11 system. The process takes between 5-10 minutes.
+To look at the details of the operations performed, you need to go to the directory where Toolbox is installed, go to the "Bin\Playbook" folder and look at the pattern file you have selected.
 For detailed information (The guide is prepared in Turkish language): https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
 ![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.png)

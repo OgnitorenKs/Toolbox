@@ -69,6 +69,7 @@ Error_6_>Microsoft Store yüklü değil>
 Error_7_>Toolbox, Windows 10/11 sistemlerde çalışmaktadır>
 Error_8_>Toolbox, Windows güncel sürümlerinde çalışmaktadır>
 Error_9_>İnternet bağlantısı olmadan uygulama yükleyiciyi kullanamazsınız>
+Error_10_>Playbook.ini kalıpları bulunumadı. Lütfen kalıpları yükleyiniz.>
 ::███████████████████████████████████████████████████████████████████
 D0001>İşlem>
 D0002>Çoklu işlem>
@@ -97,11 +98,11 @@ T0007>Yalnızca silme işlemi yapar>
 T0008>kaldırılıyor>
 T0009>Ping ölçümü yapmak istediğiniz site adresini yazabilirsiniz>
 T0010>Açık>Kapalı>Kaldırılmış>Kısmen açık>Kapalı hizmet var>Eksik hizmet var>Eksik ve kapalı hizmet var>
-T0011>>
-T0012>>
+T0011>yükleniyor>
+T0012>düzenleniyor>
 T0013>>
 T0014>>
-T0015>Chocolatey yükleniyor>
+T0015>>
 T0016>Uygulama yükleyicisi bulunamadı. Lütfen uygulamayı açılan ekran üzerinden yükleyiniz.>
 T0017>Uygulama yükleyicisinin güncellenmesi gerekiyor. Açılan market ekranından uygulamaları güncelleyin.>
 T0018>All in One Runtimes yükleniyor>
@@ -122,6 +123,34 @@ T0032>WinSxS Temizleniyor>
 T0033>'DISM /Online /Cleanup-Image /RestoreHealth' komutu çalışıyor>
 T0034>Genel ayarlar ve DLL dosyaları onarılıyor>
 T0035>WMI ile alınan sistem verilerinde hata payı olabilir>
+::██████████████████████████████████████████████████████████████████
+P1001>Bileşenler kaldırılıyor>
+P1002>Uygulamalar kaldırılıyor>
+P1003>Hizmetler düzenleniyor>
+P1004>Regedit kayıtları düzenleniyor>
+P1005>Uygulamalar yükleniyor>
+P1006>Bileşenler yükleniyor>
+P1007>Son ayarlar yapılıyor>
+::
+P2001>Defender kaldırılıyor>
+P2002>Edge kaldırılıyor>
+P2003>EdgeWebView2 kaldırılıyor>
+P2004>OneDrive kaldırılıyor>
+P2005>Winre.wim kaldırılıyor>
+::
+P3001>Kalıp dosyasını seçiniz>
+P3002>Stock sürümler için 'Playbook.ini' olanları seçiniz>
+P3003>Güncelleştirme sonrası temizlik için 'UpdateAfter.ini' olanları seçin>
+::
+P4001>Uyarılar ve Yönlendirmeler>
+P4002>Antivirüs programı yüklü ise devre dışı bırakınız>
+P4003>Açılan ekrandan defender koruma ayarlarını kapalı hale getirin>
+P4004>Sistem üzerinde birçok bileşen kaldırılıp ayarlar değiştirilecektir>
+P4005>Olası sistem çökmesi sonucu veri kayıplarını önlemek için önemli verilerinizi yedekleyiniz>
+P4006>Detaylar ve özelleştirme için seçtiğiniz kalıp dosyasına bakınız>
+P4007>İşlem bittikten sonra sistem yeniden başlatılacak>
+P4008>Sistem açıldıktan sonra "Toolbox ► 'Sistem temizliği'" bölümünü çalıştırın>
+P4009>İşleme devam etmek istiyor musunuz?>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>
@@ -198,6 +227,7 @@ SR_42_>Uzaktan eğitim - Flipgrid>İhtiyaç: Teams>
 SR_43_>Veri merkezi köprü oluşturma>Kurumsal>
 SR_44_>Active Directory Basit dizin hizmetleri>Kurumsal>
 SR_45_>Windows tanılama altyapısı>İhtiyaç: Sorun giderme>
+SR_46_>Harita Kontrolü>
 ::███████████████████████████████████████████████████████████████████
 SBB_1_>Kullanıcı Hesap Yönetimi>
 SBB_2_>Lisans Yönetimi>
@@ -238,28 +268,4 @@ EE_20_>Ekran Kartı>
 EE_21_>Sürücü>
 EE_22_>Tarihi>
 EE_23_>VRAM>
-EE_24_>Monitör>
-EE_25_>Çözünürlük>
-EE_26_>Tazeleme Hızı>
 ::███████████████████████████████████████████████████████████████████
-OG_1_>Bileşenler kaldırılıyor>
-OG_2_>Hizmetler düzenleniyor>
-OG_3_>Uygulamalar kaldırılıyor>
-OG_4_>Regedit kayıtları düzenleniyor>
-OG_5_>Görev zamanlayıcısı düzenleniyor>
-OG_6_>Gereksiz dosyalar siliniyor>
-OG_7_>Son ayarlar yapılıyor>
-OG_8_>Microsoft Defender kaldırılıyor>
-OG_9_>Microsoft Edge kaldırılıyor>
-OG_10_>Özel ayarlar yapılandırılıyor>
-WW_0_>Uyarılar ve Yönlendirmeler>
-WW_1_>Antivirüs programı yüklü ise devre dışı bırakınız>
-WW_2_>Açılan ekrandan defender koruma ayarlarını kapalı hale getirin>
-WW_3_>Veri kaybı yaşamamak için işlem öncesi önemli verilerinizi yedekleyin>
-WW_4_>Sistem üzerinde birçok bileşen kaldırılıp ayarlar değiştirilecektir>
-WW_5_>Detaylar için>https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html>
-WW_6_>İşlem bittikten sonra sistem yeniden başlatılacak>
-WW_7_>Sistem açıldıktan sonra Toolbox -'Sistem temizliği' bölümünü çalıştırın>
-WW_8_>İşlemleri özelleştirmek için aşağıdaki dosya yoluna ulaşıp düzenlemeniz gerekmektedir>
-WW_9_>İşleme devam etmek istiyor musunuz?>
-WW_10_>İşleme devam etmek istediğinize emin misiniz?>

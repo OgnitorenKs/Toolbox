@@ -4,7 +4,19 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.1.3 ►  26.11.2023</B></summary>
+
+<details><B><summary> Versiyon 4.1.4 ►  23.12.2023 - Playbook</B></summary>
+
+	• "Sistem optimizasyonu [Playbook]" bölümündeki değişiklikler;
+		• Tüm ayarlar yönetilebilir hale getirildi.
+		• Ayarlar çeşitlendirildi.
+		• Kalıp seçme ayarı eklendi.
+	• Servis açma/kapatma komutları düzenlendi. Daha düzenli hale getirildi.
+	• Winget indirme sistemindeki varsa eski sürümleri kaldırıp yükle parametresi kaldırıldı. Programların altyapıları genel olarak uymadığı için sorun çıkarabiliyor.
+	• "___HANGAR___" başlığı altındaki yer alan işlevsel başlıklar düzenli hale getirildi. Yorum satırları arttırıldı.
+		
+
+</details><B><summary> Versiyon 4.1.3 ►  26.11.2023</B></summary>
 
 	• "Hizmet Yönetimi" bölümündeki değişiklikler;
 		• Wifi hizmet grubu çalışma değerleri güncellendi.

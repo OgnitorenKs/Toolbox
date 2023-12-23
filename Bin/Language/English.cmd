@@ -69,6 +69,7 @@ Error_6_>Microsoft Store not installed>
 Error_7_>Toolbox works on Windows 10/11 systems>
 Error_8_>Toolbox works on current versions of Windows>
 Error_9_>You cannot use the app installer without an internet connection>
+Error_10_>Playbook.ini patterns were not found. Please upload them.>
 ::███████████████████████████████████████████████████████████████████
 D0001>Process>
 D0002>Multiprocessing>
@@ -97,11 +98,11 @@ T0007>Deletes only>
 T0008>removing>
 T0009>You can type the site address you want to measure ping>
 T0010>On>Off>Removed>Partly open>Closed service>Incomplete service>Incomplete and closed service>
-T0011>>
-T0012>>
+T0011>installing>
+T0012>is being organized>
 T0013>>
 T0014>>
-T0015>Chocolatey loading>
+T0015>>
 T0016>Application installer not found. Please install the application from the pop-up screen.>
 T0017>The application installer needs to be updated. Update apps from the market screen that opens.>
 T0018>All in One Runtimes installing>
@@ -122,6 +123,34 @@ T0032>WinSxS Cleanup>
 T0033>'DISM /Online /Cleanup-Image /RestoreHealth' command running>
 T0034>General settings and repairing DLL files>
 T0035>System data received via WMI may have a margin of error>
+::██████████████████████████████████████████████████████████████████
+P1001>Removing components>
+P1002>Uninstalling apps>
+P1003>Services are organized>
+P1004>Editing regedit records>
+P1005>Installing apps>
+P1006>Loading components>
+P1007>Final adjustments are being made>
+::
+P2001>Uninstalling Defender>
+P2002>Uninstalling Edge>
+P2003>Uninstalling EdgeWebView2>
+P2004>Uninstalling OneDrive>
+P2005>Uninstalling Winre.wim>
+::
+P3001>Select the mold file>
+P3002>Select 'Playbook.ini' for stock versions>
+P3003>Select 'UpdateAfter.ini' ones for post-update cleanup>
+::
+P4001>Warnings and Guidance>
+P4002>Disable antivirus program if installed>
+P4003>Turn off the defender protection settings from the pop-up screen>
+P4004>Many components on the system will be removed and settings will be changed>
+P4005>Back up your important data to prevent data loss in the event of a system crash>
+P4006>See your selected pattern file for details and customization>
+P4007>The system will reboot after the process is finished>
+P4008>After system boot, run Toolbox - 'System cleanup'>
+P4009>Do you want to continue the process?>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>
@@ -198,6 +227,7 @@ SR_42_>Distance learning - Flipgrid>Need: Teams>
 SR_43_>Data center bridging>Enterprise>
 SR_44_>Active Directory Simple directory services>Enterprise>
 SR_45_>Windows diagnostic engine>Need: Troubleshooting>
+SR_46_>Map Control>
 ::███████████████████████████████████████████████████████████████████
 SBB_1_>User Account Management>
 SBB_2_>License Management>
@@ -238,28 +268,4 @@ EE_20_>Display Card>
 EE_21_>Driver>
 EE_22_>Date>
 EE_23_>VRAM>
-EE_24_>Monitor>
-EE_25_>Resolution>
-EE_26_>Refresh Rate>
 ::███████████████████████████████████████████████████████████████████
-OG_1_>Removing components>
-OG_2_>Services are being organized>
-OG_3_>Uninstalling applications>
-OG_4_>Editing regedit records>
-OG_5_>Editing task scheduler>
-OG_6_>Deleting unnecessary files>
-OG_7_>Final adjustments being made>
-OG_8_>Microsoft Defender is being removed>
-OG_9_>Microsoft Edge is being removed>
-OG_10_>Configuring special settings>
-WW_0_>Warnings and Guidance>
-WW_1_>Disable antivirus program if installed>
-WW_2_>Switch the defender protection settings off from the screen that opens>
-WW_3_>Back up your important data before the process to avoid data loss>
-WW_4_>Many components on the system will be removed and settings will be changed>
-WW_5_>For details>https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html>
-WW_6_>After the process is finished, the system will reboot>
-WW_7_>After the system boots up, run Toolbox -'System cleaning'>
-WW_8_>To customise the operations, you need to access and edit the following file path>
-WW_9_>Do you want to continue the process?>
-WW_10_>Are you sure you want to continue the process?>

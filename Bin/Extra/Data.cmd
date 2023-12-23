@@ -101,6 +101,7 @@ _0_29_>VSS>Birim Gölge Kopyası>3>Demand>
 _0_29_>swprv>Microsoft Yazılımı Gölge Kopya Sağlayıcısı>3>Demand>
 _0_29_>wbengine>Blok Düzeyinde Yedekleme Motoru Hizmeti>3>Demand>
 _0_29_>fhsvc>Dosya Geçmişi Hizmeti>3>Demand>
+:: Karma gerçeklik
 
 :: ██████████████████████████████████████████████████████████████████
 
@@ -221,15 +222,14 @@ COM_44_>Microsoft-Windows-DirectoryServices-ADAM>Component>
 COM_44_>Server-Help-Package.ClientEnterprise>Component>
 :: Windows tanılama altyapısı - Sorun giderme
 COM_45_>Microsoft-Windows-DiagnosticInfrastructure>Component>
-
+:: :: Harita Kontrolü
+COM_46>Microsoft-OneCore-Maps>Component>
 :: ██████████████████████████████████████████████████████████████████
 
 :: OneDrive
 OGNI_1_>Microsoft-Windows-OneDrive>Component>
-:: Harita Kontrolü
-OGNI_2_>MMicrosoft-OneCore-Maps>Component>
 :: Defender
-OGNI_3_>Windows-Defender>Component>
-OGNI_3_>Microsoft-Windows-SenseClient>Component>
-OGNI_3_>Microsoft-Windows-HVSI>Component>
-OGNI_3_>Microsoft-OneCoreUAP-AppRuntime-RemoteAppLifetimeManager-Package>Component>
+OGNI_2_>Windows-Defender>Component>
+OGNI_2_>Microsoft-Windows-SenseClient>Component>
+OGNI_2_>Microsoft-Windows-HVSI>Component>
+OGNI_2_>Microsoft-OneCoreUAP-AppRuntime-RemoteAppLifetimeManager-Package>Component>
