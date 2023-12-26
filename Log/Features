@@ -1,0 +1,91 @@
+
+Deployment Image Servicing and Management tool
+Version: 10.0.22621.1
+
+Image Version: 10.0.22631.2715
+
+Features listing for package : Microsoft-Windows-Foundation-Package~31bf3856ad364e35~amd64~~10.0.22621.1
+
+
+------------------------------------------- | --------
+Feature Name                                | State   
+------------------------------------------- | --------
+LegacyComponents                            | Enabled 
+DirectPlay                                  | Enabled 
+MSRDC-Infrastructure                        | Enabled 
+MicrosoftWindowsPowerShellV2Root            | Enabled 
+MicrosoftWindowsPowerShellV2                | Enabled 
+NetFx4-AdvSrvs                              | Enabled 
+NetFx4Extended-ASPNET45                     | Enabled 
+WCF-Services45                              | Enabled 
+WCF-HTTP-Activation45                       | Disabled
+WCF-TCP-Activation45                        | Disabled
+WCF-Pipe-Activation45                       | Disabled
+WCF-MSMQ-Activation45                       | Disabled
+WCF-TCP-PortSharing45                       | Enabled 
+IIS-WebServerRole                           | Enabled 
+IIS-WebServer                               | Enabled 
+IIS-CommonHttpFeatures                      | Enabled 
+IIS-HttpErrors                              | Enabled 
+IIS-HttpRedirect                            | Disabled
+IIS-ApplicationDevelopment                  | Enabled 
+IIS-Security                                | Enabled 
+IIS-RequestFiltering                        | Enabled 
+IIS-NetFxExtensibility                      | Disabled
+IIS-NetFxExtensibility45                    | Enabled 
+IIS-HealthAndDiagnostics                    | Enabled 
+IIS-HttpLogging                             | Enabled 
+IIS-LoggingLibraries                        | Disabled
+IIS-RequestMonitor                          | Disabled
+IIS-HttpTracing                             | Disabled
+IIS-URLAuthorization                        | Disabled
+IIS-IPSecurity                              | Disabled
+IIS-Performance                             | Enabled 
+IIS-HttpCompressionDynamic                  | Disabled
+IIS-WebServerManagementTools                | Enabled 
+IIS-ManagementScriptingTools                | Disabled
+IIS-IIS6ManagementCompatibility             | Disabled
+IIS-Metabase                                | Disabled
+WAS-WindowsActivationService                | Disabled
+WAS-ProcessModel                            | Disabled
+WAS-NetFxEnvironment                        | Disabled
+WAS-ConfigurationAPI                        | Disabled
+IIS-HostableWebCore                         | Disabled
+WCF-HTTP-Activation                         | Disabled
+WCF-NonHTTP-Activation                      | Disabled
+IIS-StaticContent                           | Enabled 
+IIS-DefaultDocument                         | Enabled 
+IIS-DirectoryBrowsing                       | Enabled 
+IIS-WebDAV                                  | Disabled
+IIS-WebSockets                              | Disabled
+IIS-ApplicationInit                         | Disabled
+IIS-ISAPIFilter                             | Enabled 
+IIS-ISAPIExtensions                         | Enabled 
+IIS-ASPNET                                  | Disabled
+IIS-ASPNET45                                | Enabled 
+IIS-ASP                                     | Disabled
+IIS-CGI                                     | Disabled
+IIS-ServerSideIncludes                      | Disabled
+IIS-CustomLogging                           | Disabled
+IIS-BasicAuthentication                     | Disabled
+IIS-HttpCompressionStatic                   | Enabled 
+IIS-ManagementConsole                       | Enabled 
+IIS-ManagementService                       | Disabled
+IIS-WMICompatibility                        | Disabled
+IIS-LegacyScripts                           | Disabled
+IIS-LegacySnapIn                            | Disabled
+IIS-FTPServer                               | Disabled
+IIS-FTPSvc                                  | Disabled
+IIS-FTPExtensibility                        | Disabled
+NetFx3                                      | Enabled 
+MediaPlayback                               | Enabled 
+WindowsMediaPlayer                          | Enabled 
+SearchEngine-Client-Package                 | Enabled 
+Printing-Foundation-Features                | Enabled 
+Printing-Foundation-InternetPrinting-Client | Enabled 
+Printing-Foundation-LPDPrintService         | Disabled
+Printing-Foundation-LPRPortMonitor          | Disabled
+HypervisorPlatform                          | Disabled
+VirtualMachinePlatform                      | Disabled
+
+The operation completed successfully.

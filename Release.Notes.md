@@ -5,7 +5,21 @@
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
 
-<details><B><summary> Versiyon 4.1.4 ►  23.12.2023 - Playbook</B></summary>
+<details><B><summary> Versiyon 4.1.5 ►  26.12.2023 - Playbook</B></summary>
+
+	• "Sistem optimizasyonu [Playbook]" bölümündeki değişiklikler;
+		• Regedit komutları optimize edildi. 
+		• Kalıp seçme bölümünde ana menüye dönüş seçeneği eklendi.
+		• Svchost optimizasyon hatası giderildi.
+		• Uygulama kaldırma hatası giderildi.
+		• Kalıp okuma bölümündeki ön kontrol komutu kaldırıldı.
+		• Edge kaldırma komutlarına yeni komutlar eklendi.
+		• Bileşen yükleme bölümü ilk işlem olarak düzenlendi.
+		• Görev çubuğu arama simgesini gizleme bölümü güncel sürümlere göre düzenlendi.
+		• Uygulama kaldırma bölümündeki kodlar optimize edildi.
+		• Bileşen silme bölümündeki kısmi çalışma sorunu giderildi.
+
+</details><details><B><summary> Versiyon 4.1.4 ►  23.12.2023 - Playbook</B></summary>
 
 	• "Sistem optimizasyonu [Playbook]" bölümündeki değişiklikler;
 		• Tüm ayarlar yönetilebilir hale getirildi.

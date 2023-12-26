@@ -33,13 +33,13 @@ setlocal enabledelayedexpansion
 :: Başlık
 title  OgnitorenKs Toolbox
 :: Toolbox versiyon
-set Version=4.1.4
+set Version=4.1.5
 :: Pencere ayarı
 mode con cols=100 lines=23
 
 :: -------------------------------------------------------------
 :: Renklendirm için gerekli
-FOR /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E#&echo on&for %%b in (1) do rem"') do (set R=%%b)
+FOR /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E#&for %%b in (1) do rem"') do (set R=%%b)
 
 :: -------------------------------------------------------------
 Call :Ogni_Label
@@ -51,7 +51,10 @@ FOR /F "tokens=*" %%a in ('cd') do (set Konum=%%a)
 set NSudo="%Konum%\Bin\NSudo.exe" -U:T -P:E -Wait -ShowWindowMode:hide cmd /c
 :: Log klasörünü oluşturur
 MD "%Konum%\Log" > NUL 2>&1
+:: Hata mesajlarında olası kapanmaları önler
 set Error=NT
+:: Kullanıcı sid bilgisini alır
+Call :CurrentUserName
 
 :: -------------------------------------------------------------
 :: Yönetici yetkisi
@@ -129,6 +132,8 @@ FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Toolbox.Update." %Konum%\Setting
 
 :: ██████████████████████████████████████████████████████████████████
 :Main_Menu
+:: Regedit bölümünde yapılan işlemlerin gösterilip gösterilmeyeceğini belirler. 1 gösterir. 0 göstermez
+set Show=0
 :: Sistem hakkında bilgi alınır. Ana menüde gösterilir.
 FOR /F "tokens=2 delims=':'" %%a in ('FIND "Caption" %Konum%\Log\OS') do set Value1=%%a
 set Value1=%Value1:~11%
@@ -707,9 +712,8 @@ goto :eof
 
 :: -------------------------------------------------------------
 :Playbook_Reader
+set Playbook=NT
 :: Playbook dosyasını okur ve ayarların durumunu değişkene kayıt eder.
-Findstr /i "%~1" %PB% > NUL 2>&1
-	if !errorlevel! NEQ 0 (set Playbook=1&goto :eof)
 FOR /F "tokens=2" %%t in ('Findstr /i "%~1" %PB% 2^>NUL') do (set Playbook=%%t)
 goto :eof
 
@@ -1050,7 +1054,7 @@ goto :eof
 :Remove_Capability
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
 	Findstr /i "%%g" %Konum%\Log\C_Capabilities > NUL 2>&1
-		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1))											
+		if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1))
 )
 goto :eof
 
@@ -1096,52 +1100,49 @@ goto :eof
 
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :RegKey
+if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f%R%[0m)
 Reg add "%~1" /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f)
 goto :eof
 ::
 :RegAdd
-Reg add "%~1" /v "%~2" /t "%~3" /d "%~4" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /v "%~2" /t "%~3" /d "%~4" /f)
+if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4"%R%[0m)
+Reg add "%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /v "%~2" /t "%~3" /d "%~4")
 goto :eof
 ::
 :RegVeAdd
+if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /ve /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4"%R%[0m)
 Reg add "%~1" /ve /t "%~2" /d "%~3" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /ve /t "%~2" /d "%~3" /f)
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /ve /t "%~2" /d "%~3")
 goto :eof
 ::
 :RegDel
+if !Show! EQU 1 (echo %R%[90mReg delete%R%[33m %* %R%[90m /f%R%[0m)
 Reg delete %* /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg delete %* /f)
 goto :eof
 ::
 :RegAdd_CCS
-Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /v "%~2" /t "%~3" /d "%~4" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /v "%~2" /t "%~3" /d "%~4" /f)
-Reg add "HKLM\SYSTEM\ControlSet001\%~1" /v "%~2" /t "%~3" /d "%~4" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet001\%~1" /v "%~2" /t "%~3" /d "%~4" /f)
-Reg add "HKLM\SYSTEM\ControlSet002\%~1" /v "%~2" /t "%~3" /d "%~4" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet002\%~1" /v "%~2" /t "%~3" /d "%~4" /f)
-goto :eof
-::
-:RegAdd_CUU
-Call :CurrentUserName
-Reg add "HKCU\%~1" /v "%~2" /t "%~3" /d "%~4" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKCU\%~1" /v "%~2" /t "%~3" /d "%~4" /f)
-Reg add "HKU\!CUS!\%~1" /v "%~2" /t "%~3" /d "%~4" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKU\!CUS!\%~1" /v "%~2" /t "%~3" /d "%~4" /f)
-set CUS=
+if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\CurrentControlSet\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4" %R%[0m
+				 echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet001\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4" %R%[0m
+				 echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet002\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4" %R%[0m
+)
+Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /f /v "%~2" /t "%~3" /d "%~4")
+Reg add "HKLM\SYSTEM\ControlSet001\%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet001\%~1" /f /v "%~2" /t "%~3" /d "%~4")
+Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t "%~3" /d "%~4")
 goto :eof
 ::
 :Reg_Hide
-FOR /F "skip=2 tokens=3" %%x in ('Reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility"') do (set X_Value=%%x)
+FOR /F "skip=2 tokens=3" %%x in ('Reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" 2^>NUL') do (set X_Value=%%x)
 echo !X_Value! | Find "%~1" > NUL 2>&1
 	if !errorlevel! EQU 0 (set X_Value=&goto :eof)
-Reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" > NUL 2>&1
-	if !errorlevel! EQU 0 (echo !X_Value! | Findstr /i "hide:" > NUL 2>&1
-							if !errorlevel! EQU 0 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "SettingsPageVisibility" REG_SZ "!X_Value!;%~1")
-							if !errorlevel! NEQ 0 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "SettingsPageVisibility" REG_SZ "hide:%~1")
-)
+echo !X_Value! | Findstr /i "hide:" > NUL 2>&1
+	if !errorlevel! EQU 0 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "SettingsPageVisibility" REG_SZ "!X_Value!;%~1")
+	if !errorlevel! NEQ 0 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "SettingsPageVisibility" REG_SZ "hide:%~1")
 set X_Value=
 goto :eof
 
@@ -1467,14 +1468,18 @@ Call :Dil A 2 P3002&echo %R%[90m  • !LA2! %R%[0m
 Call :Dil A 2 P3003&echo %R%[90m  • !LA2! %R%[0m
 echo %R%[90m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬%R%[0m
 Call :DEL "%Konum%\Log\Playbook"
+Call :Dil A 2 T0006
 FOR /F "tokens=*" %%a in ('dir /b "%Konum%\Bin\Playbook\*.ini" 2^>NUL') do (
 	set /a Count+=1
 	echo PB_Index_!Count!_^>%Konum%\Bin\Playbook\%%a^> >> %Konum%\Log\Playbook
 	if !Count! LEQ 9 (echo %R%[92m  !Count!%R%[90m-%R%[33m %%a %R%[0m)
 	if !Count! GTR 9 (echo %R%[92m !Count!%R%[90m-%R%[33m %%a %R%[0m)
 )
+echo %R%[92m  X%R%[90m-%R%[37m !LA2! %R%[0m
 echo %R%[90m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬%R%[0m
 Call :Dil A 2 P3001&set /p Value_MM=►%R%[32m !LA2!: %R%[0m
+Call :Upper %Value_MM% Value_MM
+if %Value_MM% EQU X (goto Main_Menu)
 Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook > NUL 2>&1
 	if !errorlevel! NEQ 0 (goto Performans_Edit)
 	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook 2^>NUL') do (set PB=%%a))
@@ -1499,14 +1504,57 @@ Call :Upper %Value_M% Value_M
 	if %Value_M% EQU N (set Error=X&goto Main_Menu)
 set Value_M=
 set Value_MM=
+:: -------------------------------------------------------------
+cls&Call :Dil A 2 P1006&title OgnitorenKs Playbook │ 1/7 │ !LA2!
+:: Program ve oyunlar için gerekli bileşenleri yükleme bölümü
+Dism /Online /Get-Capabilities /format:table > %Konum%\Log\Capabilities
+Dism /Online /Get-Features /format:table > %Konum%\Log\Features
+::
+Findstr /i "Install_Component_1_" %PB% > NUL 2>&1
+	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_1_" %PB%') do (
+								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"NetFX3~~~~" %Konum%\Log\Capabilities') do (
+											  echo %%g | Findstr /C:"Installed" > NUL 2>&1
+													if !errorlevel! NEQ 0 (Call :Dil A 2 T0019&echo %R%[92m !LA2! %R%[0m
+																		   Dism /Online /Enable-Feature /Featurename:NetFx3 /All /NoRestart
+																		  )
+			)
+		)
+	)
+)
+Findstr /i "Install_Component_2_" %PB% > NUL 2>&1
+	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_2_" %PB%') do (
+								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"IIS-ASPNET45" %Konum%\Log\Features') do (
+									echo %%g | Findstr /C:"Enabled" > NUL 2>&1
+										if !errorlevel! NEQ 0 (Call :Dil A 2 T0020&echo %R%[92m !LA2! %R%[0m
+															   Dism /Online /Enable-Feature /FeatureName:IIS-ASPNET45 /All /NoRestart
+															  )
+			)
+		)
+	)
+)
+Findstr /i "Install_Component_3_" %PB% > NUL 2>&1
+	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_3_" %PB%') do (
+								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"DirectPlay" %Konum%\Log\Features') do (
+									echo %%g | Findstr /C:"Enabled" > NUL 2>&1
+										if !errorlevel! NEQ 0 (Call :Dil A 2 T0021&echo %R%[92m !LA2! %R%[0m
+															   Dism /Online /Enable-Feature /FeatureName:DirectPlay /All /NoRestart
+															  )
+			)
+		)
+	)
+)
 :: Bileşen kaldırma bölümü
-cls&Call :Dil A 2 P1001&title OgnitorenKs Playbook │ 1/7 │ !LA2!
+FOR %%g in (C_Packages C_Capabilities) do (Call :DEL "%Konum%\Log\%%g")
+DISM /Online /Get-Capabilities /format:table | Findstr /i "Installed" > %Konum%\Log\C_Capabilities
+FOR /F "tokens=4" %%g in ('Dism /Online /Get-Packages ^| Findstr /i "Package Identity"') do echo %%g >> %Konum%\Log\C_Packages
+cls&Call :Dil A 2 P1001&title OgnitorenKs Playbook │ 2/7 │ !LA2!
+Call :DEL "%Konum%\Log\COMPlaybook"
 Call :Dil B 2 T0008
 FOR /L %%a in (1,1,46) do (
-	FOR /F "tokens=2" %%b in ('Findstr /i "COM_%%a_" %PB%') do (
+	FOR /F "tokens=2" %%b in ('Findstr /i "COM_%%a_" %PB% 2^>NUL') do (
 		if %%b EQU 1 (Call :Dil A 2 SR_%%a_
 					  Call :Read_Features COM_%%a_
-					  echo ►%R%[32m "!LA2!"%R%[37m !LB2! %R%[0m  
+					  echo ►%R%[32m "!LA2!" %R%[37m !LB2! %R%[0m
 					  Call :Remove_!Value_C! "COM_%%a_"
 					  if %%a EQU 12 (Call :Schtasks-Remove "\Microsoft\Windows\SystemRestore\SR")
 					  if %%a EQU 21 (FOR %%x in (SharedRealitySvc VacSvc perceptionsimulation spectrum MixedRealityOpenXRSvc SpatialGraphFilter) do (Call :Service_Admin "%%x" 6))
@@ -1568,7 +1616,7 @@ Call :Playbook_Reader Component_Setting_1_
 						 Call :Service_Admin webthreatdefusersvc 4
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" "DisableNotifications" REG_DWORD "1"
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" "DisableEnhancedNotifications" REG_DWORD "1"
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows Security Health\State" "AccountProtection_MicrosoftAccount_Disconnected" REG_DWORD "0"
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows Security Health\State" "AccountProtection_MicrosoftAccount_Disconnected" REG_DWORD "0"
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender" "DisableAntiSpyware" REG_DWORD "1"
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender" "DisableAntiVirus" REG_DWORD "1"
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Defender\Features" "TamperProtection" REG_DWORD "0"
@@ -1631,9 +1679,9 @@ Call :Playbook_Reader Component_Setting_1_
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "HidRAHealth" REG_DWORD "1"
 						 Call :RegAdd_CCS "Control\CI\Policy" "VerifiedAndReputablePolicyState" REG_DWORD 0
 						 Call :RegAdd_CCS "Control\CI\Policy" "VerifiedAndReputablePolicyState" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "EnableWebContentEvaluation" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "PreventOverride" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Policies\Microsoft\Edge" "SmartScreenEnabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "EnableWebContentEvaluation" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "PreventOverride" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Policies\Microsoft\Edge" "SmartScreenEnabled" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows Security Health\State" "AppAndBrowser_StoreAppsSmartScreenOff" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" "SmartScreenEnabled" REG_SZ "Off"
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "SmartScreenEnabled" REG_SZ "Off"
@@ -1644,8 +1692,8 @@ Call :Playbook_Reader Component_Setting_1_
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "EnableSmartScreen" REG_DWORD "0"
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen" "ConfigureAppInstallControl" REG_SZ "Anywhere"
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen" "ConfigureAppInstallControlEnabled" REG_DWORD "0"
-						 Call :RegAdd_CUU "Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "PreventOverride" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "Enabledv9" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "PreventOverride" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\PhishingFilter" "Enabledv9" REG_DWORD 0
 						 Call :RegDel "HKCR\Drive\shellex\ContextMenuHandlers\EPP"
 						 Call :RegDel "HKCR\Directory\shellex\ContextMenuHandlers\EPP"
 						 Call :RegDel "HKCR\*\shellex\ContextMenuHandlers\EPP"
@@ -1669,12 +1717,16 @@ Call :Playbook_Reader Component_Setting_2_
 						 Call :DEL "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
 						 Call :RD "%LocalAppData%\Microsoft\Edge"
 						 Call :Search_Del DELS "C:\Windows\*dge.wim"
+						 Call :RD "%Windir%\System32\Microsoft-Edge-WebView"
+						 Call :RD "C:\Users\OgnitorenKs\AppData\Local\Microsoft\Edge"
+						 Call :RD "C:\Users\All Users\Microsoft\EdgeUpdate"
+						 Call :DEL "%Windir%\System32\config\systemprofile\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk"
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
 						 Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
 						 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
 						 Call :RegDel "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
-						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate" "DoNotUpdateToEdgeWithChromium" REG_DWORD 1
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate" "InstallDefault" REG_DWORD 1
+						 netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
 						 Call :Service_Admin "edgeupdate" 6
 						 Call :Service_Admin "edgeupdatem" 6
 )
@@ -1700,8 +1752,8 @@ Call :Playbook_Reader Component_Setting_4_
 						 Call :Search_Del RDS "C:\*onedrive*"
 						 Call :Search_Del DELS "C:\*onedrive*"
 						 Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup"
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280811Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280810Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280811Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280810Enabled" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive" "DisableFileSyncNGSC" REG_DWORD 1
 )
 :: Kurtarma alanını kaldır
@@ -1710,17 +1762,20 @@ Call :Playbook_Reader Component_Setting_5_
 						 Call :Search_Del DELS "C:\*winre.wim"
 )
 :: Uygulama kaldır
-cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 2/7 │ !LA2!
+:Test
+cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 3/7 │ !LA2!
+Call :Powershell "Get-AppxPackage -AllUsers | Select PackageFullName" > %Konum%\Log\Appx_Playbook
 Call :Dil B 2 T0008
 FOR /F "tokens=4" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
 	FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB% 2^>NUL') do (
 		if %%b EQU 1 (echo ► %R%[92m "%%a"%R%[37m !LB2! %R%[0m
-					  Call :Powershell "Get-AppXPackage -AllUsers *%%a* | Remove-AppxPackage"
+					  FOR /F "tokens=*" %%c in ('Findstr /i "%%a" %Konum%\Log\Appx_Playbook') do (Call :Powershell "Remove-AppxPackage -Package %%c")
 					  Call :Search_Del RD "%programfiles%\WindowsApps\*%%a*"
+					 )
 	)
 )
 :: Hizmet Yönetimi
-cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/7 │ !LA2!
+cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 4/7 │ !LA2!
 Call :Dil A 2 T0012
 FOR /F "tokens=4" %%a in ('Findstr /i "Service_Manager" %PB%') do (
 	FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a ►" %PB%') do (
@@ -1728,17 +1783,18 @@ FOR /F "tokens=4" %%a in ('Findstr /i "Service_Manager" %PB%') do (
 					  Call :Service_Admin "%%a" "%%b")
 	)
 )
-cls&Call :Dil A 2 P1004&title OgnitorenKs Playbook │ 4/7 │ !LA2!
-echo ►%R%[92m !LA2! %R%[0m
+:: Uygulanan regedit ayarlarını gösterir
+set Show=1
+cls&Call :Dil A 2 P1004&title OgnitorenKs Playbook │ 5/7 │ !LA2!
 :: Başlat menüsünde en son eklenenleri kaldır
 Call :Playbook_Reader Taskbar_Setting_1_
 	if %Playbook% EQU 1 (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" "HideRecentlyAddedApps" REG_DWORD 1
 )
 :: Başlat menüsünde önerilenler bölümünü kaldır
 Call :Playbook_Reader Taskbar_Setting_2_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_TrackProgs" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_TrackProgs" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" "HideRecommendedSection" REG_DWORD 1
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_Layout" REG_DWORD 1
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_Layout" REG_DWORD 1
 )
 :: Başlat menüsünde en çok kullanılan uygulamaları kaldır
 Call :Playbook_Reader Taskbar_Setting_3_
@@ -1747,12 +1803,12 @@ Call :Playbook_Reader Taskbar_Setting_3_
 )
 :: Başlat menüsü - Uygulama önerilerini kapat
 Call :Playbook_Reader Taskbar_Setting_4_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Context\CloudExperienceHostIntent\Wireless" "ScoobeCheckCompleted" REG_DWORD 1
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement" "ScoobeSystemSettingEnabled" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SystemPaneSuggestionsEnabled" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338388Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "ContentDeliveryAllowed" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "FeatureManagementEnabled" REG_DWORD 0 
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Context\CloudExperienceHostIntent\Wireless" "ScoobeCheckCompleted" REG_DWORD 1
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement" "ScoobeSystemSettingEnabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SystemPaneSuggestionsEnabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338388Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "ContentDeliveryAllowed" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "FeatureManagementEnabled" REG_DWORD 0 
 )
 :: Görev çubuğu kişiler simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_5_
@@ -1760,63 +1816,64 @@ Call :Playbook_Reader Taskbar_Setting_5_
 )
 :: Görev çubuğu - arama simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_6_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SearchboxTaskbarMode" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SearchboxTaskbarMode" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" "SearchboxTaskbarMode" REG_DWORD 0
 )
 :: Görev çubuğu - hava durumunu gizle
 Call :Playbook_Reader Taskbar_Setting_7_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" "ShellFeedsTaskbarViewMode" REG_DWORD 2
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" "ShellFeedsTaskbarViewMode" REG_DWORD 2
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Dsh" "AllowNewsAndInterests" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\default\NewsAndInterests\AllowNewsAndInterests" "value" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" "EnableFeeds" REG_DWORD 0
 )
 :: Görev çubuğu - widget simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_8_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarDa" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarDa" REG_DWORD 0
 )
 :: Görev çubuğu - Cortana simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_9_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowCortanaButton" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowCortanaButton" REG_DWORD 0
 )
 :: Windows Ink[kalem] çalışma alanı kapat
 Call :Playbook_Reader Taskbar_Setting_10_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280813Enabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280813Enabled" REG_DWORD 0
 )
 :: Görev çubuğu - sohbet/anında toplantı simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_11_
-	if %Playbook% EQU 1 (if %Win% EQU 10 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "HideSCAMeetNow" REG_DWORD 1)
-						 if %Win% EQU 11 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarMn" REG_DWORD 0)
+	if %Playbook% EQU 1 (if %Win% EQU 10 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "HideSCAMeetNow" REG_DWORD 1)
+						 if %Win% EQU 11 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarMn" REG_DWORD 0)
 )
 :: Görev çubuğu - başlat simgesini sola hizala
 Call :Playbook_Reader Taskbar_Setting_12_
-	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarAl" REG_DWORD 0)
+	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarAl" REG_DWORD 0)
 )
 :: Görev görünümü simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_13_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowTaskViewButton" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowTaskViewButton" REG_DWORD 0
 )
 :: ContentDeliveryManager - Ayarlar uygulamasında önerilen içeriği kapat
 Call :Playbook_Reader Privacy_Setting_1_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338393Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-353694Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-353696Enabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338393Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-353694Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-353696Enabled" REG_DWORD 0
 )
 :: ContentDeliveryManager - Windows karşılama deneyimini kapat
 Call :Playbook_Reader Privacy_Setting_2_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-310093Enabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-310093Enabled" REG_DWORD 0
 )
 :: ContentDeliveryManager - İstenmeyen uygulamaların yüklemesini kapat
 Call :Playbook_Reader Privacy_Setting_3_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SilentInstalledAppsEnabled" REG_DWORD 0 
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SilentInstalledAppsEnabled" REG_DWORD 0 
 )
 :: ContentDeliveryManager - Önerilen uygulamaların otomatik kurulmasını kapat
 Call :Playbook_Reader Privacy_Setting_4_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-314563Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280815Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-314559Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "RemediationRequired" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "PreInstalledAppsEverEnabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "PreInstalledAppsEnabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "OemPreInstalledAppsEnabled" REG_DWORD 0 
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-314563Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280815Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-314559Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "RemediationRequired" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "PreInstalledAppsEverEnabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "PreInstalledAppsEnabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "OemPreInstalledAppsEnabled" REG_DWORD 0 
 )
 :: ContentDeliveryManager - Sponsorlu uygulamaların otomatik kurulmasını engelle
 Call :Playbook_Reader Privacy_Setting_5_
@@ -1828,21 +1885,21 @@ Call :Playbook_Reader Privacy_Setting_6_
 )
 :: ContentDeliveryManager - Windows kullanırken öneri ve ipuçlarını kapat
 Call :Playbook_Reader Privacy_Setting_7_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338389Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContentEnabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338389Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContentEnabled" REG_DWORD 0
 )
 :: ContentDeliveryManager - Zaman çizelgesi önerilerini kapat
 Call :Playbook_Reader Privacy_Setting_8_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-353698Enabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-353698Enabled" REG_DWORD 0
 )
 :: ContentDeliveryManager - Kilit ekranı ipuçlarını kapat
 Call :Playbook_Reader Privacy_Setting_9_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338387Enabled" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "RotatingLockScreenOverlayEnabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338387Enabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "RotatingLockScreenOverlayEnabled" REG_DWORD 0
 )
 :: Harita uygulamasını yükleme
 Call :Playbook_Reader Privacy_Setting_10_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338381Enabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-338381Enabled" REG_DWORD 0
 )
 :: Windows'un etkinlikleri toplamasını engelle
 Call :Playbook_Reader Privacy_Setting_11_
@@ -1852,16 +1909,16 @@ Call :Playbook_Reader Privacy_Setting_11_
 )
 :: Hızlı erişimde sık kullanılan verileri kapat
 Call :Playbook_Reader Privacy_Setting_12_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "ShowFrequent" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "ShowFrequent" REG_DWORD 0
 )
 :: Giriş verilerini Microsoft'a göndermeyi engelle
 Call :Playbook_Reader Privacy_Setting_13_
 	if %Playbook% EQU 1 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\TextInput" "AllowLinguisticDataCollection" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Personalization\Settings" "AcceptedPrivacyPolicy" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Personalization\Settings" "AcceptedPrivacyPolicy" REG_DWORD 0
 )
 :: Geri bildirim frekansını kapat
 Call :Playbook_Reader Privacy_Setting_14_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Siuf\Rules" "NumberOfSIUFInPeriod" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Siuf\Rules" "NumberOfSIUFInPeriod" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" "DoNotShowFeedbackNotifications" REG_DWORD 1
 						 Call :RegDel "HKCU\SOFTWARE\Microsoft\Siuf\Rules" /v "PeriodInNanoSeconds"
 						 Call :Schtasks "Disable" "\Microsoft\Windows\Feedback\Siuf\DmClient"
@@ -1869,7 +1926,7 @@ Call :Playbook_Reader Privacy_Setting_14_
 )
 :: Yazma geliştirme için Microsoft'a veri göndermeyi engelle
 Call :Playbook_Reader Privacy_Setting_15_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Input\TIPC" "Enabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Input\TIPC" "Enabled" REG_DWORD 0
 )
 :: Microsoft deneylerini kapat
 Call :Playbook_Reader Privacy_Setting_16_
@@ -1877,7 +1934,7 @@ Call :Playbook_Reader Privacy_Setting_16_
 )
 :: Nvidia deneyim geliştirme programını kapat
 Call :Playbook_Reader Privacy_Setting_17_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\NVIDIA Corporation\NVControlPanel2\Client" "OptInOrOutPreference" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\NVIDIA Corporation\NVControlPanel2\Client" "OptInOrOutPreference" REG_DWORD 0
 )
 :: Göz atma verilerinin Microsoft'a gönderilmesini engelle
 Call :Playbook_Reader Privacy_Setting_18_
@@ -1885,11 +1942,11 @@ Call :Playbook_Reader Privacy_Setting_18_
 )
 :: Web sitelerinin kullanıcı dil verisine erişimini engelle
 Call :Playbook_Reader Privacy_Setting_19_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Control Panel\International\User Profile" "HttpAcceptLanguageOptOut" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Control Panel\International\User Profile" "HttpAcceptLanguageOptOut" REG_DWORD 1
 )
 :: Uygulamaların reklam kimliği kullanmasını engelle
 Call :Playbook_Reader Privacy_Setting_20_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" "Enabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" "Enabled" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo" "DisabledByGroupPolicy" REG_DWORD 1
 )
 :: Uygulama envanterini toplamayı kapatın
@@ -1906,16 +1963,16 @@ Call :Playbook_Reader Privacy_Setting_23_
 )
 :: Çevrimiçi konuşma tanıma kapat
 Call :Playbook_Reader Privacy_Setting_24_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Microsoft\Speech\Preferences" "ModeForOff" REG_DWORD "1"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Microsoft\Speech\Preferences" "ModeForOff" REG_DWORD "1"
 )
 :: Microsoft'a tanılama verilerinin gönderilmesini engelle
 Call :Playbook_Reader Privacy_Setting_25_
 	if %Playbook% EQU 1 (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" "DisableTailoredExperiencesWithDiagnosticData" REG_DWORD 1
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy" "TailoredExperiencesWithDiagnosticDataEnabled" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy" "TailoredExperiencesWithDiagnosticDataEnabled" REG_DWORD 0
 )
 :: Son kullanılan dosyaları hızlı erişimde gizle
 Call :Playbook_Reader Privacy_Setting_26_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "ShowRecent" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "ShowRecent" REG_DWORD 0
 )
 :: Skype'ın adres defterine erişimini engelle
 Call :Playbook_Reader Privacy_Setting_27_
@@ -1923,13 +1980,13 @@ Call :Playbook_Reader Privacy_Setting_27_
 )
 :: Cihazlar arası deneyimi kapat
 Call :Playbook_Reader Privacy_Setting_28_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\CDP" "NearShareChannelUserAuthzPolicy" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\CDP" "CdpSessionUserAuthzPolicy" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\CDP" "NearShareChannelUserAuthzPolicy" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\CDP" "CdpSessionUserAuthzPolicy" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "EnableCdp" REG_DWORD 0
 )
 :: Yazı tanımayı kapat
 Call :Playbook_Reader Privacy_Setting_29_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Input\Settings" "InsightsEnabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Input\Settings" "InsightsEnabled" REG_DWORD 0
 )
 :: Ücretli ağları tespit etmek için geçici erişim noktalarına bağlanmayı kapat
 Call :Playbook_Reader Privacy_Setting_30_
@@ -1945,9 +2002,9 @@ Call :Playbook_Reader Privacy_Setting_32_
 )
 :: Açılan belge izlemesini devre dışı bırak [Son açılan belge geçmişi]
 Call :Playbook_Reader Privacy_Setting_33_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoRecentDocsHistory" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoRecentDocsHistory" REG_DWORD 1
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoRecentDocsHistory" REG_DWORD 1 
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_TrackDocs" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_TrackDocs" REG_DWORD 0
 					     Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" "HideAppList" REG_DWORD 3
 )
 :: Sık kullanılanları hızlı erişimden kaldır
@@ -1978,7 +2035,7 @@ Call :Playbook_Reader Privacy_Setting_39_
 )
 :: Senkronizasyon sağlayıcı bildirimleri kapat
 Call :Playbook_Reader Privacy_Setting_40_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowSyncProviderNotifications" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowSyncProviderNotifications" REG_DWORD 0
 )
 :: Bileşenlerin hizmet günlüğünü devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_41_
@@ -1998,11 +2055,11 @@ Call :Playbook_Reader Privacy_Setting_44_
 )
 :: Yanlış yazılan sözcükleri otomatik düzelt kapat
 Call :Playbook_Reader Privacy_Setting_45_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\TabletTip\1.7" "EnableAutocorrection" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\TabletTip\1.7" "EnableAutocorrection" REG_DWORD 0
 )
 :: Yazım denetimi kapat
 Call :Playbook_Reader Privacy_Setting_46_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\TabletTip\1.7" "EnableSpellchecking" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\TabletTip\1.7" "EnableSpellchecking" REG_DWORD 0
 )
 :: Diğer cihazlardaki uygulamaların bu cihazdaki uygulamaları açmasını engelle
 Call :Playbook_Reader Privacy_Setting_47_
@@ -2010,7 +2067,7 @@ Call :Playbook_Reader Privacy_Setting_47_
 )
 :: Arama geçmişini kapat
 Call :Playbook_Reader Privacy_Setting_48_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings" "IsDeviceSearchHistoryEnabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings" "IsDeviceSearchHistoryEnabled" REG_DWORD 0
 )
 :: Yardım ve Destek ipuçlarını kapat
 Call :Playbook_Reader Privacy_Setting_49_
@@ -2024,11 +2081,11 @@ Call :Playbook_Reader Privacy_Setting_50_
 )
 :: Mürekkep oluşturma ve yazma kişiselleştirmeyi kapat
 Call :Playbook_Reader Privacy_Setting_51_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore" "HarvestContacts" REG_DWORD 0
-						 Call :RegAdd_CUU "SOFTWARE\Policies\Microsoft\InputPersonalization" "RestrictImplicitInkCollection" REG_DWORD 1
-						 Call :RegAdd_CUU "SOFTWARE\Policies\Microsoft\InputPersonalization" "RestrictImplicitTextCollection" REG_DWORD 1
-						 Call :RegAdd_CUU "Software\Microsoft\InputPersonalization\TrainedDataStore" "AcceptedPrivacyPolicy" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Personalization\Settings" "AcceptedPrivacyPolicy" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore" "HarvestContacts" REG_DWORD 0
+						 Call :RegAdd "HKCU\SOFTWARE\Policies\Microsoft\InputPersonalization" "RestrictImplicitInkCollection" REG_DWORD 1
+						 Call :RegAdd "HKCU\SOFTWARE\Policies\Microsoft\InputPersonalization" "RestrictImplicitTextCollection" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\InputPersonalization\TrainedDataStore" "AcceptedPrivacyPolicy" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Personalization\Settings" "AcceptedPrivacyPolicy" REG_DWORD 0
 )
 :: Konum erişimini devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_52_
@@ -2056,7 +2113,7 @@ Call :Playbook_Reader Privacy_Setting_56_
 Call :Playbook_Reader Privacy_Setting_57_
 	if %Playbook% EQU 1 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" "AllowTelemetry" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" "AllowTelemetry" REG_DWORD 0
-						 Call :RegAdd_CUU "Policies\Microsoft\Windows\CloudContent" "DisableTailoredExperiencesWithDiagnosticData" REG_DWORD 1
+						 Call :RegAdd "HKCU\Policies\Microsoft\Windows\CloudContent" "DisableTailoredExperiencesWithDiagnosticData" REG_DWORD 1
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat" "AITEnable" REG_DWORD 0
 						 Call :RegAdd_CCS "Control\WMI\Autologger\AutoLogger-Diagtrack-Listener" "Start" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" "AllowTelemetry" REG_DWORD 0
@@ -2067,8 +2124,8 @@ Call :Playbook_Reader Privacy_Setting_57_
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\ClientTelemetry" "DontRetryOnError" REG_DWORD 1
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\ClientTelemetry" "TaskEnableRun" REG_DWORD 1
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\DataCollection" "AllowTelemetry" REG_DWORD 0
-						 Call :RegAdd_CUU "Policies\Microsoft\Windows\DataCollection" "AllowTelemetry" REG_DWORD 0
-						 Call :RegAdd_CUU "Policies\Microsoft\Assistance\Client\1.0" "NoExplicitFeedback" REG_DWORD 1
+						 Call :RegAdd "HKCU\Policies\Microsoft\Windows\DataCollection" "AllowTelemetry" REG_DWORD 0
+						 Call :RegAdd "HKCU\Policies\Microsoft\Assistance\Client\1.0" "NoExplicitFeedback" REG_DWORD 1
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Application-Experience/Program-Telemetry" "Enabled" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Application-Experience/Program-Compatibility-Assistant" "Enabled" REG_DWORD 0
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Application-Experience/Program-Compatibility-Troubleshooter" "Enabled" REG_DWORD 0
@@ -2120,7 +2177,7 @@ Call :Playbook_Reader Privacy_Setting_60_
 )
 :: Uygulama bildirimlerini devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_61_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\PushNotifications" "ToastEnabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications" "ToastEnabled" REG_DWORD 0
 )
 :: Müşteri deneyimi geliştirme programı (CEIP) devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_62_
@@ -2147,12 +2204,12 @@ Call :Playbook_Reader Privacy_Setting_65_
 )
 :: Windows Search - Cortana'nın cihaz geçmişini kullanmasını devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_66_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Search" "DeviceHistoryEnabled" REG_DWORD "0"
-						 Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Search" "HistoryViewEnabled" REG_DWORD "0"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" "DeviceHistoryEnabled" REG_DWORD "0"
+						 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" "HistoryViewEnabled" REG_DWORD "0"
 )
 :: Dosya gezgini arama kutusu geçmişini görüntelemeyi devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_67_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Policies\Microsoft\Windows\Explorer" "DisableSearchBoxSuggestions" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\Explorer" "DisableSearchBoxSuggestions" REG_DWORD 1
 )
 :: Qos paket zamanlayıcı sınırını kaldır
 Call :Playbook_Reader Internet_Setting_1_
@@ -2175,11 +2232,11 @@ Call :Playbook_Reader Explorer_Setting_2_
 )
 :: Kısayol yazısını kaldır
 Call :Playbook_Reader Explorer_Setting_3_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "Link" REG_BINARY "00000000"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "Link" REG_BINARY "00000000"
 )
 :: Transparan özelliğini kapat
 Call :Playbook_Reader Explorer_Setting_4_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" "EnableTransparency" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" "EnableTransparency" REG_DWORD 0
 )
 :: Birlikte aç bölümünden Market aramasını kaldır
 Call :Playbook_Reader Explorer_Setting_5_
@@ -2199,29 +2256,29 @@ Call :Playbook_Reader Explorer_Setting_8_
 )
 :: Explorer'u Bu Bilgisayar'dan başlat
 Call :Playbook_Reader Explorer_Setting_9_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "LaunchTo" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "LaunchTo" REG_DWORD 1
 )
 :: Dosya kopyalama ekranında daha fazla detay göster
 Call :Playbook_Reader Explorer_Setting_10_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" "EnthusiastMode" REG_DWORD 1 
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" "EnthusiastMode" REG_DWORD 1 
 )
 :: Dosya uzantılarını göster
 Call :Playbook_Reader Explorer_Setting_11_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "HideFileExt" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "HideFileExt" REG_DWORD 0
 )
 :: Korunan işletim sistemi dosyalarını göster
 Call :Playbook_Reader Explorer_Setting_12_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowSuperHidden" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowSuperHidden" REG_DWORD 1
 )
 :: Gizli dosyaları göster
 Call :Playbook_Reader Explorer_Setting_13_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Hidden" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Hidden" REG_DWORD 1
 )
 :: Masaüstü simgelerini aktifleştir - Ağ hariç
 Call :Playbook_Reader Explorer_Setting_14_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{59031a47-3f72-44a7-89c5-5595fe6b30ee}" REG_DWORD 0 :: Kullanıcı dosyalaı
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}" REG_DWORD 0 :: Denetim Masası 
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" REG_DWORD 0 :: Bu Bilgisayar
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{59031a47-3f72-44a7-89c5-5595fe6b30ee}" REG_DWORD 0 :: Kullanıcı dosyaları
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}" REG_DWORD 0 :: Denetim Masası 
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" REG_DWORD 0 :: Bu Bilgisayar
 )
 :: Windows açılış sesini kapat
 Call :Playbook_Reader Explorer_Setting_15_
@@ -2229,7 +2286,7 @@ Call :Playbook_Reader Explorer_Setting_15_
 )
 :: Eski ALT + TAB etkinleştir
 Call :Playbook_Reader Explorer_Setting_16_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer" "AltTabSettings" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "AltTabSettings" REG_DWORD 1
 )
 :: Bat/Cmd/Reg sağ-tık menüsünden yazdır kaldır
 Call :Playbook_Reader Explorer_Setting_17_
@@ -2258,37 +2315,37 @@ Call :Playbook_Reader Explorer_Setting_19_
 )
 :: Office dosyalarını dosya gezgininde gizle
 Call :Playbook_Reader Explorer_Setting_20_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer" "ShowCloudFilesInQuickAccess" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "ShowCloudFilesInQuickAccess" REG_DWORD 0
 )
 :: Windows Tema ayarlarını değiştir [Siyah başlat menüsü, beyaz dosya gezgini]
 Call :Playbook_Reader Explorer_Setting_21_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" "SystemUsesLightTheme" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "AccentColor2" REG_DWORD 0xff6b5c51
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "ColorizationColor" REG_DWORD 0xc4515c6b
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "ColorizationColorBalance" REG_DWORD 0x59
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "ColorizationAfterglow" REG_DWORD 0xc4515c6b
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "ColorizationAfterglowBalance" REG_DWORD 0xa
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "ColorizationBlurBalance" REG_DWORD 1
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "EnableWindowColorization" REG_DWORD 1
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "ColorizationGlassAttribute" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" "SystemUsesLightTheme" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "AccentColor2" REG_DWORD 0xff6b5c51
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationColor" REG_DWORD 0xc4515c6b
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationColorBalance" REG_DWORD 0x59
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationAfterglow" REG_DWORD 0xc4515c6b
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationAfterglowBalance" REG_DWORD 0xa
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationBlurBalance" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "EnableWindowColorization" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "ColorizationGlassAttribute" REG_DWORD 1
 )
 :: Animasyonları kapat
 Call :Playbook_Reader Explorer_Setting_22_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" "VisualFXSetting" REG_DWORD 3
-						 Call :RegAdd_CUU "Control Panel\Desktop" "UserPreferencesMask" REG_BINARY "9012038010000000"
-						 Call :RegAdd_CUU "Control Panel\Desktop\WindowMetrics" "MinAnimate" REG_SZ 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarAnimations" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "EnableAeroPeek" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\DWM" "AlwaysHibernateThumbnails" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewAlphaSelect" REG_DWORD 0
-						 Call :RegAdd_CUU "Control Panel\Desktop" "DragFullWindows" REG_SZ 0
-						 Call :RegAdd_CUU "Control Panel\Desktop" "FontSmoothing" REG_SZ 2
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewShadow" REG_DWORD 1
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer" "ShellState" REG_BINARY "240000003E28000000000000000000000000000001000000130000000000000062000000"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" "VisualFXSetting" REG_DWORD 3
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "UserPreferencesMask" REG_BINARY "9012038010000000"
+						 Call :RegAdd "HKCU\Control Panel\Desktop\WindowMetrics" "MinAnimate" REG_SZ 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarAnimations" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "EnableAeroPeek" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\DWM" "AlwaysHibernateThumbnails" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewAlphaSelect" REG_DWORD 0
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "DragFullWindows" REG_SZ 0
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "FontSmoothing" REG_SZ 2
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ListviewShadow" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "ShellState" REG_BINARY "240000003E28000000000000000000000000000001000000130000000000000062000000"
 )
 :: Dosya gezgini kompakt mod aktifleştir
 Call :Playbook_Reader Explorer_Setting_23_
-	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "UseCompactMode" REG_DWORD 1)
+	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "UseCompactMode" REG_DWORD 1)
 )
 :: Klasik sağ-tık menüsünü aktfileştir [Windows11]
 Call :Playbook_Reader Explorer_Setting_24_
@@ -2296,8 +2353,8 @@ Call :Playbook_Reader Explorer_Setting_24_
 )
 :: Anlık yardım [Snap Assist] [Windows11]
 Call :Playbook_Reader Explorer_Setting_25_
-	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "EnableSnapAssistFlyout" REG_DWORD 0
-										  Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SnapAssist" REG_DWORD 0)
+	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "EnableSnapAssistFlyout" REG_DWORD 0
+										  Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SnapAssist" REG_DWORD 0)
 )
 :: Sağ-tık bölümünden Terminal kaldır [Windows11]
 Call :Playbook_Reader Explorer_Setting_26_
@@ -2331,7 +2388,7 @@ Call :Playbook_Reader Explorer_Setting_28_
 )
 :: Menü göster gecikme süresini düşür [Reg değerini 20 olarak ayarlar]
 Call :Playbook_Reader Explorer_Setting_29_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Control Panel\Desktop" "MenuShowDelay" REG_SZ 20
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Control Panel\Desktop" "MenuShowDelay" REG_SZ 20
 )
 :: Modern fare simgesini yükle
 Call :Playbook_Reader Explorer_Setting_30_
@@ -2348,7 +2405,7 @@ Call :Playbook_Reader Search_Setting_2_
 )
 :: Windows Search - İnternet aramasında yetişkin içerikleri [+18] göstermeyi engelle
 Call :Playbook_Reader Search_Setting_3_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\SearchSettings" "SafeSearchMode" REG_DWORD 2
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings" "SafeSearchMode" REG_DWORD 2
 )
 :: Windows Search - Bulut aramayı kapat
 Call :Playbook_Reader Search_Setting_4_
@@ -2356,7 +2413,7 @@ Call :Playbook_Reader Search_Setting_4_
 )
 :: Windows Search - İnternet aramasını devre dışı bırak
 Call :Playbook_Reader Search_Setting_5_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Search" "BingSearchEnabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" "BingSearchEnabled" REG_DWORD 0
 )
 :: Başlangıç ​​gecikmesini devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_1_
@@ -2365,13 +2422,13 @@ Call :Playbook_Reader Optimization_Setting_1_
 )
 :: Oyun modunu kapat
 Call :Playbook_Reader Optimization_Setting_2_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\GameBar" "AutoGameModeEnabled" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\GameBar" "AutoGameModeEnabled" REG_DWORD 0
 )
 :: Tam ekran optimizasyonlarını kapat
 Call :Playbook_Reader Optimization_Setting_3_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "System\GameConfigStore" "GameDVR_FSEBehavior" REG_DWORD "2"
-						 Call :RegAdd_CUU "System\GameConfigStore" "GameDVR_FSEBehaviorMode" REG_DWORD "2"
-						 Call :RegAdd_CUU "System\GameConfigStore" "GameDVR_Enabled" REG_SZ "0"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\System\GameConfigStore" "GameDVR_FSEBehavior" REG_DWORD "2"
+						 Call :RegAdd "HKCU\System\GameConfigStore" "GameDVR_FSEBehaviorMode" REG_DWORD "2"
+						 Call :RegAdd "HKCU\System\GameConfigStore" "GameDVR_Enabled" REG_SZ "0"
 )
 :: Donanım hızlandırmalı GPU planlamasını aktifleştir
 Call :Playbook_Reader Optimization_Setting_4_
@@ -2379,23 +2436,23 @@ Call :Playbook_Reader Optimization_Setting_4_
 )
 :: Uygulamaların arka planda çalışmasını engelle
 Call :Playbook_Reader Optimization_Setting_5_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Search" "BackgroundAppGlobalToggle" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" "GlobalUserDisabled" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" "BackgroundAppGlobalToggle" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" "GlobalUserDisabled" REG_DWORD 1
 )
 :: Otomatik bakım görevini devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_6_
 	if %Playbook% EQU 1 (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\ScheduledDiagnostics" "EnabledExecution" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoLowDiskSpaceChecks" REG_DWORD 1
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "32" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "512" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "2048" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "08" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "256" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "04" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "01" REG_DWORD 0
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "LinkResolveIgnoreLinkInfo" REG_DWORD 1
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoResolveSearch" REG_DWORD 1
-						 Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoResolveTrack" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoLowDiskSpaceChecks" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "32" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "512" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "2048" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "08" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "256" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "04" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "01" REG_DWORD 0
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "LinkResolveIgnoreLinkInfo" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoResolveSearch" REG_DWORD 1
+						 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoResolveTrack" REG_DWORD 1
 						 Call :Schtasks "Disable" "\Microsoft\Windows\DiskCleanup\SilentCleanup"
 						 Call :Schtasks "Disable" "\Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem"
 )
@@ -2405,7 +2462,7 @@ Call :Playbook_Reader Optimization_Setting_7_
 )
 :: Sessiz saatleri etkinleştir
 Call :Playbook_Reader Optimization_Setting_8_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Policies\Microsoft\Windows\CurrentVersion\QuietHours" "Enable" REG_DWORD 1
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\CurrentVersion\QuietHours" "Enable" REG_DWORD 1
 )
 :: Ram sayfa birleşimini kapat [PageFile Combine]
 Call :Playbook_Reader Optimization_Setting_9_
@@ -2425,10 +2482,10 @@ Call :Playbook_Reader Optimization_Setting_11_
 :: Kapanmayı engelleyen programlar hemen kapatılsın
 Call :Playbook_Reader Optimization_Setting_12_
 	if %Playbook% EQU 1 (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "AllowBlockingAppsAtShutdown" REG_DWORD 0
-						 Call :RegAdd_CUU "Control Panel\Desktop" "AutoEndTasks" REG_SZ 1 
-						 Call :RegAdd_CUU "Control Panel\Desktop" "HungAppTimeout" REG_SZ "3000"
-						 Call :RegAdd_CUU "Control Panel\Desktop" "WaitToKillAppTime" REG_SZ "1000"
-						 Call :RegAdd_CUU "Control Panel\Desktop" "LowLevelHooksTimeout" REG_SZ "4000"
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "AutoEndTasks" REG_SZ 1 
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "HungAppTimeout" REG_SZ "3000"
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "WaitToKillAppTime" REG_SZ "1000"
+						 Call :RegAdd "HKCU\Control Panel\Desktop" "LowLevelHooksTimeout" REG_SZ "4000"
 						 Call :RegAdd_CCS "Control" "WaitToKillServiceTimeout" REG_SZ "2000"
 )
 :: SSD/HDD optimizasyon
@@ -2439,11 +2496,11 @@ Call :Playbook_Reader Optimization_Setting_13_
 												   Call :RegAdd_CCS "Control\Power" "HibernateEnabledDefault" REG_DWORD 0
 												   Call :RegAdd_CCS "Control\FileSystem" "NtfsDisableLastAccessUpdate" REG_DWORD 0x80000001
 												   Call :RegAdd_CCS "Control\Power" "HiberbootEnabled" REG_DWORD 0
-												   Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoThumbnailCache" REG_DWORD 0
-												   Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "DisableThumbnailCache" REG_DWORD 0
-												   Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "NoThumbnailCache" REG_DWORD 0
-												   Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "DisableThumbnailCache" REG_DWORD 0
-												   Call :RegAdd_CUU "Software\Policies\Microsoft\Windows\Explorer" "DisableThumbsDBOnNetworkFolders" REG_DWORD 0
+												   Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoThumbnailCache" REG_DWORD 0
+												   Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "DisableThumbnailCache" REG_DWORD 0
+												   Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "NoThumbnailCache" REG_DWORD 0
+												   Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "DisableThumbnailCache" REG_DWORD 0
+												   Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\Explorer" "DisableThumbsDBOnNetworkFolders" REG_DWORD 0
 												   Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoThumbnailCache" REG_DWORD 0
 												   Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "DisableThumbnailCache" REG_DWORD 0
 												   Call :RegAdd_CCS "Control\Session Manager\Memory Management" "DisablePagingExecutive" REG_DWORD 1
@@ -2481,7 +2538,7 @@ Call :Playbook_Reader Optimization_Setting_14_
 								set /a RAM=%%b * 1024 * 1024 + 1024000
 							)
 						)
-						Call :RegAdd_CCS "Control" "SvcHostSplitThresholdInKB" REG_DWORD "0x%RAM%"
+						Call :RegAdd_CCS "Control" "SvcHostSplitThresholdInKB" REG_DWORD "0x!RAM!"
 )
 :: Farklı işlemci markasına ait hizmetleri devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_15_
@@ -2511,7 +2568,7 @@ Call :Playbook_Reader Optimization_Setting_18_
 )
 :: Dosya Gezgini hafıza sorununu gider
 Call :Playbook_Reader Fix_Setting_1_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Classes\Local Settings\Software\Microsoft\Windows\Shell" "BagMRU Size" REG_DWORD "0x4e20"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell" "BagMRU Size" REG_DWORD "0x4e20"
 )
 :: Ses ayarları hafıza sorununu gider
 Call :Playbook_Reader Fix_Setting_2_
@@ -2519,7 +2576,7 @@ Call :Playbook_Reader Fix_Setting_2_
 )
 :: Dosya gezgini fazla ram kullanma sorununu gider [Windows11]
 Call :Playbook_Reader Fix_Setting_3_
-	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SeparateProcess" REG_DWORD 0)
+	if %Playbook% EQU 1 (if %Win% EQU 11 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SeparateProcess" REG_DWORD 0)
 )
 :: Adobe Typer yazı tipi sürücüsünü devre dışı bırak
 Call :Playbook_Reader Security_Setting_1_
@@ -2532,7 +2589,7 @@ Call :Playbook_Reader Security_Setting_2_
 )
 :: Otomatik oynatma devre dışı bırak
 Call :Playbook_Reader Security_Setting_3_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" "DisableAutoplay" REG_DWORD 0
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" "DisableAutoplay" REG_DWORD 0
 )
 :: Uzak bağlantıyla komut dosyalı tanılamalıyı devre dışı bırak
 Call :Playbook_Reader Security_Setting_4_
@@ -2561,12 +2618,12 @@ Call :Playbook_Reader Security_Setting_8_
 )
 :: Yapışkan tuşları kapat
 Call :Playbook_Reader Feature_Setting_1_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Control Panel\Accessibility\StickyKeys" "Flags" REG_SZ 506
-						 Call :RegAdd_CUU "Control Panel\Accessibility\ToggleKeys" "Flags" REG_SZ "58"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Control Panel\Accessibility\StickyKeys" "Flags" REG_SZ 506
+						 Call :RegAdd "HKCU\Control Panel\Accessibility\ToggleKeys" "Flags" REG_SZ "58"
 )
 :: Filtre tuşları kapat
 Call :Playbook_Reader Feature_Setting_2_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Control Panel\Accessibility\Keyboard Response" "Flags" REG_SZ "122"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Control Panel\Accessibility\Keyboard Response" "Flags" REG_SZ "122"
 )
 :: Hazırda beklet - Hızlı başlat kapat
 Call :Playbook_Reader Feature_Setting_3_
@@ -2609,16 +2666,16 @@ Call :Playbook_Reader Feature_Setting_5_
 )
 :: Güvenli masaüstü bildirimini kapat
 Call :Playbook_Reader Feature_Setting_6_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Associations" "ModRiskFileTypes" REG_SZ ".bat;.exe;.reg;.vbs;.chm;.msi;.js;.cmd"
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Associations" "ModRiskFileTypes" REG_SZ ".bat;.exe;.reg;.vbs;.chm;.msi;.js;.cmd"
 						 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "PromptOnSecureDesktop" REG_DWORD 0
 )
 :: Fare - İşaretçi hassasiyetini arttır kapat
 Call :Playbook_Reader Feature_Setting_7_
-	if %Playbook% EQU 1 (Call :RegAdd_CUU "Control Panel\Mouse" MouseThreshold2 REG_SZ 10
-						 Call :RegAdd_CUU "Control Panel\Mouse" MouseThreshold1 REG_SZ 6
-						 Call :RegAdd_CUU "Control Panel\Mouse" MouseSpeed REG_SZ 0
-						 Call :RegAdd_CUU "Control Panel\Mouse" MouseHoverTime REG_SZ 3000
-						 Call :RegAdd_CUU "Control Panel\Mouse" MouseSensitivity REG_SZ 10
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\Control Panel\Mouse" MouseThreshold2 REG_SZ 10
+						 Call :RegAdd "HKCU\Control Panel\Mouse" MouseThreshold1 REG_SZ 6
+						 Call :RegAdd "HKCU\Control Panel\Mouse" MouseSpeed REG_SZ 0
+						 Call :RegAdd "HKCU\Control Panel\Mouse" MouseHoverTime REG_SZ 3000
+						 Call :RegAdd "HKCU\Control Panel\Mouse" MouseSensitivity REG_SZ 10
 )
 :: Mavi ekran sonrasında yeniden başlatmayı devre dışı bırak
 Call :Playbook_Reader Feature_Setting_8_
@@ -2795,6 +2852,7 @@ Call :Playbook_Reader Update_Setting_18_
 Call :Playbook_Reader Update_Setting_19_
 	if %Playbook% EQU 1 (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\SearchCompanion" "DisableContentFileUpdates" REG_DWORD 1
 )
+set Show=NT
 :: Playbook.ini regedit kayıtları ekleme bölümü
 FOR /f "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command►" %PB% 2^>NUL') do (
 	%%a > NUL 2>&1
@@ -2814,7 +2872,7 @@ Findstr /i "Task_Scheduler_Setting" %PB% > NUL 2>&1
 								)
 							)
 )
-cls&Call :Dil A 2 P1005&title OgnitorenKs Playbook │ 5/7 │ !LA2!
+cls&Call :Dil A 2 P1005&title OgnitorenKs Playbook │ 6/7 │ !LA2!
 Call :Dil B 2 T0011
 Findstr /i "Install_Application" %PB% > NUL 2>&1
 	if !errorlevel! EQU 0 (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
@@ -2828,44 +2886,7 @@ Findstr /i "Install_Application" %PB% > NUL 2>&1
 								)
 							)
 )
-cls&Call :Dil A 2 P1006&title OgnitorenKs Playbook │ 6/7 │ !LA2!
-:: Program ve oyunlar için gerekli bileşenleri yükleme bölümü
-Dism /Online /Get-Capabilities /format:table > %Konum%\Log\Capabilities
-Dism /Online /Get-Features /format:table > %Konum%\Log\Features
-::
-Findstr /i "Install_Component_1_" %PB% > NUL 2>&1
-	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_1_" %PB%') do (
-								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"NetFX3~~~~" %Konum%\Log\Capabilities') do (
-											  echo %%g | Findstr /C:"Installed" > NUL 2>&1
-													if !errorlevel! NEQ 0 (Call :Dil A 2 T0019&echo %R%[92m !LA2! %R%[0m
-																		   Dism /Online /Enable-Feature /Featurename:NetFx3 /All /NoRestart
-																		  )
-			)
-		)
-	)
-)
-Findstr /i "Install_Component_2_" %PB% > NUL 2>&1
-	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_2_" %PB%') do (
-								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"IIS-ASPNET45" %Konum%\Log\Features') do (
-									echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-										if !errorlevel! NEQ 0 (Call :Dil A 2 T0020&echo %R%[92m !LA2! %R%[0m
-															   Dism /Online /Enable-Feature /FeatureName:IIS-ASPNET45 /All /NoRestart
-															  )
-			)
-		)
-	)
-)
-Findstr /i "Install_Component_3_" %PB% > NUL 2>&1
-	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_3_" %PB%') do (
-								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"DirectPlay" %Konum%\Log\Features') do (
-									echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-										if !errorlevel! NEQ 0 (Call :Dil A 2 T0021&echo %R%[92m !LA2! %R%[0m
-															   Dism /Online /Enable-Feature /FeatureName:DirectPlay /All /NoRestart
-															  )
-			)
-		)
-	)
-)
+:: -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 7/7 │ !LA2!
 echo ►%R%[92m !LA2! %R%[0m
 Call :DEL "%Konum%\Log\Capabilities"
