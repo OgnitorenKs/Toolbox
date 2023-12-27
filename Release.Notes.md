@@ -4,7 +4,12 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.1.7 ►  27.12.2023 - Playbook</B></summary>
+
+<details><B><summary> Versiyon 4.1.8 ►  27.12.2023 - Playbook [QuickFix]</B></summary>
+
+	• Playbook "Uyarıla ve yönlendirmeler" bölümünde işlemi kabul etmediğinizde devam etmesine neden olan sorgulama hatası giderildi. Ek önlemler eklendi
+
+</details><details><B><summary> Versiyon 4.1.7 ►  27.12.2023 - Playbook</B></summary>
 
 	• Playbook kalıp seçme bölümü ekran genişliği azaltıldı.
 	• Deli_Petro06 ve Speyda_readyOS kalıpları entegre edildi.

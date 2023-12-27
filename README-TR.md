@@ -107,11 +107,12 @@ Windows sistemlerinde Microsoft'un önerdiği ve benim tespit ettiğim durumlar�
 <details>
 <B><summary> 11 - Sistem optimizasyonu</B></summary>
 
-Bu bölüm için özel bir kalıp dosyası hazırlayabilir yada benim hazırladığım kalıp dosyasını kullanıp Windows 10/11 sisteminizi özelleştirebilirsiniz. İşlemler 5-10 dakika arası sürmektedir.
-Yapılan işlemlerin detaylarına bakmak için Toolbox'ın kurulu olduğunu dizine gidip "Bin\Playbook" klasörüne gidip seçtiğiniz kalıp dosyasına bakmanız gerekmektedir.
+Bu bölüm için özel bir kalıp dosyası hazırlayabilir yada benim hazırladığım kalıp dosyasını kullanıp Windows 10/11 sisteminizi özelleştirebilirsiniz. İşlemler 10-30 dakika arası sürmektedir.
+Yapılan işlemlerin detaylarına bakmak için Toolbox'ın kurulu olduğunu dizinde "Bin\Playbook" klasörüne gidip seçtiğiniz kalıp dosyasına bakmanız gerekmektedir.
 Detaylı bilgi için: https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.1.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.2.png)
 
 </details>
 

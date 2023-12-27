@@ -112,7 +112,8 @@ You can prepare a special pattern file for this section or you can use the patte
 To look at the details of the operations performed, you need to go to the directory where Toolbox is installed, go to the "Bin\Playbook" folder and look at the pattern file you have selected.
 For detailed information (The guide is prepared in Turkish language): https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.1.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.2.png)
 
 </details>
 

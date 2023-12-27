@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 :: Başlık
 title  OgnitorenKs Toolbox
 :: Toolbox versiyon
-set Version=4.1.7
+set Version=4.1.8
 :: Pencere ayarı
 mode con cols=100 lines=23
 
@@ -1506,10 +1506,11 @@ Call :Dil A 2 P4008&echo  •%R%[33m !LA2! %R%[0m
 :: UAC kapat
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "ConsentPromptBehaviorAdmin" REG_DWORD 0
 Call :Powershell "Start-Process 'windowsdefender://ThreatSettings'" > NUL 2>&1
+:: Boş tuşlama sonrası işleme devam etmemesi için
+set Value_MM=N
 Call :Dil A 2 P4009&echo.&set /p Value_MM=►%R%[32m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
-Call :Upper %Value_M% Value_M
-	if %Value_M% EQU N (set Error=X&goto Main_Menu)
-set Value_M=
+Call :Upper %Value_MM% Value_MM
+	if %Value_MM% EQU N (set Error=X&goto Main_Menu)
 set Value_MM=
 :: -------------------------------------------------------------
 cls&Call :Dil A 2 P1006&title OgnitorenKs Playbook │ 1/7 │ !LA2!
