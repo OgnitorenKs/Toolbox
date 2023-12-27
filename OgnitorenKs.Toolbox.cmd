@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 :: Başlık
 title  OgnitorenKs Toolbox
 :: Toolbox versiyon
-set Version=4.1.5
+set Version=4.1.6
 :: Pencere ayarı
 mode con cols=100 lines=23
 
@@ -741,6 +741,14 @@ goto :eof
 :Winget
 winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1
 	if !errorlevel! NEQ 0 (cls&"%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1)
+goto :eof
+
+:: -------------------------------------------------------------
+:Powershell_C
+:: chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
+chcp 437 > NUL 2>&1
+Powershell -C %*
+chcp 65001 > NUL 2>&1
 goto :eof
 
 :: -------------------------------------------------------------
@@ -1545,6 +1553,9 @@ Findstr /i "Install_Component_3_" %PB% > NUL 2>&1
 )
 :: Bileşen kaldırma bölümü
 FOR %%g in (C_Packages C_Capabilities) do (Call :DEL "%Konum%\Log\%%g")
+:: Capabilities ve packages bileşenleri için Dism ile verileri alır.
+Call :DEL "%Konum%\Log\C_Packages"
+Call :DEL "%Konum%\Log\C_Capabilities"
 DISM /Online /Get-Capabilities /format:table | Findstr /i "Installed" > %Konum%\Log\C_Capabilities
 FOR /F "tokens=4" %%g in ('Dism /Online /Get-Packages ^| Findstr /i "Package Identity"') do echo %%g >> %Konum%\Log\C_Packages
 cls&Call :Dil A 2 P1001&title OgnitorenKs Playbook │ 2/7 │ !LA2!
@@ -1593,7 +1604,7 @@ Call :Playbook_Reader Component_Setting_1_
 						 "%programdata%\Microsoft\Windows Defender"
 						 "%windir%\SystemApps\Microsoft.Windows.SecHealthUI_cw5n1h2txyewy"
 						 ) do (
-							Call :RD %%a
+							%NSudo% RD /S /Q %%a
 						 )
 						 FOR %%a in (
 						 "%LocalAppData%\Packages\*.SecHealthUI_*"
@@ -1725,6 +1736,7 @@ Call :Playbook_Reader Component_Setting_2_
 						 Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
 						 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
 						 Call :RegDel "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v NoRemove
+						 FOR /F "skip=2 tokens=1" %%b in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /f "MicrosoftEdgeAutoLaunch" 2^>NUL') do (Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "%%b")
 						 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate" "InstallDefault" REG_DWORD 1
 						 netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
 						 Call :Service_Admin "edgeupdate" 6
@@ -1762,14 +1774,13 @@ Call :Playbook_Reader Component_Setting_5_
 						 Call :Search_Del DELS "C:\*winre.wim"
 )
 :: Uygulama kaldır
-:Test
 cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 3/7 │ !LA2!
 Call :Powershell "Get-AppxPackage -AllUsers | Select PackageFullName" > %Konum%\Log\Appx_Playbook
 Call :Dil B 2 T0008
 FOR /F "tokens=4" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
 	FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB% 2^>NUL') do (
 		if %%b EQU 1 (echo ► %R%[92m "%%a"%R%[37m !LB2! %R%[0m
-					  FOR /F "tokens=*" %%c in ('Findstr /i "%%a" %Konum%\Log\Appx_Playbook') do (Call :Powershell "Remove-AppxPackage -Package %%c")
+					  FOR /F "tokens=*" %%c in ('Findstr /i "%%a" %Konum%\Log\Appx_Playbook 2^>NUL') do (Call :Powershell_C "Remove-AppxPackage -Package %%c")
 					  Call :Search_Del RD "%programfiles%\WindowsApps\*%%a*"
 					 )
 	)
@@ -1834,14 +1845,14 @@ Call :Playbook_Reader Taskbar_Setting_8_
 Call :Playbook_Reader Taskbar_Setting_9_
 	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowCortanaButton" REG_DWORD 0
 )
-:: Windows Ink[kalem] çalışma alanı kapat
-Call :Playbook_Reader Taskbar_Setting_10_
-	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280813Enabled" REG_DWORD 0
-)
 :: Görev çubuğu - sohbet/anında toplantı simgesini gizle
-Call :Playbook_Reader Taskbar_Setting_11_
+Call :Playbook_Reader Taskbar_Setting_10_
 	if %Playbook% EQU 1 (if %Win% EQU 10 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "HideSCAMeetNow" REG_DWORD 1)
 						 if %Win% EQU 11 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarMn" REG_DWORD 0)
+)
+:: Windows Ink[kalem] çalışma alanı kapat
+Call :Playbook_Reader Taskbar_Setting_11_
+	if %Playbook% EQU 1 (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280813Enabled" REG_DWORD 0
 )
 :: Görev çubuğu - başlat simgesini sola hizala
 Call :Playbook_Reader Taskbar_Setting_12_
@@ -2889,10 +2900,13 @@ Findstr /i "Install_Application" %PB% > NUL 2>&1
 :: -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 7/7 │ !LA2!
 echo ►%R%[92m !LA2! %R%[0m
-Call :DEL "%Konum%\Log\Capabilities"
-Call :DEL "%Konum%\Log\Features"
 Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Subscriptions"
 Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\SuggestedApps"
+:: -------------------------------------------------------------
+Call :DEL "%Konum%\Log\C_Packages"
+Call :DEL "%Konum%\Log\C_Capabilities"
+Call :DEL "%Konum%\Log\Capabilities"
+Call :DEL "%Konum%\Log\Features"
 :: -------------------------------------------------------------
 FOR %%a in (
 "%windir%\*.log"
