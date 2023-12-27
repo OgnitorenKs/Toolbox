@@ -46,7 +46,7 @@
 	• "___HANGAR___" başlığı altındaki yer alan işlevsel başlıklar düzenli hale getirildi. Yorum satırları arttırıldı.
 		
 
-</details><B><summary> Versiyon 4.1.3 ►  26.11.2023</B></summary>
+</details><details><B><summary> Versiyon 4.1.3 ►  26.11.2023</B></summary>
 
 	• "Hizmet Yönetimi" bölümündeki değişiklikler;
 		• Wifi hizmet grubu çalışma değerleri güncellendi.
@@ -57,7 +57,7 @@
 	• "Sistem Hakkında" bölümündeki değişiklikler;
 		• DDR5 ram tip numarası eklendi.
 	
-</details><B><summary> Versiyon 4.1.2 ►  23.11.2023</B></summary>
+</details><details><B><summary> Versiyon 4.1.2 ►  23.11.2023</B></summary>
 
 	• "Sistem temizliği" bölümüne '%LocalAppData%' dizininde yer alan 'tw-' isimli boş klasörleri silme komutu eklendi.
 	• "Hizmet Yönetimi" bölümü kontrol kodları revize edildi.
