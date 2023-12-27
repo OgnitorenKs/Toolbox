@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 :: Başlık
 title  OgnitorenKs Toolbox
 :: Toolbox versiyon
-set Version=4.1.6
+set Version=4.1.7
 :: Pencere ayarı
 mode con cols=100 lines=23
 
@@ -1461,12 +1461,11 @@ goto Main_Menu
 
 :: ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Performans_Edit
-mode con cols=120 lines=35
 :: Playbook kütüphanesi kontrol edilir. Kalıp sayısına göre pencere ayarı yapılır. Yoksa ana menüye atar.
 set Mode=10
 dir /b "%Konum%\Bin\Playbook\*.ini" > NUL 2>&1
 	if !errorlevel! EQU 0 (FOR /F "tokens=*" %%a in ('dir /b "%Konum%\Bin\Playbook\*.ini" 2^>NUL') do (set /a Mode+=1)
-						   mode con cols=130 lines=!Mode!
+						   mode con cols=110 lines=!Mode!
 						  )
 	if !errorlevel! NEQ 0 (Call :Dil A 2 Error_10_&echo %R%[91m !LA2! %R%[0m&Call :Bekle 7&goto Main_Menu)
 :: Playbook dosyaları listelenir

@@ -4,15 +4,19 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.1.7 ►  27.12.2023 - Playbook</B></summary>
 
-<details><B><summary> Versiyon 4.1.6 ►  27.12.2023 - Playbook</B></summary>
+	• Playbook kalıp seçme bölümü ekran genişliği azaltıldı.
+	• Deli_Petro06 ve Speyda_readyOS kalıpları entegre edildi.
+
+</details><details><B><summary> Versiyon 4.1.6 ►  27.12.2023 - Playbook</B></summary>
 
 	• "Sistem optimizasyonu [Playbook]" bölümündeki değişiklikler;
 		• Taskbar_Settings_10/11 bölümündeki veri karışıklığı hatası giderildi.
 		• Edge kaldırma komutuna yeni reg kaydı eklendi.
 		• Uygulama kaldırma bölümündeki powershell optimizasyon komutlarında yaşanan sorun giderildi.
 
-<details><B><summary> Versiyon 4.1.5 ►  26.12.2023 - Playbook</B></summary>
+</details><details><B><summary> Versiyon 4.1.5 ►  26.12.2023 - Playbook</B></summary>
 
 	• "Sistem optimizasyonu [Playbook]" bölümündeki değişiklikler;
 		• Regedit komutları optimize edildi. 
