@@ -5,5 +5,5 @@ Link_1_>ms-windows-store://pdp/?ProductId=9nblggh4nns1&mode=mini>Uygulama yükle
 Link_2_>ms-windows-store://downloadsandupdates>Store güncelleme bölümü>
 Link_3_>https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/ToolboxUpdate.cmd>
 Link_4_>https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/Bin/Extra/Link.txt>
-Link_5_>>
+Link_5_>https://github.com/OgnitorenKs/Toolbox/raw/main/.github/Playbook.zip>
 
