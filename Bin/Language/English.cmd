@@ -149,7 +149,7 @@ P4004>Many components on the system will be removed and settings will be changed
 P4005>Back up your important data to prevent data loss in the event of a system crash>
 P4006>See your selected pattern file for details and customization>
 P4007>The system will reboot after the process is finished>
-P4008>After system boot, run Toolbox - 'System cleanup'>
+P4008>After the system is turned on, the command screen for the cleaning process will open, and it will automatically shut down when the process is finished>
 P4009>Do you want to continue the process?>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
@@ -228,6 +228,30 @@ SR_43_>Data center bridging>Enterprise>
 SR_44_>Active Directory Simple directory services>Enterprise>
 SR_45_>Windows diagnostic engine>Need: Troubleshooting>
 SR_46_>Map Control>
+
+SR_47_>Wifi drivers>
+SR_48_>Ethernet drivers>
+SR_49_>Windows Media Player>
+SR_50_>Assigned access>
+SR_51_>Progressive Web application - Outlook>
+SR_52_>Easy transfer>
+SR_53_>Privileged Access Workstation>
+SR_54_>Win To Go>
+SR_55_>Printing and document services>
+SR_56_>Windows search>
+SR_57_>Windows license reset - SkipRearm>
+SR_58_>Terminal Server>
+SR_59_>Windows User Choice Protection>
+SR_60_>Windows Firewall>
+SR_61_>Hyper-V>
+SR_62_>Container>
+SR_63_>Tenant account restriction [Kurumsal]>
+SR_64_>Media foundation - Kodek>
+SR_65_>DirectPlay>
+SR_66_>SQL Server failover cluster>
+SR_67_>Internet Explorer>
+SR_68_>Paint>
+SR_69_>PPI Projection>
 ::███████████████████████████████████████████████████████████████████
 SBB_1_>User Account Management>
 SBB_2_>License Management>

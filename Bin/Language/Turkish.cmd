@@ -123,6 +123,7 @@ T0032>WinSxS Temizleniyor>
 T0033>'DISM /Online /Cleanup-Image /RestoreHealth' komutu çalışıyor>
 T0034>Genel ayarlar ve DLL dosyaları onarılıyor>
 T0035>WMI ile alınan sistem verilerinde hata payı olabilir>
+T0036>Playbook Güncelleme>
 ::██████████████████████████████████████████████████████████████████
 P1001>Bileşenler kaldırılıyor>
 P1002>Uygulamalar kaldırılıyor>
@@ -149,7 +150,7 @@ P4004>Sistem üzerinde birçok bileşen kaldırılıp ayarlar değiştirilecekti
 P4005>Olası sistem çökmesi sonucu veri kayıplarını önlemek için önemli verilerinizi yedekleyiniz>
 P4006>Detaylar ve özelleştirme için seçtiğiniz kalıp dosyasına bakınız>
 P4007>İşlem bittikten sonra sistem yeniden başlatılacak>
-P4008>Sistem açıldıktan sonra "Toolbox ► 'Sistem temizliği'" bölümünü çalıştırın>
+P4008>Sistem açıldıktan sonra temizlik işlemi için komut ekranı açılacak, işlem bitince otomatik kapanacak>
 P4009>İşleme devam etmek istiyor musunuz?>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
@@ -228,6 +229,29 @@ SR_43_>Veri merkezi köprü oluşturma>Kurumsal>
 SR_44_>Active Directory Basit dizin hizmetleri>Kurumsal>
 SR_45_>Windows tanılama altyapısı>İhtiyaç: Sorun giderme>
 SR_46_>Harita Kontrolü>
+SR_47_>Wifi Sürücüleri>
+SR_48_>Ethernet sürücüleri>
+SR_49_>Windows Media Player>
+SR_50_>Atanmış erişim>
+SR_51_>Aşamalı Web uygulaması - Outlook>
+SR_52_>Kolay transfer>
+SR_53_>Ayrıcalıklı Erişim İş İstasyonu>İhtiyaç: Explorer'a bağlı>
+SR_54_>Win To Go>
+SR_55_>Yazdırma ve belge hizmetleri>
+SR_56_>Windows arama>
+SR_57_>Windows lisans sıfırlama - SkipRearm>
+SR_58_>Terminal Server>
+SR_59_>Dosya ilişkilendirici koruyucusu>
+SR_60_>Güvenlik duvarı>
+SR_61_>Hyper-V>
+SR_62_>Konteyner>
+SR_63_>Kiracı hesap kısıtla [Kurumsal]>
+SR_64_>Medya vakfı - Kodek>
+SR_65_>DirectPlay>
+SR_66_>SQL Server yük devretme kümesi>
+SR_67_>Internet Explorer>
+SR_68_>Paint>
+SR_69_>PPI Projection>
 ::███████████████████████████████████████████████████████████████████
 SBB_1_>Kullanıcı Hesap Yönetimi>
 SBB_2_>Lisans Yönetimi>

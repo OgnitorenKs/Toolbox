@@ -223,7 +223,68 @@ COM_44_>Server-Help-Package.ClientEnterprise>Component>
 :: Windows tanılama altyapısı - Sorun giderme
 COM_45_>Microsoft-Windows-DiagnosticInfrastructure>Component>
 :: :: Harita Kontrolü
-COM_46>Microsoft-OneCore-Maps>Component>
+COM_46_>Microsoft-OneCore-Maps>Component>
+:: Wifi Sürücüleri
+COM_47_>Microsoft-Windows-Wifi-Client>Component>
+:: Ethernet sürücüleri
+COM_48_>Microsoft-Windows-Ethernet-Client>Component>
+:: Windows Media Player
+COM_49_>Microsoft-Windows-MediaPlayback>Component>
+COM_49_>Microsoft-Windows-MediaPlayer>Component>
+COM_49_>Microsoft-Windows-SQL-Lite>Component>
+COM_49_>Microsoft-Windows-WindowsMediaPlayer>Component>
+COM_49_>Microsoft-Windows-WMPNetworkSharingService>Component>
+COM_49_>Microsoft-Windows-WPD-LegacyWmdmFeature>Component>
+:: Atanmış erişim
+COM_50_>Microsoft-Windows-Client-AssignedAccess>Component>
+COM_50_>Microsoft-Windows-Embedded-AssignedAccessCsp>Component>
+:: Aşamalı Web uygulaması - Outlook
+COM_51_>Microsoft-Windows-OutlookPWA>Component>
+:: Kolay transfer
+COM_52_>Microsoft-Windows-Migration>Component>
+:: Ayrıcalıklı Erişim İş İstasyonu
+COM_53_>Microsoft-Windows-PAW>Component>
+:: Win To Go
+COM_54_>Microsoft-Windows-Portable>Component>
+:: Yazdırma ve belge hizmetleri
+COM_55_>Microsoft-Windows-Printer>Component>
+COM_55_>Microsoft-Windows-Printing>Component>
+:: Windows arama
+COM_56_>Microsoft-Windows-SearchEngine>Component>
+:: Windows lisans sıfırlama - SkipRearm
+COM_57_>Windows-Security-SPP>Component>
+:: Terminal Server
+COM_58_>Microsoft-Windows-TS-Optional>Component>
+:: Dosya ilişkilendirici koruyucusu [Windows11] Seçilmiş uzantıları diğer programların değiştirmesini önler
+COM_59_>Microsoft-Windows-User-Choice-Protection>Component>
+:: Güvenlik duvarı
+COM_60_>Networking-MPSSVC-Rules>Component>
+COM_60_>Microsoft-Windows-Network-Security-MPSSVC>Component>
+:: Hyper-V
+COM_61_>HyperV>Component>
+COM_61_>Hyper-V>Component>
+COM_61_>DiskIo-QoS>Component>
+COM_61_>Microsoft-OneCore-IsolatedUserMode>Component>
+COM_61_>Microsoft-OneCore-VirtualizationBasedSecurity>Component>
+COM_61_>Microsoft-OneCore-UtilityVm-SetupAgent>Component>
+:: Konteyner
+COM_62_>Containers>Component>
+:: Kiracı hesap kısıtla [Kurumsal]
+COM_63_>Microsoft-Onecore-Identity-TenantRestrictions>Component>
+:: Medya vakfı - Kodek
+COM_64_>Microsoft-OneCore-Multimedia-MFPMP>Component>
+:: DirectPlay
+COM_65_>Microsoft-Windows-DirectPlay>Component>
+:: SQL Server yük devretme kümesi
+COM_66_>Microsoft-Windows-FCI-Client>Component>
+:: Internet Explorer
+COM_67_>Microsoft-Windows-IE-Troubleshooters>Component>
+COM_67_>Microsoft-Windows-InternetExplorer>Component>
+:: Paint
+COM_68_>Microsoft-Windows-MSPaint>Component>
+:: PPI Projection - Connect App - Bu bilgisayara yansıt
+COM_69_>Microsoft-PPIProjection-Package>Component>
+
 :: ██████████████████████████████████████████████████████████████████
 
 :: OneDrive

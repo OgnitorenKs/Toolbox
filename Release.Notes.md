@@ -5,9 +5,35 @@
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
 
-<details><B><summary> Versiyon 4.1.8 ►  27.12.2023 - Playbook [QuickFix]</B></summary>
 
-	• Playbook "Uyarıla ve yönlendirmeler" bölümünde işlemi kabul etmediğinizde devam etmesine neden olan sorgulama hatası giderildi. Ek önlemler eklendi
+<details><B><summary> Versiyon 4.1.9 ►  10.01.2024 - Playbook</B></summary>
+	
+	• Playbook bölümünde yapılan değişiklikler;
+		• "Optimization_Setting_13_" bölümüne hızlı başlatmayı kapatması için powercfg komutu eklendi.
+		• "Explorer_Setting_31_" ayarı eklendi. Bu ayar ile temayı koyu moda alabileceksiniz.
+		• "Explorer_Setting_32_" ayarı eklendi. Bu ayar ile temayı açık moda alabileceksiniz.
+		• "Explorer_Setting_33_" ayarı eklendi. Başlangıç ve görev çubuğunda vurgu rengini göster ayarını aktifleştirir.
+		• "Explorer_Setting_21_" bölümündeki gereksiz regedit kayıtları kaldırıldı.
+		• "Performance_Edit" başlığı "Playbook_Manager" olarak değiştirildi.
+		• Uygulama kaldırma komutlarına tüm kullanıcıladan sil parametresi eklendi.
+		• Sistem adı değiştirme seçeneği eklendi.
+		• Devmainview ile aygıt yöneticisi üzerinden düzenleme yapma seçeneği eklendi.
+		• Onedrive bölümüne yeni reg kayıtları eklendi.
+		• Özel güç ayarı ve duvar kağıdı değiştirme bölümü eklendi.
+		• Sistem bileşeni olarak düzenlenmiş uygulamaları kaldırma seçeneği eklendi. [Uzman kullanıcılar için]
+		• Edge silme komutlarında edgewebview2 silen komutlar kaldırıldı. İki bölüm tamamen ayrıldı.
+		• Playbook işlemi sonrası ilk yeniden başlatmada yapılması gereken sistem temizleme işlemi otomatik hale getirildi.
+		• Playbook kalıp okuma bölümü optimize edildi. Hatalar giderildi.
+	• Toolbox güncelleme sisteminde yapılan değişiklikler;
+		• Playbook kalıpları için harici bir güncelleme sistemi oluşturuldu.
+	• "Uygulama yükleyici" bölümünde yapılan değişiklikler;
+		• "All in One Runtimes" bölümünde Desktop Runtime 6.0 sürümü çıkarıldı. 8.0 sürümü eklendi.
+			• Bundan sonra güncel sürüm ve bir alt sürümü yüklenecektir. Şuan 8/7 sürümleri yüklenmektedir.
+
+
+</details><details><B><summary> Versiyon 4.1.8 ►  27.12.2023 - Playbook [QuickFix]</B></summary>
+
+	• Playbook "Uyarılar ve yönlendirmeler" bölümünde işlemi kabul etmediğinizde devam etmesine neden olan sorgulama hatası giderildi. Ek önlemler eklendi
 
 </details><details><B><summary> Versiyon 4.1.7 ►  27.12.2023 - Playbook</B></summary>
 
