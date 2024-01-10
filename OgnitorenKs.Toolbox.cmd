@@ -34,7 +34,7 @@ REM Başlık
 title  OgnitorenKs Toolbox
 REM Toolbox versiyon
 set Version=4.1.9
-set PB_Version=1.0
+set PB_Version=1.1
 REM Pencere ayarı
 mode con cols=100 lines=23
 
