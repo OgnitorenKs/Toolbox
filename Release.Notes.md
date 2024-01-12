@@ -4,9 +4,15 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+</details><details><B><summary> Versiyon 4.2.0 ►  12.01.2024 - Playbook</B></summary>
 
+	• Playbook bölümünde yapılan değişiklikler;
+		• Playbook sistem temizliği komutlarına eklemeler yapıldı. Dizin hataları giderildi
+		• Edge bölümüne temizlik işlemi için yeni komutlar eklendi.
+		• Winget ile uygulama yükleme komutlarındaki varsayılan uygulama komutları düzenlendi.
+	• Dosya ve klasör silme komutları düzenlendi.
 
-<details><B><summary> Versiyon 4.1.9 ►  10.01.2024 - Playbook</B></summary>
+</details><details><B><summary> Versiyon 4.1.9 ►  10.01.2024 - Playbook</B></summary>
 	
 	• Playbook bölümünde yapılan değişiklikler;
 		• "Optimization_Setting_13_" bölümüne hızlı başlatmayı kapatması için powercfg komutu eklendi.

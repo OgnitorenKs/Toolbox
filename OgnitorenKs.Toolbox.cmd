@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title  OgnitorenKs Toolbox
 REM Toolbox versiyon
-set Version=4.1.9
+set Version=4.2.0
 set PB_Version=1.1
 REM Pencere ayarı
 mode con cols=100 lines=23
@@ -136,7 +136,7 @@ FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Toolbox.Update." %Konum%\Setting
 												 MD "%Konum%\Bin\Playbook" > NUL 2>&1
 												 Call :Link 5&Call :PSDownload "%Konum%\Bin\Playbook\Playbook.zip"
 												 Call :Powershell "Expand-Archive -Force '%Konum%\Bin\Playbook\Playbook.zip' '%Konum%\Bin\Playbook'"
-												 Call :DEL "%Konum%\Bin\Playbook\Playbook.zip"
+												 Call :DEL_Direct "%Konum%\Bin\Playbook\Playbook.zip"
 												))
 				 )
 )
@@ -206,7 +206,7 @@ REM Winget komutunun çalışıp çalışmadığı kontrol edilir.
 winget > NUL 2>&1
 	if !errorlevel! NEQ 0 (Call :Dil A 2 T0017&echo.&echo %R%[32m !LA2!%R%[0m&Call :Link 2&start !Link!&Call :Bekle 7&goto Main_Menu)
 REM Loglar silinir
-Call :DEL %Konum%\Log\Appx
+Call :DEL_Direct %Konum%\Log\Appx
 REM Dil dosyasından ilgili bölüm çağırılır
 Call %Dil% :Menu_2
 REM Boş değişken kullanımında toolbox kapanacağı için değişkeni geçersiz bir değer ile dolduruyoruz.
@@ -348,13 +348,13 @@ Microsoft.DirectX
 	cls&Call :Dil B 2 T0018&echo %R%[32m !LB2! %R%[0m&Call :Winget %%g
 )
 REM Loglar silinir
-FOR %%g in (Capabilities Features) do (Call :DEL %Konum%\Log\%%g)
+FOR %%g in (Capabilities Features) do (Call :DEL_Direct %Konum%\Log\%%g)
 goto :eof
 
 REM -------------------------------------------------------------
 :Service_Menu
 mode con cols=130 lines=39
-Call :DEL "%Konum%\Log\Services.txt"
+Call :DEL_Direct "%Konum%\Log\Services.txt"
 REM Servis menüsünün yönetimi hakkındaki bilgileri dil dosyasından çeker
 echo.
 Call :Dil A 2 B0001
@@ -418,7 +418,7 @@ FOR %%a in (LA2 LB2 LC2 LD2 LE2) do (set %%a=)
 pause > NUL
 :Features_Menu
 mode con cols=130 lines=55
-FOR %%g in (C_Packages C_Capabilities) do (Call :DEL "%Konum%\Log\%%g")
+FOR %%g in (C_Packages C_Capabilities) do (Call :DEL_Direct "%Konum%\Log\%%g")
 DISM /Online /Get-Capabilities /format:table | Findstr /i "Installed" > %Konum%\Log\C_Capabilities
 FOR /F "tokens=4" %%g in ('Dism /Online /Get-Packages ^| Findstr /i "Package Identity"') do echo %%g >> %Konum%\Log\C_Packages
 Call :Dil A 2 B0002
@@ -574,81 +574,105 @@ REM Çöp dosyaları temizleme komutları
 ie4uinit.exe -show
 ie4uinit.exe -ClearIconCache
 taskkill /f /im explorer.exe > NUL 2>&1
-Call :DEL "%LocalAppData%\IconCache.db"
-Call :DEL "%LocalAppData%\Microsoft\Windows\Explorer\*"
-Call :DEL "%LocalAppData%\Microsoft\Windows\Explorer\IconCacheToDelete\*"
-Call :DEL "%LocalAppData%\Microsoft\Windows\Explorer\NotifyIcon\*"
-Call :DEL "%LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db"
-Call :RD "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache"
+Call :DEL_Direct "%LocalAppData%\IconCache.db"
+Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\*"
+Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\IconCacheToDelete\*"
+Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\NotifyIcon\*"
+Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db"
+Call :RD_Direct "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache"
 MD "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache" > NUL 2>&1
-Call :DEL "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\TempState\*"
+Call :DEL_Direct "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\TempState\*"
 Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v IconStreams
 Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v PastIconsStream
 Call :Powershell "Start-Process '%Windir%\explorer.exe'"
 REM
-Call :DEL "%temp%\*"
-Call :Search_Del RD "%temp%\*"
-Call :DEL "%Windir%\Temp\*"
-Call :Search_Del RD "%Windir%\Temp\*"
-Call :DEL "%LocalAppData%\Temp\*"
-Call :Search_Del RD "%LocalAppData%\Temp\*"
-Call :Search_Del RD "%Windir%\System32\config\systemprofile\AppData\Local\*.tmp"
-Call :Search_Del DELS "%systemdrive%\*log"
-Call :Search_Del DELS "%Windir%\*etl"
-Call :Search_Del DELS "%LocalAppData%\*etl"
-Call :Search_Del DEL "%Windir%\Installer\*"
-Call :Search_Del RD "%Windir%\Installer\*"
-Call :Search_Del RD "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
-Call :DEL "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
-Call :DEL "%windir%\prefetch\*"
+Call :DEL_Direct "%temp%\*"
+Call :RD_Search "%temp%\*"
+Call :DEL_Direct "%Windir%\Temp\*"
+Call :RD_Search "%Windir%\Temp\*"
+Call :DEL_Direct "%LocalAppData%\Temp\*"
+Call :RD_Search "%LocalAppData%\Temp\*"
+Call :RD_Search "%Windir%\System32\config\systemprofile\AppData\Local\*.tmp"
+Call :DEL_Deep_Search "%systemdrive%\*log"
+Call :DEL_Deep_Search "%Windir%\*etl"
+Call :DEL_Deep_Search "%LocalAppData%\*etl"
+Call :RD_Search "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
+Call :DEL_Direct "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
+Call :RD_Direct "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
+Call :DEL_Direct "%windir%\prefetch\*"
 REM Clear recently accessed files
-Call :DEL "%AppData%\Microsoft\Windows\Recent\AutomaticDestinations\*"
+Call :DEL_Direct "%AppData%\Microsoft\Windows\Recent\AutomaticDestinations\*"
 REM Clear user pins
-Call :DEL "%AppData%\Microsoft\Windows\Recent\CustomDestinations\*"
+Call :DEL_Direct "%AppData%\Microsoft\Windows\Recent\CustomDestinations\*"
 REM Clear main telemetry file
-Call :DEL "%ProgramData%\Microsoft\Diagnosis\ETLLogs\AutoLogger\*.etl"
+Call :DEL_Direct "%ProgramData%\Microsoft\Diagnosis\ETLLogs\AutoLogger\*.etl"
 REM
-FOR /F %%a in ('dir /b %LocalAppData%\tw-*.tmp') do (Call :RD "%LocalAppData%\%%a")
+FOR /F %%a in ('dir /b %LocalAppData%\tw-*.tmp') do (Call :RD_Direct "%LocalAppData%\%%a")
 REM
-Call :DEL "%SystemRoot%\DtcInstall.log"
-Call :DEL "%SystemRoot%\comsetup.log"
-Call :DEL "%SystemRoot%\PFRO.log"
-Call :DEL "%SystemRoot%\setupact.log"
-Call :DEL "%SystemRoot%\setupapi.log"
-Call :DEL "%SystemRoot%\Panther\*"
-Call :DEL "%SystemRoot%\inf\setupapi.app.log"
-Call :DEL "%SystemRoot%\inf\setupapi.dev.log"
-Call :DEL "%SystemRoot%\inf\setupapi.offline.log"
-Call :DEL "%SystemRoot%\Performance\WinSAT\winsat.log"
-Call :DEL "%SystemRoot%\debug\PASSWD.LOG"
-Call :DEL "%localappdata%\Microsoft\Windows\WebCache\*.*"
-Call :DEL "%SystemRoot%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
-Call :DEL "%SystemRoot%\Logs\CBS\CBS.log"
-Call :DEL "%SystemRoot%\Logs\DISM\DISM.log"
-Call :DEL "%SystemRoot%\Logs\SIH\*"
-Call :DEL "%LocalAppData%\Microsoft\CLR_v4.0\UsageTraces\*"
-Call :DEL "%LocalAppData%\Microsoft\CLR_v4.0_32\UsageTraces\*"
-Call :DEL "%SystemRoot%\Logs\NetSetup\*"
-Call :DEL "%SystemRoot%\System32\LogFiles\setupcln\*"
-Call :DEL "%SystemRoot%\Temp\CBS\*"
-Call :DEL "%SystemRoot%\System32\catroot2\dberr.txt"
-Call :DEL "%SystemRoot%\System32\catroot2.log"
-Call :DEL "%SystemRoot%\System32\catroot2.jrs"
-Call :DEL "%SystemRoot%\System32\catroot2.edb"
-Call :DEL "%SystemRoot%\System32\catroot2.chk"
-Call :DEL "%SystemRoot%\Logs\SIH\*"
-Call :DEL "%SystemRoot%\Traces\WindowsUpdate\*"
-Call :RD "%SystemRoot%\Logs\waasmedic"
-REM
-Call :RD "%systemdrive%\AMD"
-Call :RD "%systemdrive%\NVIDIA"
-Call :RD "%systemdrive%\INTEL"
+Call :DEL_Direct "%SystemRoot%\DtcInstall.log"
+Call :DEL_Direct "%SystemRoot%\comsetup.log"
+Call :DEL_Direct "%SystemRoot%\PFRO.log"
+Call :DEL_Direct "%SystemRoot%\setupact.log"
+Call :DEL_Direct "%SystemRoot%\setupapi.log"
+Call :DEL_Direct "%SystemRoot%\Panther\*"
+Call :DEL_Direct "%SystemRoot%\inf\setupapi.app.log"
+Call :DEL_Direct "%SystemRoot%\inf\setupapi.dev.log"
+Call :DEL_Direct "%SystemRoot%\inf\setupapi.offline.log"
+Call :DEL_Direct "%SystemRoot%\Performance\WinSAT\winsat.log"
+Call :DEL_Direct "%SystemRoot%\debug\PASSWD.LOG"
+Call :DEL_Direct "%localappdata%\Microsoft\Windows\WebCache\*.*"
+Call :DEL_Direct "%SystemRoot%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
+Call :DEL_Direct "%SystemRoot%\Logs\CBS\CBS.log"
+Call :DEL_Direct "%SystemRoot%\Logs\DISM\DISM.log"
+Call :DEL_Direct "%SystemRoot%\Logs\SIH\*"
+Call :DEL_Direct "%LocalAppData%\Microsoft\CLR_v4.0\UsageTraces\*"
+Call :DEL_Direct "%LocalAppData%\Microsoft\CLR_v4.0_32\UsageTraces\*"
+Call :DEL_Direct "%SystemRoot%\Logs\NetSetup\*"
+Call :DEL_Direct "%SystemRoot%\System32\LogFiles\setupcln\*"
+Call :DEL_Direct "%SystemRoot%\Temp\CBS\*"
+Call :DEL_Direct "%SystemRoot%\System32\catroot2\dberr.txt"
+Call :DEL_Direct "%SystemRoot%\System32\catroot2.log"
+Call :DEL_Direct "%SystemRoot%\System32\catroot2.jrs"
+Call :DEL_Direct "%SystemRoot%\System32\catroot2.edb"
+Call :DEL_Direct "%SystemRoot%\System32\catroot2.chk"
+Call :DEL_Direct "%SystemRoot%\Logs\SIH\*"
+Call :DEL_Direct "%SystemRoot%\Traces\WindowsUpdate\*"
+Call :RD_Direct "%SystemRoot%\Logs\waasmedic"
+REM Windows hata bildirimi
+Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\ReportArchive"
+Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\Temp"
+REM Windows günlüğü
+Call :DEL_Search "%Windir%\System32\LogFiles\WMI\*"
+Call :DEL_Search "%Windir%\System32\LogFiles\Scm\*"
+REM Net makine kodu önbelleği
+Call :RD_Search "%Windir%\assembly\NativeImage*"
+REM Winget artıklarını siler
+Call :RD_Direct "%ProgramData%\Package Cache"
+Call :DEL_Search "%Windir%\Installer\*"
+Call :RD_Search "%Windir%\Installer\*"
+REM Ekran kartı kurulum dosyaları
+Call :RD_Direct "%systemdrive%\AMD"
+Call :RD_Direct "%systemdrive%\NVIDIA"
+Call :RD_Direct "%systemdrive%\INTEL"
+REM WinINet Web önbelleği
+FOR /F "tokens=*" %%a in ('dir /ad /b "%LocalAppData%\Packages\*" 2^>NUL') do (
+	Call :RD_Direct "%LocalAppData%\Packages\%%a\AC\INetCache"
+	Call :RD_Direct "%LocalAppData%\Packages\%%a\AC\Temp"
+)
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\IE"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\Low"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\Virtualized"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\IE"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Low"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Virtualized"
+Call :RD_Direct "%Windir%\System32\config\systemprofile\AppData\Local\Microsoft\Windows\INetCache\IE"
 REM
 Call :NET stop wuauserv
-Call :RD "%windir%\SoftwareDistribution"
+Call :RD_Direct "%windir%\SoftwareDistribution"
 Call :NET start wuauserv
 REM
-Dism /Online /Cleanup-Image /StartComponentCleanup
+Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+Dism /Online /Cleanup-Image /SPSuperseded
 REM
 Call :Powershell "Start-Process cleanmgr -ArgumentList '/verylowdisk /sagerun:5'"
 REM
@@ -721,12 +745,20 @@ set L%~1%~2=
 FOR /F "delims=> tokens=%~2" %%z in ('Findstr /i "%~3" %Dil% 2^>NUL') do (set L%~1%~2=%%z)
 goto :eof
 
-REM -------------------------------------------------------------
+REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Playbook_Reader
 Find "%~1" !PB! > NUL 2>&1
 	if !errorlevel! NEQ 0 (set Playbook=0&goto :eof)
 FOR /F "skip=2 tokens=2" %%p in ('Find "%~1" !PB! 2^>NUL') do (set Playbook=%%p)
 echo [!Playbook!]-"%~1" >> %Konum%\Log\Playbook_Log.txt
+goto :eof
+
+REM -------------------------------------------------------------
+:Powershell_Playbook
+REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
+chcp 437 > NUL 2>&1
+Powershell %* > NUL 2>&1
+chcp 65001 > NUL 2>&1
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -753,14 +785,6 @@ REM -------------------------------------------------------------
 :Winget
 winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1
 	if !errorlevel! NEQ 0 (cls&"%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1)
-goto :eof
-
-REM -------------------------------------------------------------
-:Powershell_Playbook
-REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
-chcp 437 > NUL 2>&1
-Powershell %* > NUL 2>&1
-chcp 65001 > NUL 2>&1
 goto :eof
 
 REM -------------------------------------------------------------
@@ -826,35 +850,55 @@ www.bing.com
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-:RD
+:RD_Direct
 REM Klasör silmek için
 RD /S /Q "%~1" > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%~1")
 goto :eof
 
-REM -------------------------------------------------------------
-:DEL
+:RD_Search
+REM Klasör silmek için (dizin aramalı)
+FOR /F "tokens=*" %%v in ('Dir /AD /B "%~1" 2^>NUL') do (
+	RD /S /Q "%~dp1%%v" > NUL 2>&1
+		if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%~dp1%%v")
+)
+goto :eof
+
+:RD_Deep_Search
+REM Klasör silmek için (derin aramalı)
+FOR /F "tokens=*" %%v in ('Dir /AD /B /S "%~1" 2^>NUL') do (
+	RD /S /Q "%%v" > NUL 2>&1
+		if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%%v")
+)
+goto :eof
+
+:DEL_Direct
 REM Dosya silmek için
 DEL /F /Q /A "%~1" > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%~1")
 goto :eof
 
-REM -------------------------------------------------------------
-:Search_Del
-REM %~1: İşlem yapılacak konum  %~2: Aranacak değer
-REM 'RDS' ve 'DELS' derin arama yöntemidir. Alt klasörleri de arar bulduğu seçenekleri siler.
-REM 'RD' ve 'DEL' parametrelerinde hedef belirtmek gerekiyor. Doğrudan silmeleri buraya yönlendirme.
-if %~1 EQU RD (FOR /F "tokens=*" %%g in ('Dir /AD /B "%~2" 2^>NUL') do (Call :RD "%~dp2%%g"))
-if %~1 EQU DEL (FOR /F "tokens=*" %%g in ('Dir /A-D /B "%~2" 2^>NUL') do (Call :DEL "%~dp2%%g"))
-if %~1 EQU RDS (FOR /F "tokens=*" %%g in ('Dir /AD /B /S "%~2" 2^>NUL') do (Call :RD "%%g"))
-if %~1 EQU DELS (FOR /F "tokens=*" %%g in ('Dir /A-D /B /S "%~2" 2^>NUL') do (Call :DEL "%%g"))
+:DEL_Search
+REM Dosya silmek için (dizin aramalı)
+FOR /F "tokens=*" %%v in ('Dir /A-D /B "%~1" 2^>NUL') do (
+	DEL /F /Q /A "%~dp1%%v" > NUL 2>&1
+		if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%~dp1%%v")
+)
+goto :eof
+
+:DEL_Deep_Search
+REM Dosya silmek için (derin aramalı)
+FOR /F "tokens=*" %%v in ('Dir /A-D /B /S "%~1" 2^>NUL') do (
+	DEL /F /Q /A "%%v" > NUL 2>&1
+		if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%%v")
+)
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :CurrentUserName
 Call :Powershell "Get-CimInstance -ClassName Win32_UserAccount | Select-Object -Property Name,SID" > %Konum%\Log\cusername
 FOR /F "tokens=2" %%a in ('Find "%username%" %Konum%\Log\cusername') do set CUS=%%a
-Call :Del "%Konum%\Log\cusername"
+Call :DEL_Direct "%Konum%\Log\cusername"
 goto :eof
 
 REM -------------------------------------------------------------
@@ -1239,7 +1283,7 @@ goto :eof
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Language_Select
 cls
-Call :DEL %Konum%\Log\Dil
+Call :DEL_Direct %Konum%\Log\Dil
 Call :Dil A 2 B0009&echo.&echo %R%[91m !LA2! %R%[0m&echo.
 set Count=0
 FOR /F "delims=. tokens=1" %%g in ('dir /b "%Konum%\Bin\Language\*.cmd" 2^>NUL') do (
@@ -1520,7 +1564,7 @@ Call :Dil A 2 B0008&cls&echo ►%R%[36m !LA2! %R%[0m
 Call :Dil A 2 P3002&echo %R%[90m  • !LA2! %R%[0m
 Call :Dil A 2 P3003&echo %R%[90m  • !LA2! %R%[0m
 echo %R%[90m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬%R%[0m
-Call :DEL "%Konum%\Log\Playbook"
+Call :DEL_Direct "%Konum%\Log\Playbook"
 Call :Dil A 2 T0006
 FOR /F "tokens=*" %%a in ('dir /b "%Konum%\Bin\Playbook\*.ini" 2^>NUL') do (
 	set /a Count+=1
@@ -1536,7 +1580,7 @@ if %Value_MM% EQU X (goto Main_Menu)
 Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook > NUL 2>&1
 	if !errorlevel! NEQ 0 (goto Playbook_Manager)
 	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook 2^>NUL') do (set PB=%%a))
-Call :DEL "%Konum%\Log\Playbook"
+Call :DEL_Direct "%Konum%\Log\Playbook"
 mode con cols=130 lines=35
 Call :Dil A 2 B0008&echo.&echo %R%[36m► !LA2! %R%[0m
 Call :Dil A 2 P4001&echo %R%[36m▼ !LA2! %R%[0m
@@ -1574,11 +1618,6 @@ echo set NSudo="%Konum%\Bin\NSudo.exe" -U:T -P:E -Wait -ShowWindowMode:hide cmd 
 echo.
 echo goto Delete
 echo.
-echo :DEL_Direct
-echo echo [DEL_Direct]-[%%~1]
-echo %%NSudo%% DEL /F /Q /A "%%~1"
-echo goto :eof
-echo.
 echo :RD_Direct
 echo echo [RD_Direct]-[%%~1]
 echo %%NSudo%% RD /S /Q "%%~1"
@@ -1588,13 +1627,6 @@ echo :RD_Search
 echo echo [RD_Search]-[%%~dp1%%%%g]
 echo FOR /F "tokens=*" %%%%g in ^('Dir /AD /B "%%~1" 2^^^>NUL'^) do ^(
 echo    echo [RD_Search]-[%%~dp1%%%%g]
-echo    %%NSudo%% DEL /F /Q /A "%%~dp1%%%%g"
-echo ^)
-echo goto :eof
-echo.
-echo :DEL_Search
-echo FOR /F "tokens=*" %%%%g in ^('Dir /A-D /B "%%~1" 2^^^>NUL'^) do ^(
-echo    echo [DEL_Search]-[%%~dp1%%%%g]
 echo    %%NSudo%% RD /S /Q "%%~dp1%%%%g"
 echo ^)
 echo goto :eof
@@ -1603,6 +1635,18 @@ echo :RD_Deep_Search
 echo FOR /F "tokens=*" %%%%g in ^('Dir /AD /B /S "%%~1" 2^^^>NUL'^) do ^(
 echo    echo [RD_Deep_Search]-[%%%%g]
 echo    %%NSudo%% RD /S /Q "%%%%g"
+echo ^)
+echo goto :eof
+echo.
+echo :DEL_Direct
+echo echo [DEL_Direct]-[%%~1]
+echo %%NSudo%% DEL /F /Q /A "%%~1"
+echo goto :eof
+echo.
+echo :DEL_Search
+echo FOR /F "tokens=*" %%%%g in ^('Dir /A-D /B "%%~1" 2^^^>NUL'^) do ^(
+echo    echo [DEL_Search]-[%%~dp1%%%%g]
+echo    %%NSudo%% DEL /F /Q /A "%%~dp1%%%%g"
 echo ^)
 echo goto :eof
 echo.
@@ -1655,15 +1699,15 @@ Findstr /i "Install_Component_3_" %PB% > NUL 2>&1
 	)
 )
 REM Bileşen kaldırma bölümü
-FOR %%g in (C_Packages C_Capabilities) do (Call :DEL "%Konum%\Log\%%g")
+FOR %%g in (C_Packages C_Capabilities) do (Call :DEL_Direct "%Konum%\Log\%%g")
 REM Capabilities ve packages bileşenleri için Dism ile verileri alır.
-Call :DEL "%Konum%\Log\C_Packages"
-Call :DEL "%Konum%\Log\C_Capabilities"
+Call :DEL_Direct "%Konum%\Log\C_Packages"
+Call :DEL_Direct "%Konum%\Log\C_Capabilities"
 DISM /Online /Get-Capabilities /format:table | Findstr /i "Installed" > %Konum%\Log\C_Capabilities
 FOR /F "tokens=4" %%g in ('Dism /Online /Get-Packages ^| Findstr /i "Package Identity"') do echo %%g >> %Konum%\Log\C_Packages
 cls&Call :Dil A 2 P1001&title OgnitorenKs Playbook │ 2/7 │ !LA2!
-Call :DEL "%Konum%\Log\COMPlaybook"
-Call :DEL "%Konum%\Log\Playbook_Log.txt"
+Call :DEL_Direct "%Konum%\Log\COMPlaybook"
+Call :DEL_Direct "%Konum%\Log\Playbook_Log.txt"
 Call :Dil B 2 T0008
 FOR /L %%a in (1,1,69) do (
 	FOR /F "tokens=2" %%b in ('Findstr /i "COM_%%a_" %PB% 2^>NUL') do (
@@ -1699,8 +1743,8 @@ Call :Playbook_Reader Component_Setting_1_
 							 "%windir%\System32\securityhealthsystray.exe"
 							 "%windir%\System32\SgrmBroker.exe"
 							 ) do (
-							 echo Call :DEL_Direct %%a >> C:\Playbook.Reset.After.cmd
-							 %NSudo% DEL /F /Q /A %%a
+								echo Call :DEL_Direct %%a >> C:\Playbook.Reset.After.cmd
+								%NSudo% DEL /F /Q /A %%a
 							 )
 							 FOR %%a in (
 							 "%programfiles%\Windows Defender Advanced Threat Protection"
@@ -1714,16 +1758,16 @@ Call :Playbook_Reader Component_Setting_1_
 							 "%programdata%\Microsoft\Windows Defender"
 							 "%windir%\SystemApps\Microsoft.Windows.SecHealthUI_cw5n1h2txyewy"
 							 ) do (
-							 echo Call :RD_Direct %%a >> C:\Playbook.Reset.After.cmd
-							 %NSudo% RD /S /Q %%a
+								echo Call :RD_Direct %%a >> C:\Playbook.Reset.After.cmd
+								%NSudo% RD /S /Q %%a
 							 )
 							 FOR %%a in (
 							 "%LocalAppData%\Packages\*.SecHealthUI_*"
 							 ) do (
-							 echo Call :RD_Direct "%LocalAppData%\Packages\%%a" >> C:\Playbook.Reset.After.cmd
-							 Call :Search_Del RD %%a
+								echo Call :RD_Direct "%LocalAppData%\Packages\%%a" >> C:\Playbook.Reset.After.cmd
+								Call :RD_Search %%a
 							 )
-							 Call :Search_Del DELS "C:\*guard.wim"
+							 Call :DEL_Deep_Search "C:\*guard.wim"
 							 Call :Service_Admin SecurityHealthService 6
 							 Call :Service_Admin Sense 6
 							 Call :Service_Admin SgrmBroker 6
@@ -1838,18 +1882,20 @@ Call :Playbook_Reader Component_Setting_2_
 							 FOR %%a in ('Dir /AD /B "%programfiles(x86)%\Microsoft\Edge\Application\*" 2^>NUL') do (
 							 dir /b "%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer" > NUL 2>&1
 								if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer\setup.exe" --uninstall --system-level --force-uninstall)
-							 FOR /F "tokens=*" %%b in ('Dir /AD /B "%ProgramFiles(x86)%\Microsoft" ^| Findstr /i /l /v /C:"WebView"') do (
-								Call :RD "%ProgramFiles(x86)%\Microsoft\%%b"
-								echo Call :RD_Direct "%ProgramFiles(x86)%\Microsoft\%%b" >> C:\Playbook.Reset.After.cmd
+							 FOR /F "tokens=*" %%b in ('Dir /AD /B "%ProgramFiles(x86)%\Microsoft" ^| Findstr /i /l /v /C:"WebView" 2^>NUL') do (
+								Call :RD_Direct "%ProgramFiles(x86)%\Microsoft\%%b"
+								echo Call :RD_Direct "%%ProgramFiles(x86)%%\Microsoft\%%b" >> C:\Playbook.Reset.After.cmd
 							 )
-							 Call :DEL "C:\Users\%username%\Desktop\edge.lnk"
-							 Call :DEL "C:\Users\Public\Desktop\Microsoft Edge.lnk"
-							 Call :DEL "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
-							 Call :RD "%LocalAppData%\Microsoft\Edge"
-							 Call :Search_Del DELS "C:\Windows\*dge.wim"
-							 Call :RD "C:\Users\OgnitorenKs\AppData\Local\Microsoft\Edge"
-							 Call :RD "C:\Users\All Users\Microsoft\EdgeUpdate"
-							 Call :DEL "%Windir%\System32\config\systemprofile\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk"
+							 FOR /F "tokens=*" %%c in ('dir /ad /b /s "%SystemDrive%\*Microsoft Edge*" 2^>NUL') do (%NSudo% DEL /F /Q /A "%%c")
+							 FOR /F "tokens=*" %%d in ('dir /a-d /b /s "%SystemDrive%\*Microsoft Edge*" 2^>NUL') do (%NSudo% DEL /F /Q /A "%%d")
+							 Call :DEL_Direct "C:\Users\%username%\Desktop\edge.lnk"
+							 Call :DEL_Direct "C:\Users\Public\Desktop\Microsoft Edge.lnk"
+							 Call :DEL_Direct "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
+							 Call :RD_Direct "%LocalAppData%\Microsoft\Edge"
+							 Call :DEL_Deep_Search "C:\Windows\*dge.wim"
+							 Call :RD_Direct "C:\Users\OgnitorenKs\AppData\Local\Microsoft\Edge"
+							 Call :RD_Direct "C:\Users\All Users\Microsoft\EdgeUpdate"
+							 Call :DEL_Direct "%Windir%\System32\config\systemprofile\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk"
 							 echo Call :DEL_Direct "C:\Users\Public\Desktop\Microsoft Edge.lnk" >> C:\Playbook.Reset.After.cmd
 							 echo Call :DEL_Direct "C:\Users\Public\Desktop\Microsoft Edge.lnk" >> C:\Playbook.Reset.After.cmd
 							 echo Call :DEL_Direct "C:\Users\%username%\Desktop\Microsoft Edge.lnk" >> C:\Playbook.Reset.After.cmd
@@ -1870,17 +1916,20 @@ Call :Playbook_Reader Component_Setting_2_
 REM EdgeWebView2 kaldır
 Call :Playbook_Reader Component_Setting_3_
 	if "!Playbook!" EQU "1" (Call :Dil A 2 P2003&echo ►%R%[32m !LA2! %R%[0m
+							 %NSudo% Taskkill /f /im "msedge.exe"
+							 %NSudo% Taskkill /f /im "Setup.exe"
+							 %NSudo% Taskkill /f /im "CompactTelRunner.exe"
 							 FOR %%a in ('Dir /AD /B "%programfiles(x86)%\Microsoft\EdgeWebView\Application\*" 2^>NUL') do (
 								dir /b "%programfiles(x86)%\Microsoft\EdgeWebView\Application\%%a\Installer" > NUL 2>&1
 									if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\EdgeWebView\Application\%%a\Installer\setup.exe" --uninstall --msedgewebview --system-level --force-uninstall)
 							 )
 							 FOR /F "tokens=*" %%b in ('Dir /AD /B "%ProgramFiles(x86)%\Microsoft\*WebView*" 2^>NUL') do (
-								Call :RD "%ProgramFiles(x86)%\Microsoft\%%b"
+								Call :RD_Direct "%ProgramFiles(x86)%\Microsoft\%%b"
 								echo Call :RD_Direct "%%ProgramFiles(x86)%%\Microsoft\%%b" >> C:\Playbook.Reset.After.cmd
 							 )
-							 Call :Search_Del %Windir%\WinSxS\*microsoft-edge-webview*
-							 Call :RD "%Windir%\System32\Microsoft-Edge-WebView"
-							 echo Call :RD_Search "%%Windir%%\WinSxS\Microsoft-Edge-WebView" >> C:\Playbook.Reset.After.cmd
+							 Call :RD_Search "%Windir%\WinSxS\*-edge-webview_*"
+							 Call :RD_Direct "%Windir%\System32\Microsoft-Edge-WebView"
+							 echo Call :RD_Search "%%Windir%%\WinSxS\*microsoft-edge-webview*" >> C:\Playbook.Reset.After.cmd
 							 echo Call :RD_Direct "%%Windir%%\System32\Microsoft-Edge-WebView" >> C:\Playbook.Reset.After.cmd
 )
 REM Onedrive kaldır
@@ -1894,8 +1943,8 @@ Call :Playbook_Reader Component_Setting_4_
 							 )
 							 Call :Read_Features "OGNI_1_"
 							 Call :Remove_!Value_C! "OGNI_1_"
-							 Call :Search_Del RDS "C:\*onedrive*"
-							 Call :Search_Del DELS "C:\*onedrive*"
+							 Call :RD_Deep_Search "C:\*onedrive*"
+							 Call :DEL_Deep_Search "C:\*onedrive*"
 							 Call :RegDel "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup"
 							 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280811Enabled" REG_DWORD 0
 							 Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" "SubscribedContent-280810Enabled" REG_DWORD 0
@@ -1906,7 +1955,7 @@ Call :Playbook_Reader Component_Setting_4_
 REM Kurtarma alanını kaldır
 Call :Playbook_Reader Component_Setting_5_
 	if "!Playbook!" EQU "1" (Call :Dil A 2 P2005&echo ►%R%[32m !LA2! %R%[0m
-							 Call :Search_Del DELS "C:\*winre.wim"
+							 Call :DEL_Deep_Search "C:\*winre.wim"
 )
 REM Uygulama kaldır
 cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 3/7 │ !LA2!
@@ -2535,7 +2584,7 @@ REM Modern beyaz fare simgesini yükle
 Call :Playbook_Reader Explorer_Setting_30_
 	if "!Playbook!" EQU "1" (Call :Powershell "Expand-Archive -Force '%Konum%\Bin\Mouse.zip' '%Temp%\Mouse_Playbook'"
 							 RunDll32 advpack.dll,LaunchINFSection %Temp%\Mouse_Playbook\Mouse1\Install.inf,DefaultInstall
-							 Call :RD "%Temp%\Mouse_Playbook"
+							 Call :RD_Direct "%Temp%\Mouse_Playbook"
 )
 REM Windows Tema ayarlarını değiştir [Koyu mod]
 Call :Playbook_Reader Explorer_Setting_31_
@@ -2557,7 +2606,7 @@ REM Modern siyah fare simgesini yükle
 Call :Playbook_Reader Explorer_Setting_34_
 	if "!Playbook!" EQU "1" (Call :Powershell "Expand-Archive -Force '%Konum%\Bin\Mouse.zip' '%Temp%\Mouse_Playbook'"
 							 RunDll32 advpack.dll,LaunchINFSection %Temp%\Mouse_Playbook\Mouse2\Install.inf,DefaultInstall
-							 Call :RD "%Temp%\Mouse_Playbook"
+							 Call :RD_Direct "%Temp%\Mouse_Playbook"
 )
 REM Windows Search - Şifrelenmiş dosyaların indekslenmesini devre dışı bırak
 Call :Playbook_Reader Search_Setting_1_
@@ -2696,7 +2745,7 @@ Call :Playbook_Reader Optimization_Setting_13_
 													   powercfg /hibernate on > NUL 2>&1
 													  )
 )
-Call :DEL "%Konum%\Log\SSD"
+Call :DEL_Direct "%Konum%\Log\SSD"
 REM Sistem RAM miktarına göre Svchost işlemini optimize et [İşlemci işlem sayısında ciddi düşüş yapacaktır]
 Call :Playbook_Reader Optimization_Setting_14_
 	if "!Playbook!" EQU "1" (FOR /F "tokens=4" %%a in ('systeminfo ^| find "Total Physical Memory"') do (
@@ -2713,7 +2762,7 @@ Call :Playbook_Reader Optimization_Setting_15_
 								if %%a EQU AMD (FOR %%b in (intelpep Telemetry iai2c iaLPSS2i_I2C iaLPSS2i_I2C_BXT_P iaLPSS2i_I2C_CNL iaLPSS2i_I2C_GLK iaLPSS2i_GPIO2_GLK iaLPSS2i_GPIO2_CNL iaLPSS2i_GPIO2_BXT_P iaLPSS2i_GPIO2 iaLPSSi_GPIO intelpmax iagpio iaStorV intelppm) do (Call :Service_Check %%b))
 								if %%a NEQ AMD (FOR %%b in (amdgpio2 amdi2c AmdPPM AmdK8 amdsata amdsbs amdxata) do (Call :Service_Check %%b))
 							 )
-							 Call :DEL "%Konum%\Log\Brand"
+							 Call :DEL_Direct "%Konum%\Log\Brand"
 )
 REM Yüksek hassasiyetli olay zamanlayıcısı [HPET] devre dışı bırak [BIOS üzerinde ayar mevcut ise kapatmayı unutmayın]
 Call :Playbook_Reader Optimization_Setting_16_
@@ -3060,12 +3109,13 @@ Call :Dil B 2 T0011
 Findstr /i "Install_Application" %PB% > NUL 2>&1
 	if !errorlevel! EQU 0 (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
 								FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
-									echo %%a | Findstr /i "7zip.7zip" > NUL 2>&1
-										if !errorlevel! EQU 0 (Call :7Zip_Default)
-									echo %%a | Findstr /i "sylikc.JPEGView" > NUL 2>&1
-										if !errorlevel! EQU 0 (Call :Jpegview_Default)
-									if %%b EQU 1 (echo ► %R%[92m "%%a" %R%[37m !LB2! %R%[0m  
-												  Call :Winget "%%a")
+									if %%b EQU 1 (echo %%a | Findstr /i "sylikc.JPEGView" > NUL 2>&1
+													if !errorlevel! EQU 0 (Call :Jpegview_Default)
+												  echo %%a | Findstr /i "7zip.7zip" > NUL 2>&1
+													if !errorlevel! EQU 0 (Call :7Zip_Default)
+												  echo ► %R%[92m "%%a" %R%[37m !LB2! %R%[0m  
+												  Call :Winget "%%a"
+												 )
 								)
 							)
 )
@@ -3079,7 +3129,7 @@ Findstr /i "Power_Link_" %PB% > NUL 2>&1
 									Call :Powershell "& { iwr %%a -OutFile %Temp%\%%b }"
 									powercfg -import "%Temp%\%%b" 12345678-1234-1234-1234-123456789012 > NUL 2>&1
 									powercfg /SETACTIVE "12345678-1234-1234-1234-123456789012" > NUL 2>&1
-									Call :DEL "%Temp%\%%b"
+									Call :DEL_Direct "%Temp%\%%b"
 								)
 							)
 )
@@ -3097,36 +3147,59 @@ REM -------------------------------------------------------------
 Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Subscriptions"
 Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\SuggestedApps"
 REM -------------------------------------------------------------
-Call :DEL "%Konum%\Log\C_Packages"
-Call :DEL "%Konum%\Log\C_Capabilities"
-Call :DEL "%Konum%\Log\Capabilities"
-Call :DEL "%Konum%\Log\Features"
+Call :DEL_Direct "%Konum%\Log\C_Packages"
+Call :DEL_Direct "%Konum%\Log\C_Capabilities"
+Call :DEL_Direct "%Konum%\Log\Capabilities"
+Call :DEL_Direct "%Konum%\Log\Features"
 REM -------------------------------------------------------------
 FOR %%a in (
 "%windir%\*.log"
 "%windir%\CbsTemp\*"
 "%windir%\Logs\*"
+"%Windir%\System32\LogFiles\WMI\*"
+"%Windir%\System32\LogFiles\Scm\*"
+"%Windir%\Installer\*"
 ) do (
-	Call :Search_Del DEL %%a
+	Call :DEL_Search %%a
 )
 REM -------------------------------------------------------------
 FOR %%a in (
 "%windir%\WinSxS\Temp"
 "%windir%\WinSxS\Backup"
 "%windir%\Containers"
+"%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization"
+"%ProgramData%\Package Cache"
 ) do (
-	Call :RD %%a
+	Call :RD_Direct %%a
 )
 REM -------------------------------------------------------------
 FOR %%a in (
 "%Windir%\CbsTemp\*"
 "%windir%\Logs\*"
+"%Windir%\assembly\NativeImage*"
+"%Windir%\Installer\*"
 ) do (
-	Call :Search_Del RD %%a
+	Call :RD_Search %%a
 )
 REM -------------------------------------------------------------
+FOR /F "tokens=*" %%a in ('dir /ad /b "%LocalAppData%\Packages\*" 2^>NUL') do (
+	%NSudo% RD /S /Q "%LocalAppData%\Packages\%%a\AC\INetCache"
+	%NSudo% RD /S /Q "%LocalAppData%\Packages\%%a\AC\Temp"
+)
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\IE"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\Low"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\Virtualized"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\IE"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Low"
+Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Virtualized"
+Call :RD_Direct "%Windir%\System32\config\systemprofile\AppData\Local\Microsoft\Windows\INetCache\IE"
+REM -------------------------------------------------------------
+Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\ReportArchive"
+Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\Temp"
+Call :RD_Direct "%ProgramFiles%\$Recycle.Bin"
+REM -------------------------------------------------------------
 net stop wuauserv > NUL 2>&1
-Call :RD "%windir%\SoftwareDistribution"
+Call :RD_Direct "%windir%\SoftwareDistribution"
 net start wuauserv > NUL 2>&1
 gpupdate /force > NUL 2>&1
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "OgnitorenKs_Playbook" REG_SZ "C:\Playbook.Reset.After.cmd"
@@ -3159,6 +3232,7 @@ echo Call :DEL_Search "%%Windir%%\Installer\*"
 echo Call :RD_Search "%%Windir%%\Installer\*"
 echo Call :RD_Search "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 echo Call :DEL_Search "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
+echo Call :RD_Direct "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
 echo Call :DEL_Search "%%Windir%%\prefetch\*"
 echo Call :DEL_Search "%%AppData%%\Microsoft\Windows\Recent\AutomaticDestinations\*"
 echo Call :DEL_Search "%%AppData%%\Microsoft\Windows\Recent\CustomDestinations\*"
@@ -3193,22 +3267,46 @@ echo Call :DEL_Direct "%%SystemRoot%%\System32\catroot2.chk"
 echo Call :DEL_Search "%%SystemRoot%%\Logs\SIH\*"
 echo Call :DEL_Search "%%SystemRoot%%\Traces\WindowsUpdate\*"
 echo Call :RD_Direct "%%SystemRoot%%\Logs\waasmedic"
+echo Call :RD_Direct "%%ProgramData%%\Package Cache"
 echo Call :RD_Direct "%%systemdrive%%\AMD"
 echo Call :RD_Direct "%%systemdrive%%\NVIDIA"
 echo Call :RD_Direct "%%systemdrive%%\INTEL"
+echo Call :RD_Direct "%%systemdrive%%\$WinREAgent"
+echo Call :RD_Direct "%%ProgramFiles%%\$Recycle.Bin"
 echo net stop wuauserv /y ^> NUL 2^>^&1
 echo Call :RD_Direct "%%windir%%\SoftwareDistribution"
 echo net start wuauserv /y ^> NUL 2^>^&1
-echo Dism /Online /Cleanup-Image /StartComponentCleanup
+echo Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+echo Dism /Online /Cleanup-Image /SPSuperseded
 echo ipconfig /flushdns ^> NUL 2^>^&1
 echo ipconfig /release ^> NUL 2^>^&1
 echo ipconfig /renew ^> NUL 2^>^&1
 echo FOR /F "tokens=*" %%%%g in ^('wevtutil.exe el'^) do ^(wevtutil.exe cl "%%%%g" ^> NUL 2^>^&1^)
 echo Call :RD_Direct "%%windir%%\WinSxS\Temp"
 echo Call :RD_Direct "%%windir%%\WinSxS\Backup"
+echo Call :RD_Search "%%Windir%%\assembly\NativeImage*"
+echo Call :DEL_Search "%%Windir%%\System32\LogFiles\WMI\*"
+echo Call :DEL_Search "%%Windir%%\System32\LogFiles\Scm\*"
 echo Call :RD_Direct "%%windir%%\Containers"
 echo Call :DEL_Search "%%Windir%%\CbsTemp\*"
 echo Call :DEL_Search "%%windir%%\Logs\*"
+echo Call :RD_Search "%%windir%%\Logs\*"
+echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\ReportArchive"
+echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\Temp"
+echo FOR /F "tokens=*" %%%%a in ^('dir /b "%%LocalAppData%%\Packages\*" 2^^^>NUL'^) do ^(
+echo    Call :RD_Direct "%%LocalAppData%%\Packages\%%%%a\AC\INetCache"
+echo    Call :RD_Direct "%%LocalAppData%%\Packages\%%%%a\AC\Temp"
+echo ^)
+echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\INetCache\IE"
+echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\INetCache\Low"
+echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\INetCache\Virtualized"
+echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\Temporary Internet Files\IE"
+echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\Temporary Internet Files\Low"
+echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\Temporary Internet Files\Virtualized"
+echo Call :RD_Direct "%%Windir%%\System32\config\systemprofile\AppData\Local\Microsoft\Windows\INetCache\IE"
+echo chcp 437 ^> NUL
+echo PowerShell -ExecutionPolicy Unrestricted -Command "$bin = (New-Object -ComObject Shell.Application).NameSpace(10); $bin.items() | ForEach {; Write-Host "^^^""Deleting $($_.Name) from Recycle Bin"^^^""; Remove-Item $_.Path -Recurse -Force; }"
+echo chcp 65001 ^> NUL
 echo.
 echo reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OgnitorenKs_Playbook" /f ^> NUL 2^>^&1
 echo DEL /F /Q /A "C:\Playbook.Reset.After.cmd" ^> NUL 2^>^&1
