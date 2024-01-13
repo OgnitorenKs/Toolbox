@@ -7,6 +7,10 @@
 - Supported languages = English │ Turkish
 - Türkçe açıklama: [https://github.com/OgnitorenKs/Toolbox/blob/main/README-TR.md](README-TR.md)
 
+- Update notes [Superficial]: https://github.com/OgnitorenKs/Toolbox/blob/main/Release.Notes.md
+- Update notes [Detailed]: https://github.com/OgnitorenKs/Toolbox/commits/main/
+- Update notes playbook patterns [Superficial]: https://github.com/OgnitorenKs/Toolbox/blob/main/Playbook_Release.Notes.md
+
 All rights of the work belong to Hüseyin UZUNYAYLA. It is forbidden to develop, copy, change the content of the work. If you want to share the application on different platforms, you need to get permission from me.
 
 # OGNİTORENKS TOOLBOX

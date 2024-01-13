@@ -6,6 +6,10 @@
 - ► Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 - ► Desteklenen diller = Turkish │ English
 
+- Güncelleme notları [Yüzeysel]: https://github.com/OgnitorenKs/Toolbox/blob/main/Release.Notes.md
+- Güncelleme notları [Detaylı]: https://github.com/OgnitorenKs/Toolbox/commits/main/
+- Playbook kalıpları güncelleme notları [Yüzeysel]: https://github.com/OgnitorenKs/Toolbox/blob/main/Playbook_Release.Notes.md
+
 Çalışmanın tüm hakları Hüseyin UZUNYAYLA’ya aittir. Çalışma üzerinde geliştirme, kopyalama, içeriğini değiştirmek yasaktır. Uygulamayı farklı platformlar üzerinde paylaşmak isterseniz tarafımdan izin almanız gerekmektedir.
 
 # OGNİTORENKS TOOLBOX
