@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title  OgnitorenKs Toolbox
 REM Toolbox versiyon
-set Version=4.2.0
+set Version=4.2.1
 set PB_Version=1.1
 REM Pencere ayarı
 mode con cols=100 lines=23
@@ -437,6 +437,8 @@ FOR /L %%a in (1,1,45) do (
 )
 Call :Dil A 2 T0006&echo  %R%[36m    X%R%[90m-%R%[37m   !LA2!%R%[0m
 echo   %R%[90m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘%R%[0m
+REM Check_!Value_C! başlıklarındaki değişkeni temizlemek için
+set PB_Check=
 Call :Dil A 2 D0002&set /p Value_S=%R%[92m   !LA2!: %R%[0m
 Call :Upper "%Value_S%" Value_S 
 echo !Value_S! | Findstr /i "X" > NUL 2>&1
@@ -747,10 +749,87 @@ goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Playbook_Reader
+if "!PB_Choice!" EQU "2" (FOR %%p in (
+						  Component_Setting_2_
+						  Component_Setting_3_
+						  Component_Setting_4_
+						  Component_Setting_5_
+						  Taskbar_Setting_5_
+						  Taskbar_Setting_6_
+						  Taskbar_Setting_7_
+						  Taskbar_Setting_8_
+						  Taskbar_Setting_9_
+						  Taskbar_Setting_10_
+						  Taskbar_Setting_11_
+						  Taskbar_Setting_12_
+						  Taskbar_Setting_13_
+						  Explorer_Setting_4_
+						  Explorer_Setting_9_
+						  Explorer_Setting_10_
+						  Explorer_Setting_11_
+						  Explorer_Setting_12_
+						  Explorer_Setting_13_
+						  Explorer_Setting_14_
+						  Explorer_Setting_15_
+						  Explorer_Setting_16_
+						  Explorer_Setting_18_
+						  Explorer_Setting_19_
+						  Explorer_Setting_20_
+						  Explorer_Setting_21_
+						  Explorer_Setting_22_
+						  Explorer_Setting_23_
+						  Explorer_Setting_24_
+						  Explorer_Setting_25_
+						  Explorer_Setting_26_
+						  Explorer_Setting_27_
+						  Explorer_Setting_28_
+						  Explorer_Setting_30_
+						  Explorer_Setting_31_
+						  Explorer_Setting_32_
+						  Explorer_Setting_33_
+						  Explorer_Setting_34_
+						  Optimization_Setting_2_
+						  Optimization_Setting_5_
+						  Optimization_Setting_8_
+						  Optimization_Setting_10_
+						  Optimization_Setting_11_
+						  Optimization_Setting_15_
+						  Fix_Setting_1_
+						  Fix_Setting_2_
+						  Fix_Setting_3_
+						  Security_Setting_2_
+						  Security_Setting_7_
+						  Feature_Setting_1_
+						  Feature_Setting_2_
+						  Feature_Setting_3_
+						  Feature_Setting_4_
+						  Feature_Setting_5_
+						  Feature_Setting_6_
+						  Feature_Setting_7_
+						  Feature_Setting_10_
+						  ) do (
+						  	if "%%p" EQU "%~1" (set Playbook=0&goto :eof)
+						  )
+)
 Find "%~1" !PB! > NUL 2>&1
 	if !errorlevel! NEQ 0 (set Playbook=0&goto :eof)
 FOR /F "skip=2 tokens=2" %%p in ('Find "%~1" !PB! 2^>NUL') do (set Playbook=%%p)
 echo [!Playbook!]-"%~1" >> %Konum%\Log\Playbook_Log.txt
+goto :eof
+
+REM -------------------------------------------------------------
+:Playbook_Reader_2
+if "!PB_Choice!" EQU "2" (FOR %%p in (
+						  Install_Application
+						  Power_Link_
+						  Wallpaper_Link_
+						  System_New_Name
+						  Settings_Hide
+						  ) do (set Playbook=0&goto :eof)
+)
+Findstr /i "%~1" %PB% > NUL 2>&1
+	if "!errorlevel!" EQU "0" (set Playbook=1)
+	if "!errorlevel!" NEQ "0" (set Playbook=0)
 goto :eof
 
 REM -------------------------------------------------------------
@@ -1304,6 +1383,7 @@ FOR /F "delims=> tokens=2" %%g in ('Findstr /i "Lang_!Value_M!_" %Konum%\Log\Dil
 goto Main_Menu
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+:___DEVELOPER__HANGAR___
 :Sistem_Bilgi
 mode con cols=140 lines=50
 Call :Date&Call :Time
@@ -1552,35 +1632,56 @@ goto Main_Menu
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Playbook_Manager
 REM Playbook kütüphanesi kontrol edilir. Kalıp sayısına göre pencere ayarı yapılır. Yoksa ana menüye atar.
-set Mode=10
+set Mode=8
 dir /b "%Konum%\Bin\Playbook\*.ini" > NUL 2>&1
 	if !errorlevel! EQU 0 (FOR /F "tokens=*" %%a in ('dir /b "%Konum%\Bin\Playbook\*.ini" 2^>NUL') do (set /a Mode+=1)
 						   mode con cols=110 lines=!Mode!
 						  )
 	if !errorlevel! NEQ 0 (Call :Dil A 2 Error_10_&echo %R%[91m !LA2! %R%[0m&Call :Bekle 7&goto Main_Menu)
+REM -------------------------------------------------------------
 REM Playbook dosyaları listelenir
-set Count=0
-Call :Dil A 2 B0008&cls&echo ►%R%[36m !LA2! %R%[0m
-Call :Dil A 2 P3002&echo %R%[90m  • !LA2! %R%[0m
-Call :Dil A 2 P3003&echo %R%[90m  • !LA2! %R%[0m
+Call :Dil A 2 B0008&cls&echo.&echo ►%R%[36m !LA2! %R%[0m
 echo %R%[90m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬%R%[0m
 Call :DEL_Direct "%Konum%\Log\Playbook"
 Call :Dil A 2 T0006
+set Count=0
 FOR /F "tokens=*" %%a in ('dir /b "%Konum%\Bin\Playbook\*.ini" 2^>NUL') do (
 	set /a Count+=1
 	echo PB_Index_!Count!_^>%Konum%\Bin\Playbook\%%a^> >> %Konum%\Log\Playbook
-	if !Count! LEQ 9 (echo %R%[92m  !Count!%R%[90m-%R%[33m %%a %R%[0m)
-	if !Count! GTR 9 (echo %R%[92m !Count!%R%[90m-%R%[33m %%a %R%[0m)
+	set Version_K=1.0
+	FOR /F "tokens=2" %%b in ('Findstr /i "Playbook_Version_" %Konum%\Bin\Playbook\%%a') do (set Version_K=%%b)
+	if "!Count!" LEQ "9" (echo %R%[92m  !Count!%R%[90m-%R%[33m %%~na %R%[90m[!Version_K!] %R%[0m)
+	if "!Count!" GTR "9" (echo %R%[92m !Count!%R%[90m-%R%[33m %%~na %R%[90m[!Version_K!] %R%[0m)
 )
 echo %R%[92m  X%R%[90m-%R%[37m !LA2! %R%[0m
 echo %R%[90m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬%R%[0m
+set Version_K=
 Call :Dil A 2 P3001&set /p Value_MM=►%R%[32m !LA2!: %R%[0m
-Call :Upper %Value_MM% Value_MM
-if %Value_MM% EQU X (goto Main_Menu)
+Call :Upper !Value_MM! Value_MM
+	if "!Value_MM!" EQU "X" (goto Main_Menu)
+	if "!Value_MM!" EQU "OGNITORENKS" (set PB=%Konum%\Bin\Extra\OgnitorenKs_Special.ini)
 Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook > NUL 2>&1
-	if !errorlevel! NEQ 0 (goto Playbook_Manager)
+	if !errorlevel! NEQ 0 (if "!Value_MM!" NEQ "OGNITORENKS" (goto Playbook_Manager))
 	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook 2^>NUL') do (set PB=%%a))
 Call :DEL_Direct "%Konum%\Log\Playbook"
+REM -------------------------------------------------------------
+REM İkinci menü
+mode con cols=110 lines=12
+Call :Dil A 2 B0008&cls&echo ►%R%[36m !LA2! %R%[0m
+Call :Dil A 2 P3002&echo %R%[90m  • !LA2! %R%[0m
+Call :Dil A 2 P3003&echo %R%[90m  • !LA2! %R%[0m
+Call :Dil A 2 T0006
+echo %R%[90m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬%R%[0m
+echo %R%[92m  1%R%[90m-%R%[33m Playbook %R%[0m
+echo %R%[92m  2%R%[90m-%R%[33m UpdateAfter %R%[0m
+echo %R%[92m  X%R%[90m-%R%[37m !LA2! %R%[0m
+echo %R%[90m▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬%R%[0m
+Call :Dil A 2 P3004&set /p PB_Choice=►%R%[32m !LA2!: %R%[0m
+Call :Upper !PB_Choice! PB_Choice
+	if "!PB_Choice!" EQU "X" (goto Main_Menu)
+	if "!PB_Choice!" GTR "3" (goto Playbook_Manager)
+REM -------------------------------------------------------------
+REM Uyarı ekranı
 mode con cols=130 lines=35
 Call :Dil A 2 B0008&echo.&echo %R%[36m► !LA2! %R%[0m
 Call :Dil A 2 P4001&echo %R%[36m▼ !LA2! %R%[0m
@@ -1599,10 +1700,11 @@ Call :Powershell "Start-Process 'windowsdefender://ThreatSettings'" > NUL 2>&1
 REM Boş tuşlama sonrası işleme devam etmemesi için
 set Value_MM=N
 Call :Dil A 2 P4009&echo.&set /p Value_MM=►%R%[32m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
-Call :Upper %Value_MM% Value_MM
-	if %Value_MM% EQU N (set Error=X&goto Main_Menu)
+Call :Upper !Value_MM! Value_MM
+	if "!Value_MM!" EQU "N" (set Error=X&goto Main_Menu)
 set Value_MM=
 REM -------------------------------------------------------------
+REM Uygulama artıklarını silebilmek için WindowsApps klasürünün yetkisini alıyorum.
 Call :Sahip "%ProgramFiles%\WindowsApps\*"
 (
 echo echo off
@@ -1666,34 +1768,34 @@ Dism /Online /Get-Capabilities /format:table > %Konum%\Log\Capabilities
 Dism /Online /Get-Features /format:table > %Konum%\Log\Features
 REM
 Findstr /i "Install_Component_1_" %PB% > NUL 2>&1
-	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_1_" %PB%') do (
-								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"NetFX3~~~~" %Konum%\Log\Capabilities') do (
-											  echo %%g | Findstr /C:"Installed" > NUL 2>&1
-													if !errorlevel! NEQ 0 (Call :Dil A 2 T0019&echo %R%[92m !LA2! %R%[0m
-																		   Dism /Online /Enable-Feature /Featurename:NetFx3 /All /NoRestart
-																		  )
+	if "!errorlevel!" EQU "0" (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_1_" %PB%') do (
+								   if "%%a" EQU "1" (FOR /F "tokens=3" %%g in ('Findstr /C:"NetFX3~~~~" %Konum%\Log\Capabilities') do (
+													 echo %%g | Findstr /C:"Installed" > NUL 2>&1
+														if "!errorlevel!" NEQ "0" (Call :Dil A 2 T0019&echo %R%[92m !LA2! %R%[0m
+																				   Dism /Online /Enable-Feature /Featurename:NetFx3 /All /NoRestart
+																				  )
 			)
 		)
 	)
 )
 Findstr /i "Install_Component_2_" %PB% > NUL 2>&1
-	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_2_" %PB%') do (
-								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"IIS-ASPNET45" %Konum%\Log\Features') do (
-									echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-										if !errorlevel! NEQ 0 (Call :Dil A 2 T0020&echo %R%[92m !LA2! %R%[0m
-															   Dism /Online /Enable-Feature /FeatureName:IIS-ASPNET45 /All /NoRestart
-															  )
+	if "!errorlevel!" EQU "0" (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_2_" %PB%') do (
+								   if "%%a" EQU "1" (FOR /F "tokens=3" %%g in ('Findstr /C:"IIS-ASPNET45" %Konum%\Log\Features') do (
+													 echo %%g | Findstr /C:"Enabled" > NUL 2>&1
+														if "!errorlevel!" NEQ "0" (Call :Dil A 2 T0020&echo %R%[92m !LA2! %R%[0m
+																				   Dism /Online /Enable-Feature /FeatureName:IIS-ASPNET45 /All /NoRestart
+																				  )
 			)
 		)
 	)
 )
 Findstr /i "Install_Component_3_" %PB% > NUL 2>&1
-	if %errorlevel% EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_3_" %PB%') do (
-								if %%a EQU 1 (FOR /F "tokens=3" %%g in ('Findstr /C:"DirectPlay" %Konum%\Log\Features') do (
-									echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-										if !errorlevel! NEQ 0 (Call :Dil A 2 T0021&echo %R%[92m !LA2! %R%[0m
-															   Dism /Online /Enable-Feature /FeatureName:DirectPlay /All /NoRestart
-															  )
+	if "!errorlevel!" EQU 0 (FOR /F "tokens=2" %%a in ('Findstr /i "Install_Component_3_" %PB%') do (
+								 if "%%a" EQU "1" (FOR /F "tokens=3" %%g in ('Findstr /C:"DirectPlay" %Konum%\Log\Features') do (
+												   echo %%g | Findstr /C:"Enabled" > NUL 2>&1
+														if "!errorlevel!" NEQ "0" (Call :Dil A 2 T0021&echo %R%[92m !LA2! %R%[0m
+																				   Dism /Online /Enable-Feature /FeatureName:DirectPlay /All /NoRestart
+																				  )
 			)
 		)
 	)
@@ -1711,17 +1813,17 @@ Call :DEL_Direct "%Konum%\Log\Playbook_Log.txt"
 Call :Dil B 2 T0008
 FOR /L %%a in (1,1,69) do (
 	FOR /F "tokens=2" %%b in ('Findstr /i "COM_%%a_" %PB% 2^>NUL') do (
-		if "%%b" EQU "1" (Call :Dil A 2 SR_%%a_
+		if "%%b" EQU "1" (Call :Dil A 2 SR_%%a_&echo ►%R%[32m "!LA2!" %R%[37m !LB2! %R%[0m
 						  Call :Read_Features COM_%%a_
-						  echo ►%R%[32m "!LA2!" %R%[37m !LB2! %R%[0m
 						  Call :Remove_!Value_C! "COM_%%a_"
-						  echo [COM_%%a_] - "%%b" >> %Konum%\Log\Playbook_Log.txt
-						  if %%a EQU 12 (Call :Schtasks-Remove "\Microsoft\Windows\SystemRestore\SR")
-						  if %%a EQU 21 (FOR %%x in (SharedRealitySvc VacSvc perceptionsimulation spectrum MixedRealityOpenXRSvc SpatialGraphFilter) do (Call :Service_Admin "%%x" 6))
+						  echo [%%b]-"COM_%%a_" >> %Konum%\Log\Playbook_Log.txt
+						  if "%%a" EQU "12" (set Value=D&Call :SS_29)
+						  if "%%a" EQU "21" (FOR %%x in (SharedRealitySvc VacSvc perceptionsimulation spectrum MixedRealityOpenXRSvc SpatialGraphFilter) do (Call :Service_Admin "%%x" 6))
 						 )
 	)
 )
 REM Microsoft Defender kaldır
+REM NonRemove bölümünde reset sonrası açılacak batch dosyasına yazdırmak için PLog ayarını 1 yaptım.
 set PLog=1
 Call :Playbook_Reader Component_Setting_1_
 	if "!Playbook!" EQU "1" (Call :Dil A 2 P2001&echo ►%R%[32m !LA2! %R%[0m
@@ -1764,7 +1866,7 @@ Call :Playbook_Reader Component_Setting_1_
 							 FOR %%a in (
 							 "%LocalAppData%\Packages\*.SecHealthUI_*"
 							 ) do (
-								echo Call :RD_Direct "%LocalAppData%\Packages\%%a" >> C:\Playbook.Reset.After.cmd
+								echo Call :RD_Search "%%LocalAppData%%\Packages\%%a" >> C:\Playbook.Reset.After.cmd
 								Call :RD_Search %%a
 							 )
 							 Call :DEL_Deep_Search "C:\*guard.wim"
@@ -1880,19 +1982,18 @@ Call :Playbook_Reader Component_Setting_2_
 							 %NSudo% Taskkill /f /im "Setup.exe"
 							 %NSudo% Taskkill /f /im "CompactTelRunner.exe"
 							 FOR %%a in ('Dir /AD /B "%programfiles(x86)%\Microsoft\Edge\Application\*" 2^>NUL') do (
-							 dir /b "%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer" > NUL 2>&1
-								if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer\setup.exe" --uninstall --system-level --force-uninstall)
-							 FOR /F "tokens=*" %%b in ('Dir /AD /B "%ProgramFiles(x86)%\Microsoft" ^| Findstr /i /l /v /C:"WebView" 2^>NUL') do (
+								dir /b "%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer" > NUL 2>&1
+									if !errorlevel! EQU 0 ("%programfiles(x86)%\Microsoft\Edge\Application\%%a\Installer\setup.exe" --uninstall --system-level --force-uninstall)
+							 )
+							 FOR /F "tokens=*" %%b in ('Dir /AD /B "%ProgramFiles(x86)%\Microsoft" 2^>NUL ^| Findstr /i /l /v /C:"WebView" 2^>NUL') do (
 								Call :RD_Direct "%ProgramFiles(x86)%\Microsoft\%%b"
 								echo Call :RD_Direct "%%ProgramFiles(x86)%%\Microsoft\%%b" >> C:\Playbook.Reset.After.cmd
 							 )
-							 FOR /F "tokens=*" %%c in ('dir /ad /b /s "%SystemDrive%\*Microsoft Edge*" 2^>NUL') do (%NSudo% DEL /F /Q /A "%%c")
-							 FOR /F "tokens=*" %%d in ('dir /a-d /b /s "%SystemDrive%\*Microsoft Edge*" 2^>NUL') do (%NSudo% DEL /F /Q /A "%%d")
 							 Call :DEL_Direct "C:\Users\%username%\Desktop\edge.lnk"
 							 Call :DEL_Direct "C:\Users\Public\Desktop\Microsoft Edge.lnk"
 							 Call :DEL_Direct "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
 							 Call :RD_Direct "%LocalAppData%\Microsoft\Edge"
-							 Call :DEL_Deep_Search "C:\Windows\*dge.wim"
+							 Call :DEL_Deep_Search "%Windir%\*dge.wim"
 							 Call :RD_Direct "C:\Users\OgnitorenKs\AppData\Local\Microsoft\Edge"
 							 Call :RD_Direct "C:\Users\All Users\Microsoft\EdgeUpdate"
 							 Call :DEL_Direct "%Windir%\System32\config\systemprofile\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk"
@@ -1963,9 +2064,11 @@ Call :Appx_Info
 Call :Dil B 2 T0008
 FOR /F "tokens=4" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
 	FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB% 2^>NUL') do (
-		if "%%b" EQU "1" (echo ► %R%[92m "%%a"%R%[37m !LB2! %R%[0m
-						  echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
-						  Call :NonRemoved "%%a"
+		if "%%b" EQU "1" (Findstr /i "%%a" %Konum%\Log\Appx_Info2 > NUL 2>&1
+								if "!errorlevel!" EQU "0" (echo ► %R%[92m "%%a"%R%[37m !LB2! %R%[0m
+														   echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
+														   Call :NonRemoved "%%a"
+														  )
 						 )
 	)
 )
@@ -1977,7 +2080,8 @@ FOR /F "tokens=4" %%a in ('Findstr /i "Service_Manager" %PB%') do (
 	FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a ►" %PB%') do (
 		if "%%b" NEQ "5" (echo ► %R%[92m "%%a"%R%[37m !LA2! %R%[0m
 						  echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
-						  Call :Service_Admin "%%a" "%%b")
+						  Call :Service_Admin "%%a" "%%b"
+						 )
 	)
 )
 REM Uygulanan regedit ayarlarını gösterir
@@ -1992,6 +2096,7 @@ Call :Playbook_Reader Taskbar_Setting_2_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_TrackProgs" REG_DWORD 0
 							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" "HideRecommendedSection" REG_DWORD 1
 							 Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_Layout" REG_DWORD 1
+							 Call :RegDel "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection"
 )
 REM Başlat menüsünde en çok kullanılan uygulamaları kaldır
 Call :Playbook_Reader Taskbar_Setting_3_
@@ -2047,6 +2152,12 @@ Call :Playbook_Reader Taskbar_Setting_12_
 REM Görev görünümü simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_13_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowTaskViewButton" REG_DWORD 0
+)
+:: 
+Call :Playbook_Reader Taskbar_Setting_14_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection"
+							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" "HideRecommendedSection" REG_DWORD 1
+
 )
 REM ContentDeliveryManager - Ayarlar uygulamasında önerilen içeriği kapat
 Call :Playbook_Reader Privacy_Setting_1_
@@ -2535,46 +2646,46 @@ Call :Playbook_Reader Explorer_Setting_22_
 )
 REM Dosya gezgini kompakt mod aktifleştir
 Call :Playbook_Reader Explorer_Setting_23_
-	if "!Playbook!" EQU "1" (if %Win% EQU 11 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "UseCompactMode" REG_DWORD 1)
+	if "!Playbook!" EQU "1" (if "%Win%" EQU "11" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "UseCompactMode" REG_DWORD 1)
 )
 REM Klasik sağ-tık menüsünü aktfileştir [Windows11]
 Call :Playbook_Reader Explorer_Setting_24_
-	if "!Playbook!" EQU "1" (if %Win% EQU 11 (Call :RegKey "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32")
+	if "!Playbook!" EQU "1" (if "%Win%" EQU "11" (Call :RegKey "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32")
 )
 REM Anlık yardım [Snap Assist] [Windows11]
 Call :Playbook_Reader Explorer_Setting_25_
-	if "!Playbook!" EQU "1" (if %Win% EQU 11 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "EnableSnapAssistFlyout" REG_DWORD 0
-											  Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SnapAssist" REG_DWORD 0)
+	if "!Playbook!" EQU "1" (if "%Win%" EQU "11" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "EnableSnapAssistFlyout" REG_DWORD 0
+											      Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SnapAssist" REG_DWORD 0)
 )
 REM Sağ-tık bölümünden Terminal kaldır [Windows11]
 Call :Playbook_Reader Explorer_Setting_26_
-	if "!Playbook!" EQU "1" (if %Win% EQU 11 (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked")
+	if "!Playbook!" EQU "1" (if "%Win%" EQU "11" (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked")
 )
 REM Bu bilgisayara kullanıcı klasörlerini ekle [Windows11]
 Call :Playbook_Reader Explorer_Setting_27_
-	if "!Playbook!" EQU "1" (if %Win% EQU 11 (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}" /v "HideIfEnabled"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{d3162b92-9365-467a-956b-92703aca08af}" /v "HideIfEnabled"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{088e3905-0323-4b02-9826-5d99428e115f}" /v "HideIfEnabled"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}" /v "HideIfEnabled"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{24ad3ad4-a569-4530-98e1-ab02f9417aa8}" /v "HideIfEnabled"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}" /v "HideIfEnabled"
-											 )
+	if "!Playbook!" EQU "1" (if "%Win%" EQU "11" (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}" /v "HideIfEnabled"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{d3162b92-9365-467a-956b-92703aca08af}" /v "HideIfEnabled"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{088e3905-0323-4b02-9826-5d99428e115f}" /v "HideIfEnabled"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}" /v "HideIfEnabled"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{24ad3ad4-a569-4530-98e1-ab02f9417aa8}" /v "HideIfEnabled"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}" /v "HideIfEnabled"
+											     )
 )
 REM Bu bilgisayardaki kullanıcı dosyalarını kaldırın [Windows10]
 Call :Playbook_Reader Explorer_Setting_28_
-	if "!Playbook!" EQU "1" (if %Win% EQU 10 (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{088e3905-0323-4b02-9826-5d99428e115f}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{1CF1260C-4DD0-4ebb-811F-33C572699FDE}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{24ad3ad4-a569-4530-98e1-ab02f9417aa8}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{374DE290-123F-4565-9164-39C4925E467B}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3ADD1653-EB32-4cb0-BBD7-DFA0ABB5ACCA}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{A0953C92-50DC-43bf-BE83-3742FED03C9C}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{A8CDFF1C-4878-43be-B5FD-F8091C1C60D0}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{d3162b92-9365-467a-956b-92703aca08af}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}"
-											  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
-											 )
+	if "!Playbook!" EQU "1" (if "%Win%" EQU "10" (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{088e3905-0323-4b02-9826-5d99428e115f}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{1CF1260C-4DD0-4ebb-811F-33C572699FDE}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{24ad3ad4-a569-4530-98e1-ab02f9417aa8}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{374DE290-123F-4565-9164-39C4925E467B}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3ADD1653-EB32-4cb0-BBD7-DFA0ABB5ACCA}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{A0953C92-50DC-43bf-BE83-3742FED03C9C}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{A8CDFF1C-4878-43be-B5FD-F8091C1C60D0}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{d3162b92-9365-467a-956b-92703aca08af}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}"
+											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
+											     )
 )
 REM Menü göster gecikme süresini düşür [Reg değerini 20 olarak ayarlar]
 Call :Playbook_Reader Explorer_Setting_29_
@@ -2753,14 +2864,14 @@ Call :Playbook_Reader Optimization_Setting_14_
 									set /a RAM=%%b * 1024 * 1024 + 1024000
 								)
 							 )
-							 Call :RegAdd_CCS "Control" "SvcHostSplitThresholdInKB" REG_DWORD "0x!RAM!"
+							 Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Control" "SvcHostSplitThresholdInKB" REG_DWORD "0x!RAM!"
 )
 REM Farklı işlemci markasına ait hizmetleri devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_15_
 	if "!Playbook!" EQU "1" (Call :Powershell "Get-CimInstance -ClassName Win32_Processor | Select-Object -Property Name | format-list" > %Konum%\Log\Brand
 							 FOR /F "tokens=3" %%a in ('Findstr /i "Name" %Konum%\Log\Brand') do (
-								if %%a EQU AMD (FOR %%b in (intelpep Telemetry iai2c iaLPSS2i_I2C iaLPSS2i_I2C_BXT_P iaLPSS2i_I2C_CNL iaLPSS2i_I2C_GLK iaLPSS2i_GPIO2_GLK iaLPSS2i_GPIO2_CNL iaLPSS2i_GPIO2_BXT_P iaLPSS2i_GPIO2 iaLPSSi_GPIO intelpmax iagpio iaStorV intelppm) do (Call :Service_Check %%b))
-								if %%a NEQ AMD (FOR %%b in (amdgpio2 amdi2c AmdPPM AmdK8 amdsata amdsbs amdxata) do (Call :Service_Check %%b))
+								if "%%a" EQU "AMD" (FOR %%b in (intelpep Telemetry iai2c iaLPSS2i_I2C iaLPSS2i_I2C_BXT_P iaLPSS2i_I2C_CNL iaLPSS2i_I2C_GLK iaLPSS2i_GPIO2_GLK iaLPSS2i_GPIO2_CNL iaLPSS2i_GPIO2_BXT_P iaLPSS2i_GPIO2 iaLPSSi_GPIO intelpmax iagpio iaStorV intelppm) do (Call :Service_Check %%b))
+								if "%%a" NEQ "AMD" (FOR %%b in (amdgpio2 amdi2c AmdPPM AmdK8 amdsata amdsbs amdxata) do (Call :Service_Check %%b))
 							 )
 							 Call :DEL_Direct "%Konum%\Log\Brand"
 )
@@ -2791,7 +2902,7 @@ Call :Playbook_Reader Fix_Setting_2_
 )
 REM Dosya gezgini fazla ram kullanma sorununu gider [Windows11]
 Call :Playbook_Reader Fix_Setting_3_
-	if "!Playbook!" EQU "1" (if %Win% EQU 11 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SeparateProcess" REG_DWORD 0)
+	if "!Playbook!" EQU "1" (if "%Win%" EQU "11" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "SeparateProcess" REG_DWORD 0)
 )
 REM Adobe Typer yazı tipi sürücüsünü devre dışı bırak
 Call :Playbook_Reader Security_Setting_1_
@@ -2846,6 +2957,8 @@ Call :Playbook_Reader Feature_Setting_3_
 							 Call :RegAdd_CCS "Control\Power" "HibernateEnabled" REG_DWORD "0"
 							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" "ShowHibernateOption" REG_DWORD 0
 							 powercfg /h off > NUL 2>&1
+							 Call :DEL_Direct "%SystemDrive%\hiberfil.sys"
+							 echo Call :DEL_Direct "%%SystemDrive%%\hiberfil.sys"
 )
 REM Windows fotoğraf görüntüleyicisini aktifleştir
 Call :Playbook_Reader Feature_Setting_4_
@@ -3077,21 +3190,21 @@ FOR /f "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command" %PB% 2^>NUL') do 
 REM Playbook.ini Powershell komutları uygulama bölümü
 FOR /f "delims=► tokens=2" %%a in ('Findstr /i "Powershell_Command" %PB% 2^>NUL') do (
 	Call :Powershell_Playbook %%a > NUL 2>&1
-		if !errorlevel! NEQ 0 (%NSudo% Powershell %%a)
+		if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
 )
 REM Ayarlardan gizlenecek bölümler yapılandırılıyor
 REM İlgili ayar playbook bölümünde yer almıyorsa işlemi gerçekleştirmez
-Findstr /i "Settings_Hide" %PB% > NUL 2>&1
-	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Settings_Hide" %PB%') do (Call :Reg_Hide "%%a")
+Call :Playbook_Reader_2 "Settings_Hide"
+	if "!Playbook!" EQU "1" (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Settings_Hide" %PB%') do (Call :Reg_Hide "%%a")
 )
 REM Görev zamanlayıcısı ayarları yapılandırılıyor
 Findstr /i "Task_Scheduler_Setting" %PB% > NUL 2>&1
-	if !errorlevel! EQU 0 (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Task_Scheduler_Setting" %PB%') do (
-								FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
-									if %%b EQU 1 (Call :Schtasks "Disable" "%%a")
-									if %%b EQU 2 (Call :Schtasks-Remove "%%a")
-								)
-							)
+	if "!errorlevel!" EQU "0" (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Task_Scheduler_Setting" %PB%') do (
+								   FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
+									   if "%%b" EQU "1" (Call :Schtasks "Disable" "%%a")
+									   if "%%b" EQU "2" (Call :Schtasks-Remove "%%a")
+								   )
+							   )
 )
 REM Aygıt yöneticisi - Devmainview
 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Devmainview_Setting" %PB%') do (
@@ -3100,14 +3213,14 @@ FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Devmainview_Setting" %PB%') do
 	)
 )
 REM Sistem açılış ismi değiştir
-Findstr /i "System_New_Name" %PB% > NUL 2>&1
-	if !errorlevel! EQU 0 (FOR /F "delims='=' tokens=2" %%a in ('Findstr /i "System_New_Name" %PB%') do (bcdedit /set {current} description "%%a" > NUL 2>&1)
+Call :Playbook_Reader_2 "System_New_Name"
+	if "!Playbook!" EQU "1" (FOR /F "delims='=' tokens=2" %%a in ('Findstr /i "System_New_Name" %PB%') do (bcdedit /set {current} description "%%a" > NUL 2>&1)
 )
 REM
 cls&Call :Dil A 2 P1005&title OgnitorenKs Playbook │ 6/7 │ !LA2!
 Call :Dil B 2 T0011
-Findstr /i "Install_Application" %PB% > NUL 2>&1
-	if !errorlevel! EQU 0 (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
+Call :Playbook_Reader_2 "Install_Application"
+	if "!Playbook!" EQU "1" (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
 								FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
 									if %%b EQU 1 (echo %%a | Findstr /i "sylikc.JPEGView" > NUL 2>&1
 													if !errorlevel! EQU 0 (Call :Jpegview_Default)
@@ -3123,8 +3236,8 @@ REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 7/7 │ !LA2!
 echo ►%R%[92m !LA2! %R%[0m
 REM Özel güç ayarı ekleme bölümü
-Findstr /i "Power_Link_" %PB% > NUL 2>&1
-	if !errorlevel! EQU 0 (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Power_Link_" %PB%') do (
+Call :Playbook_Reader_2 "Power_Link_"
+	if "!Playbook!" EQU "1" (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Power_Link_" %PB%') do (
 								FOR /F "delims=► tokens=3" %%b in ('Findstr /i "Power_Link_" %PB%') do (
 									Call :Powershell "& { iwr %%a -OutFile %Temp%\%%b }"
 									powercfg -import "%Temp%\%%b" 12345678-1234-1234-1234-123456789012 > NUL 2>&1
@@ -3134,8 +3247,8 @@ Findstr /i "Power_Link_" %PB% > NUL 2>&1
 							)
 )
 REM Özel masaüstü resmi entegre etme
-Findstr /i "Wallpaper_Link_" %PB% > NUL 2>&1
-	if !errorlevel! EQU 0 (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Wallpaper_Link_" %PB%') do (
+Call :Playbook_Reader_2 "Wallpaper_Link_"
+	if "!Playbook!" EQU "1" (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Wallpaper_Link_" %PB%') do (
 								FOR /F "delims=► tokens=3" %%b in ('Findstr /i "Wallpaper_Link_" %PB%') do (
 									Call :Powershell "& { iwr %%a -OutFile C:\Users\%username%\Pictures\%%b }"
 									Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "Wallpaper" REG_SZ "C:\Users\%username%\Pictures\%%b"
@@ -3169,6 +3282,7 @@ FOR %%a in (
 "%windir%\Containers"
 "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization"
 "%ProgramData%\Package Cache"
+"%SystemDrive%\System Volume Information"
 ) do (
 	Call :RD_Direct %%a
 )
@@ -3291,6 +3405,7 @@ echo Call :RD_Direct "%%windir%%\Containers"
 echo Call :DEL_Search "%%Windir%%\CbsTemp\*"
 echo Call :DEL_Search "%%windir%%\Logs\*"
 echo Call :RD_Search "%%windir%%\Logs\*"
+echo Call :RD_Direct "%%SystemDrive%%\System Volume Information"
 echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\ReportArchive"
 echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\Temp"
 echo FOR /F "tokens=*" %%%%a in ^('dir /b "%%LocalAppData%%\Packages\*" 2^^^>NUL'^) do ^(
@@ -3361,9 +3476,13 @@ if !Value! EQU D (Call :RegDel "HKCR\AllFilesystemObjects\shellex\ContextMenuHan
 				  Call :RegDel "HKCR\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
 				  Call :RegDel "HKCR\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
 				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\FileHistory" "Disabled" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" "RPSessionInterval" REG_DWORD 0
+				  FOR /F "tokens=1" %%g in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" /f "{" ^| Findstr /i "{" 2^>NUL') do (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" /v "%%g")
+				  FOR /F "tokens=1" %%g in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Leases" /f "{" ^| Findstr /i "{" 2^>NUL') do (Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Lease" /v "%%g")
 				  schtasks /change /TN "\Microsoft\Windows\SystemRestore\SR" /DISABLE > NUL 2>&1
 				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableConfig" REG_DWORD "1"
 				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableSR" REG_DWORD "1"
+				  Call :RD_Direct "%SystemDrive%\System Volume Information"
 )
 if !Value! EQU E (Call :RegKey "HKCR\AllFilesystemObjects\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
 				  Call :RegKey "HKCR\AllFilesystemObjects\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
@@ -3376,8 +3495,12 @@ if !Value! EQU E (Call :RegKey "HKCR\AllFilesystemObjects\shellex\ContextMenuHan
 				  Call :RegKey "HKCR\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
 				  Call :RegKey "HKCR\WOW6432Node\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
 				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\FileHistory" "Disabled" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" "RPSessionInterval" REG_DWORD 1
 				  schtasks /change /TN "\Microsoft\Windows\SystemRestore\SR" /ENABLE > NUL 2>&1
 				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableConfig" REG_DWORD "0"
 				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableSR" REG_DWORD "0"
 )
+goto :eof
+
+:Developer
 goto :eof

@@ -140,8 +140,9 @@ P2004>OneDrive kaldırılıyor>
 P2005>Winre.wim kaldırılıyor>
 ::
 P3001>Kalıp dosyasını seçiniz>
-P3002>Stock sürümler için 'Playbook.ini' olanları seçiniz>
-P3003>Güncelleştirme sonrası temizlik için 'UpdateAfter.ini' olanları seçin>
+P3002>Playbook: İlk defa uyguluyorsanız seçiniz. Kişisel ayarları değiştirir>
+P3003>UpdateAfter: İkinci defa uyguluyarsanız seçiniz. Kişisel ayarları değiştirmez>
+P3004>İşlem türünü seçiniz>
 ::
 P4001>Uyarılar ve Yönlendirmeler>
 P4002>Antivirüs programı yüklü ise devre dışı bırakınız>
@@ -292,4 +293,3 @@ EE_20_>Ekran Kartı>
 EE_21_>Sürücü>
 EE_22_>Tarihi>
 EE_23_>VRAM>
-::███████████████████████████████████████████████████████████████████

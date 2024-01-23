@@ -117,6 +117,7 @@ Detaylı bilgi için: https://ognitorenks.blogspot.com/2023/08/windows-10-11-per
 
 ![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.1.png)
 ![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.2.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.3.png)
 
 </details>
 

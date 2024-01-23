@@ -4,6 +4,20 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.2.1 ►  23.01.2024 - Playbook</B></summary>
+
+	• Playbook bölümünde yapılan değişiklikler;
+		• Kodlarda genel iyileştirme yapıldı.
+		• Edge bölümündeki derin tarama komutları işlemleri hızlandırmak adına kaldırıldı.
+		• Kalıp seçme bölümü değiştirildi.
+			• Playbook ve UpdateAfter olarak ayırdığım kalıpları tek bir kalıp haline getirdim.
+			• Kalıp tercihinizi yaptıktan sonra size Playbook/UpdateAfter seçimini yapmanızı isteyecek.
+			• Kalıp versiyonları eklendi.
+		• "Bileşen kaldırma"; "Sistem geri yükleme" kaldırma işlemine regedit komutları eklendi.
+		• Kaldırımış uygulamaların işlemler sırasında görüntülenmesi engellendi.
+	• Hizmet yönetimi bölümündeki değişiklikler;
+		• Sistem geri yükleme bölümüne hizmet artıklarını silecek şekilde ekleme yapıldı.
+
 </details><details><B><summary> Versiyon 4.2.0 ►  12.01.2024 - Playbook</B></summary>
 
 	• Playbook bölümünde yapılan değişiklikler;

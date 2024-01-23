@@ -123,6 +123,7 @@ T0032>WinSxS Cleanup>
 T0033>'DISM /Online /Cleanup-Image /RestoreHealth' command running>
 T0034>General settings and repairing DLL files>
 T0035>System data received via WMI may have a margin of error>
+T0036>Playbook Update>
 ::██████████████████████████████████████████████████████████████████
 P1001>Removing components>
 P1002>Uninstalling apps>
@@ -138,9 +139,10 @@ P2003>Uninstalling EdgeWebView2>
 P2004>Uninstalling OneDrive>
 P2005>Uninstalling Winre.wim>
 ::
-P3001>Select the mold file>
-P3002>Select 'Playbook.ini' for stock versions>
-P3003>Select 'UpdateAfter.ini' ones for post-update cleanup>
+P3001>Select the pattern file>
+P3002>Playbook: Select if you are applying it for the first time. Changes personal settings>
+P3003>UpdateAfter: Select if you apply it a second time. Does not change personal settings>
+P3004>Select the transaction type>
 ::
 P4001>Warnings and Guidance>
 P4002>Disable antivirus program if installed>
@@ -228,7 +230,6 @@ SR_43_>Data center bridging>Enterprise>
 SR_44_>Active Directory Simple directory services>Enterprise>
 SR_45_>Windows diagnostic engine>Need: Troubleshooting>
 SR_46_>Map Control>
-
 SR_47_>Wifi drivers>
 SR_48_>Ethernet drivers>
 SR_49_>Windows Media Player>
@@ -292,4 +293,3 @@ EE_20_>Display Card>
 EE_21_>Driver>
 EE_22_>Date>
 EE_23_>VRAM>
-::███████████████████████████████████████████████████████████████████
