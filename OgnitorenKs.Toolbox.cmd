@@ -33,8 +33,8 @@ setlocal enabledelayedexpansion
 REM Başlık
 title  OgnitorenKs Toolbox
 REM Toolbox versiyon
-set Version=4.2.1
-set PB_Version=1.1
+set Version=4.2.2
+set PB_Version=1.2
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -68,15 +68,15 @@ Call :Default_System_Language
 Findstr /i "Language_Pack" %Konum%\Settings.ini > NUL 2>&1
 	if !errorlevel! NEQ 0 (Call :Default_System_Language
 								if "!DefaultLang!" EQU "tr-TR" (echo. >> %Konum%\Settings.ini
-																echo Language_Pack^>Turkish^> >> %Konum%\Settings.ini
+																echo ► Language_Pack^= Turkish >> %Konum%\Settings.ini
 																set Dil=%Konum%\Bin\Language\Turkish.cmd
 															   )
 								if "!DefaultLang!" NEQ "tr-TR" (echo. >> %Konum%\Settings.ini
-																echo Language_Pack^>English^> >> %Konum%\Settings.ini
+																echo ► Language_Pack= English >> %Konum%\Settings.ini
 																set Dil=%Konum%\Bin\Language\English.cmd
 															   )
 						  )
-	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Language_Pack" %Konum%\Settings.ini') do (set Dil=%Konum%\Bin\Language\%%a.cmd))
+	if !errorlevel! EQU 0 (FOR /F "tokens=3" %%a in ('Findstr /i "Language_Pack" %Konum%\Settings.ini') do (set Dil=%Konum%\Bin\Language\%%a.cmd))
 REM -------------------------------------------------------------
 REM Boşluk ve Türkçe karakter kontrolü
 FOR %%a in (Ö ö Ü ü Ğ ğ Ş ş Ç ç ı İ) do (
@@ -113,11 +113,11 @@ REM -------------------------------------------------------------
 REM İnternet bağlantı durumunu kontrol ediyorum
 Call :Check_Internet
 REM İnternet yoksa oto güncellemeyi atlıyorum.
-if %Internet% EQU Offline (goto Main_Menu)
+if "%Internet%" EQU "Offline" (goto Main_Menu)
 REM -------------------------------------------------------------
 REM Toolbox güncelleştirme bölümü
 REM Github reposundan indirdiğim Link.txt dosyası içnideki version ile toolbox versiyonunu karşılaştırıyorum. Farklı ise güncel sürümü indiriyorum.
-FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Toolbox.Update." %Konum%\Settings.ini') do (
+FOR /F "tokens=2" %%a in ('Findstr /i "Setting_1_" %Konum%\Settings.ini') do (
 	if %%a EQU 0 (Call :Link 4&Call :PSDownload "%Konum%\Bin\Extra\Link.txt"
 				  FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Toolbox.Version." %Konum%\Bin\Extra\Link.txt') do (
 					if "!Version!" NEQ "%%b" (cls&Call :Dil A 2 T0022&echo.&echo %R%[92m !LA2! %R%[0m
@@ -650,8 +650,9 @@ REM Net makine kodu önbelleği
 Call :RD_Search "%Windir%\assembly\NativeImage*"
 REM Winget artıklarını siler
 Call :RD_Direct "%ProgramData%\Package Cache"
-Call :DEL_Search "%Windir%\Installer\*"
-Call :RD_Search "%Windir%\Installer\*"
+FOR %%g in (msi msp exe) do (Call :DEL_Deep_Search "%Windir%\Installer\*.%%g")
+Call :DEL_Deep_Search "%Windir%\Installer\SourceHash*"
+Call :RD_Search "%Windir%\Installer\$PatchCache$\Managed\*"
 REM Ekran kartı kurulum dosyaları
 Call :RD_Direct "%systemdrive%\AMD"
 Call :RD_Direct "%systemdrive%\NVIDIA"
@@ -672,10 +673,7 @@ REM
 Call :NET stop wuauserv
 Call :RD_Direct "%windir%\SoftwareDistribution"
 Call :NET start wuauserv
-REM
-Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
-Dism /Online /Cleanup-Image /SPSuperseded
-REM
+REM 
 Call :Powershell "Start-Process cleanmgr -ArgumentList '/verylowdisk /sagerun:5'"
 REM
 chcp 437 > NUL
@@ -688,6 +686,7 @@ ipconfig /renew > NUL 2>&1
 REM
 FOR /F "tokens=*" %%g in ('wevtutil.exe el') do (wevtutil.exe cl "%%g" > NUL 2>&1)
 REM
+Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
 goto :eof
 
 REM -------------------------------------------------------------
@@ -825,6 +824,7 @@ if "!PB_Choice!" EQU "2" (FOR %%p in (
 						  Wallpaper_Link_
 						  System_New_Name
 						  Settings_Hide
+						  Playbook_Type
 						  ) do (set Playbook=0&goto :eof)
 )
 Findstr /i "%~1" %PB% > NUL 2>&1
@@ -866,6 +866,16 @@ winget install -e --silent --force --accept-source-agreements --accept-package-a
 	if !errorlevel! NEQ 0 (cls&"%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1)
 goto :eof
 
+:Winget_Link
+REM %~1 winget program adı
+FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %PB% 2^>NUL') do (
+	set Silent=%%g
+)
+FOR /F "tokens=3" %%g in ('Winget show %~1 --accept-source-agreements ^| Find "Installer Url"') do (
+	set Link=%%g
+	set Setup=%%~nxg
+)
+goto :eof
 REM -------------------------------------------------------------
 :Powershell_C
 REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
@@ -991,16 +1001,28 @@ REM !Default!= Uzantıları içeren değişken
 REM !AppKey!= Program adı
 REM !AppIcon!= Uygulama simgesi
 REM !AppRoad!= Uygulama .exe'sinin yüklü olduğu dizin
+echo Windows Registry Editor Version 5.00 > %Konum%\Log\DefaultApp.reg
+echo. >> %Konum%\Log\DefaultApp.reg
+FOR %%g in (!Default!) do (
+	echo [-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.%%g] >> %Konum%\Log\DefaultApp.reg
+	echo [-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g] >> %Konum%\Log\DefaultApp.reg
+	echo [-HKEY_CLASSES_ROOT\.%%g] >> %Konum%\Log\DefaultApp.reg 
+	echo [-HKEY_CLASSES_ROOT\!AppKey!.%%g] >> %Konum%\Log\DefaultApp.reg
+)
+regedit /s "%Konum%\Log\DefaultApp.reg"
 FOR %%g in (!Default!) do (
 	reg delete "HKCR\.%%g" /f > NUL 2>&1
 	reg delete "HKCR\!AppKey!.%%g" /f > NUL 2>&1
-	reg add "HKCR\.%%g" /f /ve /t REG_SZ /d "%AppKey%.%%g" > NUL 2>&1
-	reg add "HKCR\!AppKey!.%%g\DefaultIcon" /f /ve /t REG_SZ /d "!AppIcon!" > NUL 2>&1
-	reg add "HKCR\!AppKey!.%%g\shell\open\command" /f /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" > NUL 2>&1
+	reg add "HKCR\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
+	reg add "HKCR\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
+	reg add "HKCR\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
+	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
+	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
+	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
 )
 FOR %%g in (AppRoad AppIcon AppKey Default) do (set %%g=)
+Call :DEL_Direct "%Konum%\Log\DefaultApp.reg"
 goto :eof
-
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Ping_M1
 FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M1=%%b)
@@ -1265,19 +1287,27 @@ FOR /F "tokens=*" %%j in ('Findstr /i "%~1" %Konum%\Log\Appx_Info1') do (
 		set NonRemove2=!NonRemove2: =!
 		Call :RegKey "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\EndOfLife\%CUS%\!NonRemove1!"
 		Call :RegKey "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Deprovisioned\!NonRemove2!"
-		Dism /Online /Set-NonRemovableapppolicy /Packagefamily:!NonRemove1! /nonremovable:0 > NUL 2>&1
+		Dism /Online /Set-NonRemovableapppolicy /Packagefamily:!NonRemove1! /Nonremovable:0 > NUL 2>&1
 		"%Konum%\Bin\NSudo.exe" -U:T -P:E -Wait -ShowWindowMode:hide Powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -C "Remove-AppxPackage -Package '!NonRemove1!' -allusers"
 		FOR /F "tokens=1" %%m in ('Findstr /i "!NonRemove2!" %Konum%\Log\Appx_Info3 2^>NUL') do (
 			FOR /F "tokens=*" %%n in ('Dir /AD /B "%ProgramFiles%\WindowsApps\%%m*" 2^>NUL') do (
-				if !PLog! EQU 1 (echo Call :RD_Direct "%%ProgramFiles%%\WindowsApps\%%n" >> C:\Playbook.Reset.After.cmd)
+				echo Call :RD_Direct "%%ProgramFiles%%\WindowsApps\%%n" >> C:\Playbook.Reset.After.cmd
 				%NSudo% RD /S /Q "%ProgramFiles%\WindowsApps\%%n"
 			)
 		)
 		%NSudo% RD /S /Q "%Windir%\SystemApps\!NonRemove2!"
-		if !PLog! EQU 1 (echo Call :RD_Direct "%Windir%\SystemApps\!NonRemove2!" >> C:\Playbook.Reset.After.cmd)
+		echo Call :RD_Direct "%%Windir%%\SystemApps\!NonRemove2!" >> C:\Playbook.Reset.After.cmd
 		set NonRemove1=
 		set NonRemove2=
 	)
+)
+FOR /F "tokens=*" %%v in ('dir /b "%Windir%\SystemApps\*%~1*" 2^>NUL') do (
+	echo Call :RD_Direct "%%Windir%%\SystemApps\%%v" >> C:\Playbook.Reset.After.cmd
+	%NSudo% RD /S /Q "%Windir%\SystemApps\%%v"
+)
+FOR /F "tokens=*" %%v in ('dir /b "%ProgramFiles%\WindowsApps\*%~1*" 2^>NUL') do (
+	echo Call :RD_Direct "%%ProgramFiles%%\WindowsApps\%%v" >> C:\Playbook.Reset.After.cmd
+	%NSudo% RD /S /Q "%ProgramFiles%\WindowsApps\%%v"
 )
 goto :eof
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -1287,14 +1317,14 @@ Reg add "%~1" /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f)
 goto :eof
 :RegAdd
-if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4"%R%[0m)
-Reg add "%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /v "%~2" /t "%~3" /d "%~4")
+if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4"%R%[0m)
+Reg add "%~1" /f /v "%~2" /t %~3 /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /v "%~2" /t %~3 /d "%~4")
 goto :eof
 :RegVeAdd
-if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /ve /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4"%R%[0m)
-Reg add "%~1" /ve /t "%~2" /d "%~3" /f > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /ve /t "%~2" /d "%~3")
+if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /ve /t%R%[33m %~2%R%[90m /d%R%[33m "%~3"%R%[0m)
+Reg add "%~1" /ve /t %~2 /d "%~3" /f > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /ve /t %~2 /d "%~3")
 goto :eof
 :RegDel
 if !Show! EQU 1 (echo %R%[90mReg delete%R%[33m %* %R%[90m /f%R%[0m)
@@ -1302,16 +1332,16 @@ Reg delete %* /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg delete %* /f)
 goto :eof
 :RegAdd_CCS
-if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\CurrentControlSet\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4" %R%[0m
-				 echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet001\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4" %R%[0m
-				 echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet002\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m "%~3"%R%[90m /d%R%[33m "%~4" %R%[0m
+if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\CurrentControlSet\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
+				 echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet001\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
+				 echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet002\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
 )
-Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /f /v "%~2" /t "%~3" /d "%~4")
-Reg add "HKLM\SYSTEM\ControlSet001\%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet001\%~1" /f /v "%~2" /t "%~3" /d "%~4")
-Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t "%~3" /d "%~4" > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t "%~3" /d "%~4")
+Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /f /v "%~2" /t %~3 /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\CurrentControlSet\%~1" /f /v "%~2" /t %~3 /d "%~4")
+Reg add "HKLM\SYSTEM\ControlSet001\%~1" /f /v "%~2" /t %~3 /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet001\%~1" /f /v "%~2" /t %~3 /d "%~4")
+Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t %~3 /d "%~4" > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t %~3 /d "%~4")
 goto :eof
 :Reg_Hide
 FOR /F "skip=2 tokens=3" %%x in ('Reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" 2^>NUL') do (set X_Value=%%x)
@@ -1375,7 +1405,7 @@ Call :Dil A 2 D0001&echo.&set /p Value_M=►%R%[32m !LA2!%R%[90m= %R%[0m
 Call :Upper %Value_M% Value_M
 	if %Value_M% EQU X (goto Main_Menu)
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "Lang_!Value_M!_" %Konum%\Log\Dil') do (
-	FOR /F "delims=> tokens=2" %%k in ('Findstr /i "Language_Pack" %Konum%\Settings.ini') do (
+	FOR /F "tokens=3" %%k in ('Findstr /i "Language_Pack" %Konum%\Settings.ini') do (
 		set Dil=%Konum%\Bin\Language\%%g.cmd
 		Call :Powershell "(Get-Content %Konum%\Settings.ini) | ForEach-Object { $_ -replace '%%k', '%%g' } | Set-Content '%Konum%\Settings.ini'"
 	)
@@ -1659,9 +1689,7 @@ set Version_K=
 Call :Dil A 2 P3001&set /p Value_MM=►%R%[32m !LA2!: %R%[0m
 Call :Upper !Value_MM! Value_MM
 	if "!Value_MM!" EQU "X" (goto Main_Menu)
-	if "!Value_MM!" EQU "OGNITORENKS" (set PB=%Konum%\Bin\Extra\OgnitorenKs_Special.ini)
 Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook > NUL 2>&1
-	if !errorlevel! NEQ 0 (if "!Value_MM!" NEQ "OGNITORENKS" (goto Playbook_Manager))
 	if !errorlevel! EQU 0 (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "PB_Index_!Value_MM!_" %Konum%\Log\Playbook 2^>NUL') do (set PB=%%a))
 Call :DEL_Direct "%Konum%\Log\Playbook"
 REM -------------------------------------------------------------
@@ -1823,13 +1851,11 @@ FOR /L %%a in (1,1,69) do (
 	)
 )
 REM Microsoft Defender kaldır
-REM NonRemove bölümünde reset sonrası açılacak batch dosyasına yazdırmak için PLog ayarını 1 yaptım.
-set PLog=1
 Call :Playbook_Reader Component_Setting_1_
 	if "!Playbook!" EQU "1" (Call :Dil A 2 P2001&echo ►%R%[32m !LA2! %R%[0m
 							 Call :Appx_Info
-							 Call :NonRemoved "Microsoft.Windows.SecHealthUI"
-							 Call :NonRemoved "Microsoft.Windows.Apprep.ChxApp"
+							 Call :NonRemoved "SecHealthUI"
+							 Call :NonRemoved "Apprep.ChxApp"
 							 Call :Read_Features "OGNI_2_"
 							 Call :Remove_!Value_C! "OGNI_2_"
 							 Taskkill /f /im smartscreen.exe > NUL 2>&1
@@ -1976,8 +2002,8 @@ REM Microsoft Edge kaldır
 Call :Playbook_Reader Component_Setting_2_
 	if "!Playbook!" EQU "1" (Call :Dil A 2 P2002&echo ►%R%[32m !LA2! %R%[0m
 							 Call :Appx_Info
-							 Call :NonRemoved "MicrosoftEdge.Stable"
-							 Call :NonRemoved "MicrosoftEdgeDevToolsClient"
+							 Call :NonRemoved "Edge.Stable"
+							 Call :NonRemoved "EdgeDevToolsClient"
 							 %NSudo% Taskkill /f /im "msedge.exe"
 							 %NSudo% Taskkill /f /im "Setup.exe"
 							 %NSudo% Taskkill /f /im "CompactTelRunner.exe"
@@ -1989,6 +2015,7 @@ Call :Playbook_Reader Component_Setting_2_
 								Call :RD_Direct "%ProgramFiles(x86)%\Microsoft\%%b"
 								echo Call :RD_Direct "%%ProgramFiles(x86)%%\Microsoft\%%b" >> C:\Playbook.Reset.After.cmd
 							 )
+							 FOR /F "delims=\ tokens=9" %%c in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree" /f "Edge" 2^>NUL') do (Call :Schtasks "Disable" "\%%c")
 							 Call :DEL_Direct "C:\Users\%username%\Desktop\edge.lnk"
 							 Call :DEL_Direct "C:\Users\Public\Desktop\Microsoft Edge.lnk"
 							 Call :DEL_Direct "C:\Users\%username%\Desktop\Microsoft Edge.lnk"
@@ -2013,6 +2040,72 @@ Call :Playbook_Reader Component_Setting_2_
 							 netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
 							 Call :Service_Admin "edgeupdate" 6
 							 Call :Service_Admin "edgeupdatem" 6
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\EdgeUpdate"
+							 REM Aşağıdaki reg kayıtları https://coolvitto.hateblo.jp/entry/2024/02/02/011205 sitesinden alınmıştır.
+							 Call :RegDel "HKCR\AppID\MicrosoftEdgeUpdate.exe"
+							 Call :RegDel "HKCR\AppID\{A6B716CB-028B-404D-B72C-50E153DD68DA}"
+							 Call :RegDel "HKCR\AppID\{CECDDD22-2E72-4832-9606-A9B0E5E344B2}"
+							 Call :RegDel "HKCR\CLSID\{2B473453-BCFD-454A-AB98-B0DE7FDF2A6E}"
+							 Call :RegDel "HKCR\CLSID\{3AF1251F-9B5A-4F53-9B6D-B0B71E02006E}"
+							 Call :RegDel "HKCR\CLSID\{8BA747D4-0E17-4C7B-A5DD-6B81BB4A26D1}"
+							 Call :RegDel "HKCR\CLSID\{9BD1F370-1212-4794-AA9B-9EBD575091D5}"
+							 Call :RegDel "HKCR\CLSID\{9E8F1B36-249F-4FC3-9994-974AFAA07B26}"
+							 Call :RegDel "HKCR\CLSID\{A2F5CB38-265F-4A02-9D1E-F25B664968AB}"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.CoreClass.1"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.CoreClass"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.CoreMachineClass.1"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.CoreMachineClass"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.CredentialDialogMachine.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.CredentialDialogMachine"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachine.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachineFallback.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachineFallback"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachine"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassSvc.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassSvc"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.PolicyStatusMachine.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.PolicyStatusMachineFallback.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.PolicyStatusMachineFallback"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.PolicyStatusMachine"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.PolicyStatusSvc.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.PolicyStatusSvc"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.ProcessLauncher.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.ProcessLauncher"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3COMClassService.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3COMClassService"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3WebMachine.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3WebMachine"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0"
+							 Call :RegDel "HKCR\MicrosoftEdgeUpdate.Update3WebSvc"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{08D832B9-D2FD-481F-98CF-904D00DF63CC}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{2B473453-BCFD-454A-AB98-B0DE7FDF2A6E}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{2E1DD7EF-C12D-4F8E-8AD8-CF8CC265BAD0}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{3AF1251F-9B5A-4F53-9B6D-B0B71E02006E}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{492E1C30-A1A2-4695-87C8-7A8CAD6F936F}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{5F6A18BB-6231-424B-8242-19E5BB94F8ED}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{77857D02-7A25-4B67-9266-3E122A8F39E4}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{8BA747D4-0E17-4C7B-A5DD-6B81BB4A26D1}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{8F09CD6C-5964-4573-82E3-EBFF7702865B}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{9BD1F370-1212-4794-AA9B-9EBD575091D5}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{9E8F1B36-249F-4FC3-9994-974AFAA07B26}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{9F3F5F5D-721A-4B19-9B5D-69F664C1A591}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{A2F5CB38-265F-4A02-9D1E-F25B664968AB}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{A6B716CB-028B-404D-B72C-50E153DD68DA}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{B5977F34-9264-4AC3-9B31-1224827FF6E8}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{CECDDD22-2E72-4832-9606-A9B0E5E344B2}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{D1E8B1A6-32CE-443C-8E2E-EBA90C481353}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{E421557C-0628-43FB-BF2B-7C9F8A4D067C}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{EA92A799-267E-4DF5-A6ED-6A7E0684BB8A}"
+							 Call :RegDel "HKCR\WOW6432Node\CLSID\{FF419FF9-90BE-4D9F-B410-A789F90E5A7C}"
+							 Call :RegDel "HKCU\Software\Microsoft\EdgeUpdate"
+							 Call :RegDel "HKCU\Software\Microsoft\Edge"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\EdgeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
+							 Call :RegDel "HKLM\SYSTEM\CurrentControlSet\Services\EventLog\Application\edgeupdate"
+							 Call :RegDel "HKLM\SYSTEM\CurrentControlSet\Services\EventLog\Application\edgeupdatem"
 )
 REM EdgeWebView2 kaldır
 Call :Playbook_Reader Component_Setting_3_
@@ -2056,23 +2149,20 @@ Call :Playbook_Reader Component_Setting_4_
 REM Kurtarma alanını kaldır
 Call :Playbook_Reader Component_Setting_5_
 	if "!Playbook!" EQU "1" (Call :Dil A 2 P2005&echo ►%R%[32m !LA2! %R%[0m
-							 Call :DEL_Deep_Search "C:\*winre.wim"
+							 Call :DEL_Deep_Search "%Windir%\*winre.wim"
 )
 REM Uygulama kaldır
 cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 3/7 │ !LA2!
 Call :Appx_Info
 Call :Dil B 2 T0008
 FOR /F "tokens=4" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
-	FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB% 2^>NUL') do (
-		if "%%b" EQU "1" (Findstr /i "%%a" %Konum%\Log\Appx_Info2 > NUL 2>&1
-								if "!errorlevel!" EQU "0" (echo ► %R%[92m "%%a"%R%[37m !LB2! %R%[0m
-														   echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
-														   Call :NonRemoved "%%a"
-														  )
+	FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a ►" %PB% 2^>NUL') do (
+		if "%%b" EQU "1" (echo ► %R%[92m "%%a"%R%[37m !LB2! %R%[0m
+						  echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
+						  Call :NonRemoved "%%a"
 						 )
 	)
 )
-set PLog=
 REM Hizmet Yönetimi
 cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 4/7 │ !LA2!
 Call :Dil A 2 T0012
@@ -2153,11 +2243,14 @@ REM Görev görünümü simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_13_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowTaskViewButton" REG_DWORD 0
 )
-:: 
+REM Başlat menüsü - Önerilenler bölümünü kaldır
 Call :Playbook_Reader Taskbar_Setting_14_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection"
 							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" "HideRecommendedSection" REG_DWORD 1
-
+)
+REM Başlangıç menüsü - ipuçları, kısayollar, yeni uygulamalar ve daha fazlası için önerileri kapat
+Call :Playbook_Reader Taskbar_Setting_15_
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_IrisRecommendations" REG_DWORD 0
 )
 REM ContentDeliveryManager - Ayarlar uygulamasında önerilen içeriği kapat
 Call :Playbook_Reader Privacy_Setting_1_
@@ -2399,6 +2492,11 @@ REM Konum erişimini devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_52_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" "Value" REG_SZ "Deny"
 							 Call :RegAdd_CCS "Services\lfsvc\Service\Configuration" "Status" REG_DWORD 0
+							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" "AllowSearchToUseLocation" REG_DWORD 0
+							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocation" REG_DWORD 1
+							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocationScripting" REG_DWORD 1
+							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableWindowsLocationProvider" REG_DWORD 1
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\System" "AllowLocation" REG_DWORD 0
 )
 REM Hesap bilgileri erişimini devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_53_
@@ -2518,6 +2616,10 @@ REM Dosya gezgini arama kutusu geçmişini görüntelemeyi devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_67_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\Explorer" "DisableSearchBoxSuggestions" REG_DWORD 1
 )
+REM Program uyumluluk asistanını kapat
+Call :Playbook_Reader Privacy_Setting_68_
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\AppCompat" "DisablePCA" REG_DWORD 1
+)
 REM Qos paket zamanlayıcı sınırını kaldır
 Call :Playbook_Reader Internet_Setting_1_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Psched" "NonBestEffortLimit" REG_DWORD "0"
@@ -2525,6 +2627,16 @@ Call :Playbook_Reader Internet_Setting_1_
 REM Sınırlı ağ kontrol sınamasını kapat
 Call :Playbook_Reader Internet_Setting_2_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\NetworkConnectivityStatusIndicator" "NoActiveProbe" REG_DWORD 1
+)
+REM Nagle's algoritmasını kapat
+Call :Playbook_Reader Internet_Setting_3_
+	if "!Playbook!" EQU "1" (Call :Powershell "Get-CimInstance -ClassName Win32_NetworkAdapter | Select-Object GUID" > %Konum%\Log\Nagle.txt
+							 FOR /F "tokens=*" %%a in ('Findstr /i "{" %Konum%\Log\Nagle.txt' 2^>NUL) do (
+								Call :RegAdd_CCS "Services\Tcpip\Parameters\Interfaces\%%a" "TcpAckFrequency" REG_DWORD 1
+								Call :RegAdd_CCS "Services\Tcpip\Parameters\Interfaces\%%a" "TcpDelAckTicks" REG_DWORD 0
+								Call :RegAdd_CCS "Services\Tcpip\Parameters\Interfaces\%%a" "TCPNoDelay" REG_DWORD 1
+							 )
+							 Call :DEL_Direct "%Konum%\Log\Nagle.txt"
 )
 REM Önbellekleme kapat - Prefetch
 Call :Playbook_Reader Explorer_Setting_1_
@@ -2892,6 +3004,22 @@ REM NTFS sıkıştırmayı devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_18_
 	if "!Playbook!" EQU "1" (fsutil behavior set disablecompression > NUL 2>&1
 )
+REM MSI mode
+Call :Playbook_Reader Optimization_Setting_19_
+	if "!Playbook!" EQU "1" (Call :DEL_Direct "%Konum%\Log\MSIMODE.txt"
+							 Call :Powershell "Get-CimInstance -ClassName Win32_USBController | Select-Object PNPDeviceID" >> %Konum%\Log\MSIMODE.txt
+							 Call :Powershell "Get-CimInstance -ClassName Win32_VideoController | Select-Object PNPDeviceID" >> %Konum%\Log\MSIMODE.txt
+							 Call :Powershell "Get-CimInstance -ClassName Win32_NetworkAdapter | Select-Object PNPDeviceID" >> %Konum%\Log\MSIMODE.txt
+							 FOR /F %%a in ('Findstr /i "PCI\VEN_" %Konum%\Log\MSIMODE.txt' 2^>NUL) do (
+								Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Enum\%%a\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties" "MSISupported" REG_DWORD 1
+							 )
+)
+REM Cihaz önceliklerini kaldır
+Call :Playbook_Reader Optimization_Setting_20_
+	if "!Playbook!" EQU "1" (FOR /F "tokens=*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Enum" /s /f "Affinity Policy" ^| Findstr /l "PCI\VEN_"') do (
+								Call :RegDel "%%a" /v "DevicePriority"
+							)
+)
 REM Dosya Gezgini hafıza sorununu gider
 Call :Playbook_Reader Fix_Setting_1_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell" "BagMRU Size" REG_DWORD "0x4e20"
@@ -2958,7 +3086,7 @@ Call :Playbook_Reader Feature_Setting_3_
 							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" "ShowHibernateOption" REG_DWORD 0
 							 powercfg /h off > NUL 2>&1
 							 Call :DEL_Direct "%SystemDrive%\hiberfil.sys"
-							 echo Call :DEL_Direct "%%SystemDrive%%\hiberfil.sys"
+							 echo Call :DEL_Direct "%%SystemDrive%%\hiberfil.sys" >> C:\Playbook.Reset.After.cmd
 )
 REM Windows fotoğraf görüntüleyicisini aktifleştir
 Call :Playbook_Reader Feature_Setting_4_
@@ -3074,7 +3202,8 @@ Call :Playbook_Reader Update_Setting_4_
 )
 REM Microsoft Store otomatik güncelleştirmeleri kapat
 Call :Playbook_Reader Update_Setting_5_
-	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" "AutoDownload" REG_DWORD 2 
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" "AutoDownload" REG_DWORD 2
+							 REM NTLite içinde manuel olarak ayarlanıyor. Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" "AutoDownload" REG_DWORD 0
 )
 REM Disk hatası tahmin modeli güncelleştirmelerini kapat
 Call :Playbook_Reader Update_Setting_6_
@@ -3180,23 +3309,81 @@ REM Windows Search - Arama yardımcısı içerik güncelleştirmelesini devre d�
 Call :Playbook_Reader Update_Setting_19_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\SearchCompanion" "DisableContentFileUpdates" REG_DWORD 1
 )
+REM Windows'u güncelleştirdiğimde diğer Microsoft uygulamalarının güncelleştirmelerini devre dışı bırak
+Call :Playbook_Reader Update_Setting_20_
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Services\Pending\7971f918-a847-4430-9279-4a52d1efe18d" "RegisterWithAU" REG_DWORD 0
+)
+REM OOBE Uygulamaları Tarama Çalışmasını devre dışı bırak
+Call :Playbook_Reader Update_Setting_21_
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler" "OobeAppsScanRun" REG_DWORD 0
+)
+REM En son güncellemeleri hazır olur olmaz alın özelliğini devre dışı bırak
+Call :Playbook_Reader Update_Setting_22_
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" "IsContinuousInnovationOptedIn" REG_DWORD 0
+)
+REM DevHomeUpdate devre dışı bırak [Microsoft proje yönetim uygulamasının otomatik kurulmasını engeller]
+Call :Playbook_Reader Taskschd_Update_Setting_1_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\DevHomeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\DevHomeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM IA devre dışı bırak [Microsoft güncelleştirme kanalı üzerinden Market için kritik güncelleştirmeleri yapar]
+Call :Playbook_Reader Taskschd_Update_Setting_2_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\IA"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\IA"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM LXP devre dışı bırak [Yerel deneyim paketleri - Dil paket güncelleştirmelerini market güncelleştirme kanalından sunar]
+Call :Playbook_Reader Taskschd_Update_Setting_3_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\LXP"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\LXP"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM MACUpdate devre dışı bırak [Bu konuda bilgi bulamadım ancak tahminimce Windows yüklü MAC cihazlar için bir özellik güncelleştirmesi içeriyor]
+Call :Playbook_Reader Taskschd_Update_Setting_4_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\MACUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\MACUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM OutlookUpdate devre dışı bırak [Yeni Outlook uygulamasının otomatik kurulmasını engeller]
+Call :Playbook_Reader Taskschd_Update_Setting_5_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\OutlookUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM TFLUpdate devre dışı bırak [Londra şehrinin ulaşım hizmetleri hakkında bilgi veren Market tabanlı uygulamanın yüklenmesini sağlar. Bölgelese çalışdığını düşünüyorum ancak siz kapatmayı ihmal etmeyin. Microsoft bildiğimiz gibi :D]
+Call :Playbook_Reader Taskschd_Update_Setting_6_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\TFLUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\TFLUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM -------------------------------------------------------------
 REM Regedit kayıtlarının çıktılarını gizlemek için
 set Show=NT
 REM Playbook.ini CMD komutları uygulama bölümü
-FOR /f "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command" %PB% 2^>NUL') do (
+FOR /F "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command" %PB% 2^>NUL') do (
 	%%a > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% %%a)
 )
+REM -------------------------------------------------------------
 REM Playbook.ini Powershell komutları uygulama bölümü
 FOR /f "delims=► tokens=2" %%a in ('Findstr /i "Powershell_Command" %PB% 2^>NUL') do (
 	Call :Powershell_Playbook %%a > NUL 2>&1
 		if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
 )
+REM -------------------------------------------------------------
 REM Ayarlardan gizlenecek bölümler yapılandırılıyor
 REM İlgili ayar playbook bölümünde yer almıyorsa işlemi gerçekleştirmez
 Call :Playbook_Reader_2 "Settings_Hide"
 	if "!Playbook!" EQU "1" (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Settings_Hide" %PB%') do (Call :Reg_Hide "%%a")
 )
+REM -------------------------------------------------------------
 REM Görev zamanlayıcısı ayarları yapılandırılıyor
 Findstr /i "Task_Scheduler_Setting" %PB% > NUL 2>&1
 	if "!errorlevel!" EQU "0" (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Task_Scheduler_Setting" %PB%') do (
@@ -3206,32 +3393,57 @@ Findstr /i "Task_Scheduler_Setting" %PB% > NUL 2>&1
 								   )
 							   )
 )
+REM -------------------------------------------------------------
 REM Aygıt yöneticisi - Devmainview
 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Devmainview_Setting" %PB%') do (
 	FOR /F "skip=2 tokens=2" %%b in ('Find "%%a" %PB%') do (
 		if "%%b" EQU "1" (%Konum%\Bin\DevManView.exe /disable "%%a" > NUL 2>&1)
 	)
 )
+REM -------------------------------------------------------------
 REM Sistem açılış ismi değiştir
 Call :Playbook_Reader_2 "System_New_Name"
 	if "!Playbook!" EQU "1" (FOR /F "delims='=' tokens=2" %%a in ('Findstr /i "System_New_Name" %PB%') do (bcdedit /set {current} description "%%a" > NUL 2>&1)
 )
-REM
+REM Uygulama yükleyici
 cls&Call :Dil A 2 P1005&title OgnitorenKs Playbook │ 6/7 │ !LA2!
 Call :Dil B 2 T0011
 Call :Playbook_Reader_2 "Install_Application"
-	if "!Playbook!" EQU "1" (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
-								FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
-									if %%b EQU 1 (echo %%a | Findstr /i "sylikc.JPEGView" > NUL 2>&1
-													if !errorlevel! EQU 0 (Call :Jpegview_Default)
-												  echo %%a | Findstr /i "7zip.7zip" > NUL 2>&1
-													if !errorlevel! EQU 0 (Call :7Zip_Default)
-												  echo ► %R%[92m "%%a" %R%[37m !LB2! %R%[0m  
-												  Call :Winget "%%a"
-												 )
-								)
-							)
+	if "!Playbook!" EQU "1" (FOR /F "tokens=2" %%c in ('Findstr /i "Setting_2_" %Konum%\Settings.ini') do (
+								if "%%c" EQU "0" (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
+													FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a" %PB%') do (
+														if "%%b" EQU "1" (echo %%a | Findstr /i "sylikc.JPEGView" > NUL 2>&1
+																			if "!errorlevel!" EQU "0" (Call :Jpegview_Default)
+																		  echo %%a | Findstr /i "7zip.7zip" > NUL 2>&1
+																			if "!errorlevel!" EQU "0" (Call :7Zip_Default)
+																		  echo ► %R%[92m "%%a" %R%[37m !LB2! %R%[0m  
+																	      Call :Winget "%%a
+																		 )
+				)
+			)
+		)
+	)
 )
+REM -------------------------------------------------------------
+REM Winget üzeri indirme linki alınır ve yükleme işlemi yapılır.
+Call :Playbook_Reader_2 "Download_Application"
+	if "!Playbook!" EQU "1" (FOR /F "tokens=2" %%a in ('Findstr /i "Setting_2_" %Konum%\Settings.ini') do (
+								if "%%a" EQU "0" (FOR /F "tokens=4" %%b in ('Findstr /i "Download_Application" %PB% 2^>NUL') do (
+													FOR /F "tokens=2" %%c in ('Findstr /i "► %%b" %PB% 2^>NUL') do (
+														if "%%c" EQU "1" (Call :Winget_Link "%%b"
+																		  Call :PSDownload "%Konum%\Log\!Setup!"
+																		  "%Konum%\Log\!Setup!" !Silent!
+																		  echo %%b | Findstr /i "Open-Shell" > NUL 2>&1
+																			if "!errorlevel!" EQU "0" (Call :Openshell_Setting)
+																		  Call :DEL_Direct "%Konum%\Log\!Setup!"
+					)
+				)
+			)
+		)
+	)
+)
+REM İşi biten değişkenleri sıfırlıyorum
+FOR %%a in (Silent Setup Link) do (set %%a=)
 REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 7/7 │ !LA2!
 echo ►%R%[92m !LA2! %R%[0m
@@ -3342,6 +3554,9 @@ echo Call :DEL_Search "%%Windir%%\System32\config\systemprofile\AppData\Local\*.
 echo Call :DEL_Deep_Search "%%systemdrive%%\*log"
 echo Call :DEL_Deep_Search "%%Windir%%\*etl"
 echo Call :DEL_Deep_Search "%%LocalAppData%%\*etl"
+echo FOR %%%%g in ^(msi msp exe^) do ^(Call :DEL_Deep_Search "%%Windir%%\Installer\*.%%%%g"^)
+echo Call :DEL_Deep_Search "%%Windir%%\Installer\SourceHash*"
+echo Call :RD_Search "%%Windir%%\Installer\$PatchCache$\Managed\*"
 echo Call :DEL_Search "%%Windir%%\Installer\*"
 echo Call :RD_Search "%%Windir%%\Installer\*"
 echo Call :RD_Search "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
@@ -3391,7 +3606,6 @@ echo net stop wuauserv /y ^> NUL 2^>^&1
 echo Call :RD_Direct "%%windir%%\SoftwareDistribution"
 echo net start wuauserv /y ^> NUL 2^>^&1
 echo Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
-echo Dism /Online /Cleanup-Image /SPSuperseded
 echo ipconfig /flushdns ^> NUL 2^>^&1
 echo ipconfig /release ^> NUL 2^>^&1
 echo ipconfig /renew ^> NUL 2^>^&1
@@ -3454,6 +3668,27 @@ set Default=bmp jpg jpeg png gif tiff webp tga jxl heif heic avif wdp hdp jxr dn
 Call :Default_App
 MD "%AppData%\JPEGView" > NUL 2>&1
 Copy /y "%Konum%\Bin\Icon\JPEGView.ini" "%AppData%\JPEGView" > NUL 2>&1)
+goto :eof
+
+:Openshell_Setting
+"C:\Program Files\Open-Shell\StartMenu.exe" -exit > NUL 2>&1
+Taskkill /f im "StartMenu.exe" > NUL 2>&1
+Call :RegAdd "HKLM\SOFTWARE\OpenShell\StartMenu" "MenuStyle_Default" REG_SZ "Win7"
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "GlassOverride" REG_DWORD 1
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "GlassColor" REG_DWORD 0
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "StartScreenShortcut" REG_DWORD 0
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "RecentMetroApps" REG_DWORD 1
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "SearchInternet" REG_DWORD 0
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "SkinW7" REG_SZ "Midnight"
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "ShiftWin" REG_SZ "Nothing"
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "ProgramsStyle" REG_SZ "Inline"
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "RecentPrograms" REG_SZ "None"
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "SearchBox" REG_SZ "Normal"
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "SkinVariationW7" REG_SZ ""
+Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "SkipMetro" REG_DWORD 1
+reg add "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" /f /v "SkinOptionsW7" /t REG_MULTI_SZ /d "USER_IMAGE=1"\0"SMALL_ICONS=0"\0"LARGE_FONT=0"\0"DISABLE_MASK=1"\0"OPAQUE=0"\0"TRANSPARENT_LESS=1"\0"TRANSPARENT_MORE=0"\0"WHITE_SUBMENUS2=1" > NUL 2>&1
+reg add "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" /f /v "MenuItems7" /t REG_MULTI_SZ /d "Item1.Command=user_files"\0"Item1.Settings=TRACK_RECENT"\0"Item2.Command=user_documents"\0"Item2.Settings=ITEM_DISABLED"\0"Item3.Command=user_pictures"\0"Item3.Settings=ITEM_DISABLED"\0"Item4.Command=user_music"\0"Item4.Settings=ITEM_DISABLED"\0"Item5.Command=user_videos"\0"Item5.Settings=ITEM_DISABLED"\0"Item6.Command=downloads"\0"Item6.Settings=ITEM_DISABLED"\0"Item7.Command=homegroup"\0"Item7.Settings=ITEM_DISABLED"\0"Item8.Command=separator"\0"Item9.Command=games"\0"Item9.Settings=TRACK_RECENT|NOEXPAND|ITEM_DISABLED"\0"Item10.Command=favorites"\0"Item10.Settings=ITEM_DISABLED"\0"Item11.Command=recent_documents"\0"Item11.Settings=ITEM_DISABLED"\0"Item12.Command=computer"\0"Item12.Settings=NOEXPAND"\0"Item13.Command=network"\0"Item13.Settings=ITEM_DISABLED"\0"Item14.Command=network_connections"\0"Item14.Settings=ITEM_DISABLED"\0"Item15.Command=separator"\0"Item15.Settings=ITEM_DISABLED"\0"Item16.Command=control_panel"\0"Item16.Settings=TRACK_RECENT"\0"Item17.Command=pc_settings"\0"Item17.Settings=TRACK_RECENT"\0"Item18.Command=admin"\0"Item18.Settings=TRACK_RECENT"\0"Item19.Command=devices"\0"Item19.Settings=ITEM_DISABLED"\0"Item20.Command=defaults"\0"Item20.Settings=ITEM_DISABLED"\0"Item21.Command=help"\0"Item21.Settings=ITEM_DISABLED"\0"Item22.Command=run"\0"Item22.Settings=ITEM_DISABLED"\0"Item23.Command=apps"\0"Item24.Command=windows_security"\0"Item24.Settings=ITEM_DISABLED"\0" > NUL 2>&1
+Call :Powershell "Start-Process '%ProgramFiles%\Open-Shell\StartMenu.exe'"
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■

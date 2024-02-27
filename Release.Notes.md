@@ -4,7 +4,47 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.2.1 ►  23.01.2024 - Playbook</B></summary>
+
+<details><B><summary> Versiyon 4.2.2 ►  27.02.2024 - Playbook</B></summary>
+
+	• Playbook bölümünde yapılan değişiklikler;
+		• Uygulama kaldırma bölümü;
+			• PLog değişkeni kaldırıldı.
+			• "%Windir\SystemApps" klasöründeki artık klasörleri silmek için yeni komutlar eklendi.
+			• Bir önceki güncellemede yaptığım kaldırılmış uygulamaları
+		• Edge kaldırma bölümüne görev zamanlayıcısı ve regedit bölümlerine eklemeler yapıldı.
+		• Defender kaldırma bölümündeki appx kaldırma komutları düzenlendi.
+		• "Privacy_Setting_52_" konum hizmetini kapatması için yeni regedit kayıtları eklendi.
+		• "Privacy_Setting_68_" ayarı program uyumluluk asistanı kapatmak için eklendi.
+		• "Taskbar_Setting_14_" ayarı başlat menüsünden önerilenleri kaldırmak için eklendi. Microsoft sürüm bazında kısıtlama yaptığı için her sürümde çalışmayabilir.
+		• "Taskbar_Setting_15_" ayarı başlat menüsü - ipuçları, kısayollar, yeni uygulamalar ve daha fazlası için önerileri kapatması için eklendi.
+		• "Update_Setting_20_" ayarı Windows'u güncelleştirdiğimde diğer Microsoft uygulamalarının güncelleştirmelerini devre dışı bırakması için eklendi.
+		• "Optimization_Setting_19_" ayarı MSI modu aktifleştirmek için eklendi.
+		• "Optimization_Setting_20_" ayarı cihaz önceliklerini kaldırmak için eklendi.
+		• "Internet_Setting_3_" ayarı Nagle's algoritmasını kapatmak için eklendi.
+		• Winre.wim bölümündeki tarama işlemini hızlandırmak için yolu Windows dizinine göre ayarlandı.
+		• Playbook ayarı seçilip uygulama yükletmeden işlem yapılması için "Settings.ini" dosyasına ayarlar eklendi. Settings.ini başlığında detaylarını yazacağım.
+		• Windows güncelleştirme bileşeni usoclient.exe üzerinden her açılışta kontrol edilip otomatik yüklemeyle alakalı bölümleri devre dışı bırakmayı sağlayan komutlar eklendi.
+			• Taskschd_Update_Setting_1-6 ayarları eklendi. Açıklamaları kalıplar içinde yer almaktadır.
+		• Özelleştirilmiş yüklemeler için Winget üzerinde setup dosyasını indirip katılımsız komutlarla özel kurulum yapılmasını sağlayacak eklemeler yapıldı.
+			• Bu tarz bir ekleme yapmamın nedeni başlat menüsünü kaldırıp yerine alternatif program yüklemek isteyenler için >
+			• çünkü winget ile Openshell kurulduğunda yanında diğer bileşenleri de yükleniyordu. Bunu engellemek ve daha özelleştirilmiş bir Openshell kurulumu için eklendi >
+			• Ancak içeriği tüm programları yükletebilmesini sağlayacak şekilde geniş tutuldu.
+		• Varsayılan program yapılandırma bölümündeki regedit komutları düzenlendi. Kullanıcı seçimlerinin engel olduğu varsayılan olarak ayarlayamama sorunu giderildi.
+		• Uygulama kaldırma bölümüne eklenenler;
+			• DevHome
+			• New outlook
+	• Settings.ini bölümünde yapılan değişiklikler;
+		• Anlaşılır olması için düzenleme yapıldı.
+		• "Setting_1_" Toolbox güncelleştirme işlemi içindir.
+		• "Setting_2_" Playbook kalıbı seçilip uygulama yüklemeyi atlatmak isteyenler için eklendi.
+		• Bu bölümdeki değişikliklere bağlı olarak dil ile alakalı komutlar düzenlendi.
+	• "Sistem temizliği" bölümünde; Bu bölüm değişiklikleri ayrıca Playbook işlemi sonrası sistem yeniden başladıktan sonra açılan temizlik dosyasına da uygulanmıştır.
+		• "\Windows\Installer" silme işlemi hedef dosyalara yönelecek şekilde ayarlandı.
+		• "Dism /Online /Cleanup-Image /SPSuperseded" yeni sürüm Windows'larda işlevsiz olduğu için kaldırıldı.
+	
+
+</details><details><B><summary> Versiyon 4.2.1 ►  23.01.2024 - Playbook</B></summary>
 
 	• Playbook bölümünde yapılan değişiklikler;
 		• Kodlarda genel iyileştirme yapıldı.
