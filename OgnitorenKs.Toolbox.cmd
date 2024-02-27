@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title  OgnitorenKs Toolbox
 REM Toolbox versiyon
-set Version=4.2.2
+set Version=4.2.3
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -117,7 +117,7 @@ REM -------------------------------------------------------------
 REM Toolbox güncelleştirme bölümü
 REM Github reposundan indirdiğim Link.txt dosyası içnideki version ile toolbox versiyonunu karşılaştırıyorum. Farklı ise güncel sürümü indiriyorum.
 FOR /F "tokens=2" %%a in ('Findstr /i "Setting_1_" %Konum%\Settings.ini') do (
-	if %%a EQU 0 (REM Call :Link 4&Call :PSDownload "%Konum%\Bin\Extra\Link.txt"
+	if %%a EQU 0 (Call :Link 4&Call :PSDownload "%Konum%\Bin\Extra\Link.txt"
 				  FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Toolbox.Version." %Konum%\Bin\Extra\Link.txt') do (
 					if "!Version!" NEQ "%%b" (cls&Call :Dil A 2 T0022&echo.&echo %R%[92m !LA2! %R%[0m
 											  Call :Dil A 2 T0023&echo.&echo %R%[33m !LA2! %R%[90m=%R%[37m !Version! %R%[0m
@@ -142,11 +142,11 @@ FOR /F "tokens=2" %%a in ('Findstr /i "Setting_1_" %Konum%\Settings.ini') do (
 											)))
 	)
 )
-pause
 REM ██████████████████████████████████████████████████████████████████
 :Main_Menu
 set PB_Version=
 REM Regedit bölümünde yapılan işlemlerin gösterilip gösterilmeyeceğini belirler. 1 gösterir. 0 göstermez
+REM Playbook bölümünde ayarları göstermek için bu değişkeni 0 olarak ayarlıyorum. Burada daha düzgün bir arayüz için regedit kayıtlarını uygularken göstermiyorum.
 set Show=0
 REM Sistem hakkında bilgi alınır. Ana menüde gösterilir.
 FOR /F "tokens=2 delims=':'" %%a in ('FIND "Caption" %Konum%\Log\OS') do set Value1=%%a
@@ -2808,9 +2808,9 @@ Call :Playbook_Reader Explorer_Setting_28_
 											      Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
 											     )
 )
-REM Menü göster gecikme süresini düşür [Reg değerini 20 olarak ayarlar]
+REM Sağ-tık - Yeni bölümüne .bat dosya uzantısını ekle
 Call :Playbook_Reader Explorer_Setting_29_
-	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Desktop" "MenuShowDelay" REG_SZ 20
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKCR\.bat\ShellNew" "NullFile" REG_SZ ""
 )
 REM Modern beyaz fare simgesini yükle
 Call :Playbook_Reader Explorer_Setting_30_
@@ -3139,8 +3139,6 @@ Call :Playbook_Reader Feature_Setting_7_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Mouse" MouseThreshold2 REG_SZ 10
 							 Call :RegAdd "HKCU\Control Panel\Mouse" MouseThreshold1 REG_SZ 6
 							 Call :RegAdd "HKCU\Control Panel\Mouse" MouseSpeed REG_SZ 0
-							 Call :RegAdd "HKCU\Control Panel\Mouse" MouseHoverTime REG_SZ 3000
-							 Call :RegAdd "HKCU\Control Panel\Mouse" MouseSensitivity REG_SZ 10
 )
 REM Mavi ekran sonrasında yeniden başlatmayı devre dışı bırak
 Call :Playbook_Reader Feature_Setting_8_
@@ -3376,6 +3374,16 @@ REM Masaüstü duvar kağıdı görüntü kalitesini değiştir
 Call :Playbook_Reader Special_Setting_1_
 	if "!Playbook!" EQU "1" (Call :Playbook_Reader_Special Special_Setting_1_
 							 Call :RegAdd "HKCU\Control Panel\Desktop" "JPEGImportQuality" REG_DWORD !PBSpecial!
+)
+REM Menü gösterim gecikme süresini düşür [Varsayılan değer= 400]
+Call :Playbook_Reader Special_Setting_2_
+	if "!Playbook!" EQU "1" (Call :Playbook_Reader_Special Special_Setting_2_
+							 Call :RegAdd "HKCU\Control Panel\Desktop" "MenuShowDelay" REG_SZ !PBSpecial!
+)
+REM Fare ile bir öğenin üzerine gelindiğinde bilgi penceresi gösterim süresi [Varsayılan değer= 400]
+Call :Playbook_Reader Special_Setting_3_
+	if "!Playbook!" EQU "1" (Call :Playbook_Reader_Special Special_Setting_3_
+							 Call :RegAdd "HKCU\Control Panel\Mouse" "MouseHoverTime" REG_SZ !PBSpecial!
 )
 REM -------------------------------------------------------------
 REM Regedit kayıtlarının çıktılarını gizlemek için

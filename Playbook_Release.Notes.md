@@ -7,6 +7,8 @@
 <details><B><summary> Versiyon 1.3 ► 28.02.2024</B></summary>
 
 	• Deli_Petro06_Performance kalıbına sistem değişikliği ve duvar kağıdı değiştirme seçenekleri eklendi.
+	• OgnitorenKs_Performance bölümündeki All in one Runtimes ve 7-Zip dışındaki programların yükleme işlemi iptal edildi.
+	• 4.2.3 güncellemesi ile eklenen ayarlar kalıplara entegre edildi.
 
 </details><details><B><summary> Versiyon 1.2 ► 27.02.2024</B></summary>
 

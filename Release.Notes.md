@@ -6,14 +6,16 @@
 
 
 
-<details><B><summary> Versiyon 4.2.3 ►  GELİŞTİRİLİYOR...</B></summary>
+<details><B><summary> Versiyon 4.2.3 ►  28.02.2024 - Playbook</B></summary>
 	
 	• Playbook bölümünde yapılan değişiklikler;
 		• "Special_Setting_1_" ayarı masaüstü arkaplan resminin görüntü kalitesini ayarlamak için eklendi.
 		• Playbook kalıp güncelleme ayarındaki döngü hatası giderildi.
+		• "Explorer_Setting_29_" ayarı "Sağ-tık - Yeni bölümüne .bat dosya uzantısını ekle" olarak değiştirildi.
+		• "Special_Setting_2_" ayarı "Explorer_Setting_29_" buraya aktarılmıştır. Reg değerini değiştirebilecek şekilde düzenlenmiştir.
+		• "Feature_Setting_7_" ayarında yer alan regedit kayıtları yeniden düzenlendi.
+		• "Special_Setting_3_" ayarı fare işaretçi hızı bölümünden çıkartılıp özel ayar olarak eklendi. İçeriği farklı olduğu ayrı olması daha sağlıklı.
 		
-
-
 </details><details><B><summary> Versiyon 4.2.2 ►  27.02.2024 - Playbook</B></summary>
 
 	• Playbook bölümünde yapılan değişiklikler;
