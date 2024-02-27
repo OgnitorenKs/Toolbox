@@ -4,7 +4,11 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 1.2 ► 27.02.2024</B></summary>
+<details><B><summary> Versiyon 1.3 ► 28.02.2024</B></summary>
+
+	• Deli_Petro06_Performance kalıbına sistem değişikliği ve duvar kağıdı değiştirme seçenekleri eklendi.
+
+</details><details><B><summary> Versiyon 1.2 ► 27.02.2024</B></summary>
 
 	• OgnitorenKs;
 	_	• Lite kalıbı eklendi.

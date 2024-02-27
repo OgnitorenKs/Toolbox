@@ -34,7 +34,6 @@ REM Başlık
 title  OgnitorenKs Toolbox
 REM Toolbox versiyon
 set Version=4.2.2
-set PB_Version=1.2
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -118,7 +117,7 @@ REM -------------------------------------------------------------
 REM Toolbox güncelleştirme bölümü
 REM Github reposundan indirdiğim Link.txt dosyası içnideki version ile toolbox versiyonunu karşılaştırıyorum. Farklı ise güncel sürümü indiriyorum.
 FOR /F "tokens=2" %%a in ('Findstr /i "Setting_1_" %Konum%\Settings.ini') do (
-	if %%a EQU 0 (Call :Link 4&Call :PSDownload "%Konum%\Bin\Extra\Link.txt"
+	if %%a EQU 0 (REM Call :Link 4&Call :PSDownload "%Konum%\Bin\Extra\Link.txt"
 				  FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Toolbox.Version." %Konum%\Bin\Extra\Link.txt') do (
 					if "!Version!" NEQ "%%b" (cls&Call :Dil A 2 T0022&echo.&echo %R%[92m !LA2! %R%[0m
 											  Call :Dil A 2 T0023&echo.&echo %R%[33m !LA2! %R%[90m=%R%[37m !Version! %R%[0m
@@ -129,17 +128,21 @@ FOR /F "tokens=2" %%a in ('Findstr /i "Setting_1_" %Konum%\Settings.ini') do (
 											  exit
 											 ))
 				  FOR /F "delims=> tokens=2" %%c in ('Findstr /i "Playbook_Pattern_Version_" %Konum%\Bin\Extra\Link.txt 2^>NUL') do (
-					if "!PB_Version!" NEQ "%%c" (cls&Call :Dil A 2 T0036&echo.&echo %R%[92m !LA2! %R%[0m
-												 Call :Dil A 2 T0023&echo.&echo %R%[33m !LA2! %R%[90m=%R%[37m !PB_Version! %R%[0m
-												 Call :Dil A 2 T0024&echo %R%[33m !LA2! %R%[90m=%R%[37m %%c %R%[0m
-												 Call :Bekle 2
-												 MD "%Konum%\Bin\Playbook" > NUL 2>&1
-												 Call :Link 5&Call :PSDownload "%Konum%\Bin\Playbook\Playbook.zip"
-												 Call :Powershell "Expand-Archive -Force '%Konum%\Bin\Playbook\Playbook.zip' '%Konum%\Bin\Playbook'"
-												 Call :DEL_Direct "%Konum%\Bin\Playbook\Playbook.zip"
-												))
-				 )
+					FOR /F "delims=> tokens=2" %%d in ('Findstr /i "Playbook_Pattern_Version" %Konum%\Settings.ini 2^>NUL') do (
+						if "%%d" NEQ "%%c" (cls&Call :Dil A 2 T0036&echo.&echo %R%[92m !LA2! %R%[0m
+											Call :Dil A 2 T0023&echo.&echo %R%[33m !LA2! %R%[90m=%R%[37m %%d %R%[0m
+											Call :Dil A 2 T0024&echo %R%[33m !LA2! %R%[90m=%R%[37m %%c %R%[0m
+											Call :Bekle 2
+											MD "%Konum%\Bin\Playbook" > NUL 2>&1
+											Call :Link 5&Call :PSDownload "%Konum%\Bin\Playbook\Playbook.zip"
+											Call :Powershell "Expand-Archive -Force '%Konum%\Bin\Playbook\Playbook.zip' '%Konum%\Bin\Playbook'"
+											FOR /F "tokens=2" %%e in ('Findstr /i "Playbook_Pattern_Version_" %Konum%\Bin\Extra\Link.txt 2^>NUL') do (
+												Call :Powershell "(Get-Content %Konum%\Settings.ini) | ForEach-Object { $_ -replace '%%e', 'Playbook_Pattern_Version>%%c>' } | Set-Content '%Konum%\Settings.ini'")
+											Call :DEL_Direct "%Konum%\Bin\Playbook\Playbook.zip"
+											)))
+	)
 )
+pause
 REM ██████████████████████████████████████████████████████████████████
 :Main_Menu
 set PB_Version=
@@ -833,6 +836,12 @@ Findstr /i "%~1" %PB% > NUL 2>&1
 goto :eof
 
 REM -------------------------------------------------------------
+:Playbook_Reader_Special
+set PBSpecial=
+FOR /F "skip=2 tokens=4" %%p in ('Find "%~1" !PB! 2^>NUL') do (set PBSpecial=%%p)
+goto :eof
+
+REM -------------------------------------------------------------
 :Powershell_Playbook
 REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
 chcp 437 > NUL 2>&1
@@ -929,11 +938,11 @@ goto :eof
 REM -------------------------------------------------------------
 :Check_Internet
 set Internet=Offline
-FOR %%a in (
+FOR %%n in (
 ognitorenks.blogspot.com
 www.bing.com
 ) do (
-	ping -n 1 %%a -w 1000 > NUL
+	ping -n 1 %%n -w 1000 > NUL
 		if !errorlevel! EQU 0 (set Internet=Online)
 )
 goto :eof
@@ -3362,6 +3371,11 @@ Call :Playbook_Reader Taskschd_Update_Setting_6_
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\TFLUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM Masaüstü duvar kağıdı görüntü kalitesini değiştir
+Call :Playbook_Reader Special_Setting_1_
+	if "!Playbook!" EQU "1" (Call :Playbook_Reader_Special Special_Setting_1_
+							 Call :RegAdd "HKCU\Control Panel\Desktop" "JPEGImportQuality" REG_DWORD !PBSpecial!
 )
 REM -------------------------------------------------------------
 REM Regedit kayıtlarının çıktılarını gizlemek için

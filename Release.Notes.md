@@ -5,7 +5,16 @@
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
 
-<details><B><summary> Versiyon 4.2.2 ►  27.02.2024 - Playbook</B></summary>
+
+<details><B><summary> Versiyon 4.2.3 ►  GELİŞTİRİLİYOR...</B></summary>
+	
+	• Playbook bölümünde yapılan değişiklikler;
+		• "Special_Setting_1_" ayarı masaüstü arkaplan resminin görüntü kalitesini ayarlamak için eklendi.
+		• Playbook kalıp güncelleme ayarındaki döngü hatası giderildi.
+		
+
+
+</details><details><B><summary> Versiyon 4.2.2 ►  27.02.2024 - Playbook</B></summary>
 
 	• Playbook bölümünde yapılan değişiklikler;
 		• Uygulama kaldırma bölümü;
