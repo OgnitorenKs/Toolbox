@@ -102,6 +102,54 @@ _0_29_>swprv>Microsoft Yazılımı Gölge Kopya Sağlayıcısı>3>Demand>
 _0_29_>wbengine>Blok Düzeyinde Yedekleme Motoru Hizmeti>3>Demand>
 _0_29_>fhsvc>Dosya Geçmişi Hizmeti>3>Demand>
 :: Karma gerçeklik
+_0_30_>SharedRealitySvc>Uzamsal Veri Hizmeti>3>Demand>
+_0_30_>VacSvc>Hacimsel Ses Düzenleyici Hizmeti>3>Demand>
+_0_30_>perceptionsimulation>Windows Algı Simülasyon Hizmeti>3>Demand>
+_0_30_>spectrum>Windows Algılama Hizmeti>3>Demand>
+_0_30_>MixedRealityOpenXRSvc>Windows Karma Gerçeklik OpenXR Hizmeti>3>Demand>
+_0_30_>SpatialGraphFilter>Windows Ses Akışı Uzamsal Ses>3>Demand>
+:: Xbox
+_11_31_>XboxGipSvc>Xbox Accessory Management>3>Demand>
+_0_31_>XboxNetApiSvc>Xbox Live Ağ>3>Demand>
+_0_31_>XblAuthManager>Xbox Live Kimlik Doğrulama Yöneticisi>3>Demand>
+_0_31_>XblGameSave>Xbox Live Oyun Kaydetme>3>Demand>
+_10_31_>xboxgip>Oyun çevre birimleri>3>Demand>
+:: Teslim iyileştirme
+_0_32_>DoSvc>Teslim en iyileştirme>2>Auto>
+:: Uzak masaüstü
+_0_33_>TermService>Uzak masaüstü hizmetleri>3>Demand>
+_0_33_>UmRdpService>Uzak Masaüstü Hizmetleri Kullanıcı Modu Bağlantı Noktası Yeniden Yönlendiricisi>3>Demand>
+_0_33_>SessionEnv>Uzak Masaüstü Yapılandırması>3>Demand>
+_0_33_>RasAuto>Uzaktan Erişim Otomatik Bağlantı Yöneticisi>3>Demand>
+_0_33_>RasMan>Uzaktan Erişim Otomatik Bağlantı Yöneticisi>2>Auto>
+_0_33_>RpcLocator>Uzaktan Yordam Çağrısı Konumlandırıcısı>3>Demand>
+_0_33_>lmhosts>TCP/IP NetBIOS Yardımcısı>3>Demand>
+_0_33_>tcpipreg>TCP/IP Kayıt Defteri Uyumluluğu>2>Auto>
+_0_33_>Netlogon>Netlogon>3>Demand>
+:: Yakalama hizmeti
+_0_34_>CaptureService>Ekran yakalama>3>Demand>
+:: Ebeveyn Denetimleri
+_0_35_>WpcMonSvc>Ebeveyn Denetimleri>3>Demand>
+:: Atanmış erişim
+_0_36_>AssignedAccessManagerSvc>Atanmış Erişim>3>Demand>
+:: Retail demo
+_0_37_>RetailDemo>Perakende gösteri>3>Demand>
+:: Kişiler
+_0_38_>PimIndexMaintenanceSvc>Kişi Verileri>3>Demand>
+:: Telemetri
+_0_39_>diagsvc>Tanı Yürütme Hizmeti>3>Demand>
+_0_39_>InventorySvc>Envanter ve Uyumluluk Değerlendirme hizmeti>3>Demand>
+_0_39_>dmwappushservice>Cihaz Yönetimi Kablosuz Uygulama Protokolü Anında İleti Yönlendirme>3>Demand>
+_0_39_>DiagTrack>Bağlı kullanıcı deneyimi ve telemetrisi>2>Auto>
+_0_39_>diagnosticshub.standardcollector.service>diagnosticshub.standardcollector.service>3>Demand>
+:: Sorun giderme
+_0_40_>DPS>Tanılama İlkesi Hizmeti>2>Auto>
+_0_40_>WdiServiceHost>Tanılama Hizmeti Ana Bilgisayarı>3>Demand>
+_0_40_>WdiSystemHost>Tanılama Sistemi Ana Bilgisayarı>3>Demand>
+_0_40_>wercplsupport>Sorun Raporları Denetim Masası Desteği>3>Demand>
+_0_40_>WerSvc>Windows Hata Raporlama>3>Demand>
+_0_40_>PcaSvc>Program Uyumluluk Yardımcısı>3>Demand>
+_0_40_>TroubleshootingSvc>Önerilen Sorun Giderme Hizmeti>3>Demand>
 
 :: ██████████████████████████████████████████████████████████████████
 

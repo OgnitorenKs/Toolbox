@@ -109,18 +109,20 @@ It performs a general cleaning of the Windows system. Quickly cleans locations w
 On Windows systems, it checks and applies repair options for conditions that Microsoft recommends and that I have detected.
 
 </details>
+
 <details>
-<B><summary> 11 - System optimization</B></summary>
+<B><summary> 11 - System optimization [Playbook]</B></summary>
 
-You can prepare a special pattern file for this section or you can use the pattern file I prepared and customize your Windows 10/11 system. The process takes between 5-10 minutes.
-To look at the details of the operations performed, you need to go to the directory where Toolbox is installed, go to the "Bin\Playbook" folder and look at the pattern file you have selected.
-For detailed information (The guide is prepared in Turkish language): https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
+It streamlines Windows 10/11 22H2+ systems by performing a system tune-up.
+Does not delete components except Edge and OneDrive. 
+Adjusts privacy and performance settings. All settings are tested. No unnecessary settings are applied.
+For detailed information on the subject, you can review my blog page; https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.1.png)
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.2.png)
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.3.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.png)
+![Tool11.2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/playbook.png)
 
 </details>
+
 
 <details>
 <B><summary> Z - Change language</B></summary>

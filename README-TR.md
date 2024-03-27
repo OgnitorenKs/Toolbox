@@ -108,16 +108,17 @@ Windows sisteminde genel bir temizlik yapmaktadır. Temp ve çöp dosyaların de
 Windows sistemlerinde Microsoft'un önerdiği ve benim tespit ettiğim durumları kontrol edip onarma seçeneklerini uygular.
 
 </details>
+
 <details>
-<B><summary> 11 - Sistem optimizasyonu</B></summary>
+<B><summary> 11 - Sistem optimizasyonu [Playbook]</B></summary>
 
-Bu bölüm için özel bir kalıp dosyası hazırlayabilir yada benim hazırladığım kalıp dosyasını kullanıp Windows 10/11 sisteminizi özelleştirebilirsiniz. İşlemler 10-30 dakika arası sürmektedir.
-Yapılan işlemlerin detaylarına bakmak için Toolbox'ın kurulu olduğunu dizinde "Bin\Playbook" klasörüne gidip seçtiğiniz kalıp dosyasına bakmanız gerekmektedir.
-Detaylı bilgi için: https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
+Sistem üzerinde düzenleme işlemi yaparak Windows 10/11 22H2+ sistemleri akıcı bir hale getirir.
+Edge ve OneDrive dışında bileşen silmez. 
+Gizlilik ve performans ayarlarını yapar. Tüm ayarlar test edilmiştir. Gereksiz bir ayar uygulanmamaktadır.
+Konu hakkında detaylı bilgi için blogsayfamdaki konumu inceleyebilirsiniz; https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.1.png)
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.2.png)
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.3.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.png)
+![Tool11.2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/playbook.png)
 
 </details>
 

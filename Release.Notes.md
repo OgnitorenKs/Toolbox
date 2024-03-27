@@ -5,8 +5,63 @@
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
 
-
-<details><B><summary> Versiyon 4.2.3 ►  28.02.2024 - Playbook</B></summary>
+<details><B><summary> Versiyon 4.2.4 ►  28.03.2024 - Playbook</B></summary>
+	
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• Playbook kalıp güncelleme sistemi kaldırıldı. Ana güncellemeye bağlı olarak kalıplar güncellenecek.
+		• UpdateAfter seçeneği iptal edildi. Artık yalnızca playbook olarak uygulanacak.
+		• Delipedro ve Speyda'nın playbook kalıpları kaldırıldı. Tek bir kalıp bırakıldı.
+		• Uyarı ekranında yer alan bilgiler daha anlaşılır hale getirildi.
+		• Kalıp klasöründe tek bir kalıp var ise doğrudan uyarılar ekranına geçecek şekilde ayarlama yapıldı. Birden fazla dosya var ise seçim yapma menüsünü gösterir.
+		• Bazı powershell komutlarına tek tırnak işareti eklendi. Kullanıcı adında boşluk olunca sorunlara neden olduığu içindir.
+		• Bir kaç bölümde yer alan " işareti hataları giderildi.
+		• "\Windows\Installer" klasör içeriğini silmesi sonucu oluşan simge hatalarını önlemek için silme işlemi .msi .msp dosyalarına ve SourceHash klasörüne odaklandırıldı.
+		• Edge kaldırma bölümündeki güvenlik duvarından engelleme komutu ve regedit temizleme komutları kaldırıldı. Detaylı temizlik yapmak isteyenler Playbook sonrası Hibit Uninstaller programıyla kapsamlı temizlik yapabilir.
+		• Winget'in olası çökme, takılma gibi sorunlarında sistemi yeniden başlatıp işlemleri hızlıca tamamlamak için "Uygulama yükleme" bölümü son işlem olarak düzenlendi.
+		• "Change_App_1_" ayarı defender'ı silmeden devre dışı bırakmayı sağlar. (Windows Update yaparken sorun çıkmaması için oluşturuldu)
+		• "Change_App_2_" ayarı görev çubuğu arama bileşenini silmeden devre dışı bırakmayı sağlar.
+		• "Change_App_3_" ayarı başlat menüsünü silmeden devre dışı bırakmayı sağlar.
+		• Onedrive komutlarına yeni regedit kaydı eklendi
+		• "Uyarılar ve yönlendirmeler" bölümünde UAC kapatma işlemi onay verdikten sonra yapacak şekilde ayarlandı.
+		• "Optimization_Setting_16_" ayarındaki HPET komutu düzenlendi.
+		• "Explorer_Setting_19_" ayarı varsayılan dili Türkçe olan sistemlerde uygulanıyordu. Artık tüm dillerde bu ayar eklenebilecek. Türkçe dışında ismi "Take Ownership" olacaktır.
+		• Settings.ini içerisinde yer alan winget uygulama yükleme bölümüyle ilgili ayar kaldırıldı.
+		• Uygulama kurma bölümü kaldırıldı. Openshell başlat menüsü ve arama işlevi için yüklenecek.
+		• Winget kontrol komutları revize edildi. Artık uygulama yükleyici güncellenmeden playbook bölümü kullanılamayacak.
+		• Net framework 3.5/4.5/DirectPlay bileşen yükleme işlemi kaldırıldı.
+		• Uygulama yükleme işlemleri için komutlar duruyor ancak kalıplardan kaldırıldı.
+		• İşlem sıraları değiştirildi.
+	▼ Uygulama yükleyici bölümünden yapılan değişiklikler;
+		• Teamviewer programı kaldırıldı. Sebeplerine gelecek olursak;
+			• İşlevsellikten uzak olması. Çünkü bağlantı kurmak için üye olmak gibi saçma bir politikası var.
+			• Ücretsiz sürümünün kısıtlı olması.
+		• Uzak bağlantı menüsü kaldırıldı. AnyDesk programı Diğer kategorisine alındı.
+		• All in One Runtimes bölümünden ".Net Desktop Runtime 7.0" sürümü kaldırıldı. Artık yalnızca güncel sürüm yüklenecek.
+		• DuckduckgoBrowser kaldırıldı yerine MaxthonBrowser eklendi. Duckduckgo programının setup dosyası çok büyük olduğu için kaldırdım.
+		• Uygulama yüklemeden önce yüklü olup olmadığını kontrol edecek. Bu kontrol ile olası kurulum hataları önlenmiş oldu.
+		• Winget kontrol komutları revize edildi. Artık uygulama yükleyici güncellenmeden bu bölüm kullanılamayacak.
+	▼ Hizmet yönetimi bölümünde yapılan değişiklikler;
+		• Eklenen yeni hizmet grupları;
+			• Karma gerçeklik
+			• Xbox
+			• Teslim en iyileştirme
+			• Uzak masaüstü
+			• Ekran yakalama hizmeti
+			• Ebeveyn denetimleri
+			• Atanmış erişim
+			• Perakende gösteri [RetailDemo]
+			• Kişiler
+			• Telemetri
+			• Sorun giderme
+	▼ Genel değişiklikler;
+		• Toolbox yalnızca 10 ve 11 sistemlerde çalışacağı için sistem kontrol komutlarını kaldırdım. Çünkü Toolbox 8.1 sistemlerde açılmayacaktır.
+		• Ana menüye ve toolbox başlığına simgeler eklendi.
+		• Hizmet silme komutunda yer alan ufak bir eksiklik giderildi.
+			• SC başlığı SC_Config olarak düzenlendi.
+		• Ping ölçer bölümünde DNS adresleri belirtildi.
+		• Sistem temizliği bölümündeki kodlar düzenlendi. Hızlı erişim sabitlenmiş pinleri silme sorunu giderildi.
+		
+</details><details><B><summary> Versiyon 4.2.3 ►  28.02.2024 - Playbook</B></summary>
 	
 	• Playbook bölümünde yapılan değişiklikler;
 		• "Special_Setting_1_" ayarı masaüstü arkaplan resminin görüntü kalitesini ayarlamak için eklendi.
@@ -1050,4 +1105,33 @@
 	• Sürüm notları Toolbox içine kısayol olarak eklendi.
  
 </details><details><B><summary> Versiyon 1.0   ►  23.11.2021</B></summary>
+</details>
+
+
+<details><B><summary> Versiyon 1.4 ► 28.02.2024</B></summary>
+
+	• OgnitorenKs_Lite kalıbındaki all in one runtimes yüklemeleri varsayılan olarak kapalı unutmuştum. Yüklenecek şekilde düzenlendi.
+
+</details><details><B><summary> Versiyon 1.3 ► 28.02.2024</B></summary>
+
+	• Deli_Petro06_Performance kalıbına sistem değişikliği ve duvar kağıdı değiştirme seçenekleri eklendi.
+	• OgnitorenKs_Performance bölümündeki All in one Runtimes ve 7-Zip dışındaki programların yükleme işlemi iptal edildi.
+	• 4.2.3 güncellemesi ile eklenen ayarlar kalıplara entegre edildi.
+
+</details><details><B><summary> Versiyon 1.2 ► 27.02.2024</B></summary>
+
+	• OgnitorenKs;
+	_	• Lite kalıbı eklendi.
+			• Performans kalıptan farklı bazı işlemler yapar. Başlat menüsü ve arama hizmetini siler.
+		• Performans ve lite kalıplarına masaüstü arka planını özelleştirmesi için ekleme yapıldı. İşlemler sırasında Github deposundan indirilip uygulanır.
+	• Kalıplara yeni ayarlar eklendi. Appx silme bölümündeki tanımlamalar yeniden düzenlendi ve hatalar giderildi.
+
+</details><details><B><summary> Versiyon 1.1 ► 11.01.2024</B></summary>
+
+	• Playbook ve UpdateAfter kalıplarındaki farklılıklar giderildi.
+
+</details><details><B><summary> Versiyon 1.0 ► 10.01.2024</B></summary>
+
+	• Deli_Petro06, OgnitorenKs, Spydea[readyOS] kalıpları güncellendi.
+
 </details>
