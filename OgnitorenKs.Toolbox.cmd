@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.2.4
+set Version=4.2.5
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -166,9 +166,6 @@ goto Main_Menu
 
 REM -------------------------------------------------------------
 :Software_Installer
-REM İnternet bağlantısı kontrol edilir
-Call :Check_Internet
-	if %Internet% EQU Offline (Call :Dil A 2 Error_9_&cls&echo.&echo %R%[31m !LA2! %R%[0m&Call :Bekle 4&goto Main_Menu)
 mode con cols=98 lines=38
 REM Winget sistemini kontrol eder
 Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
@@ -825,8 +822,9 @@ REM -------------------------------------------------------------
 :Check_Internet
 set Internet=Offline
 FOR %%n in (
-ognitorenks.blogspot.com
+www.google.com
 www.bing.com
+github.com
 ) do (
 	ping -n 1 %%n -w 1000 > NUL
 		if !errorlevel! EQU 0 (set Internet=Online)
@@ -1580,8 +1578,6 @@ cls
 REM Winget sistemini kontrol eder
 Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
 	if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_&echo.&echo %R%[31m !LA2!%R%[0m&Call :Bekle 7&goto Main_Menu)
-Call :Check_Internet
-	if "!Internet!" EQU "Offline" (Call :Dil A 2 Error_9_&echo.&echo %R%[31m !LA2!%R%[0m&Call :Bekle 7&goto Main_Menu)
 REM Playbook kütüphanesi kontrol edilir. Kalıp sayısına göre pencere ayarı yapılır. Yoksa ana menüye atar.
 set Mode=8
 set CTRL=0

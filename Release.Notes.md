@@ -4,8 +4,13 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.2.5 ►  28.03.2024 - Playbook</B></summary>
 
-<details><B><summary> Versiyon 4.2.4 ►  28.03.2024 - Playbook</B></summary>
+	• Playbook bölümü internet kontrol komutları kaldırıldı.
+	• Internet kontrol bölümüne www.google.com ve github.com adresleri eklendi.
+	• Uygulama yükleyici bölümünden internet kontrol komutları kaldırıldı.
+
+</details><details><B><summary> Versiyon 4.2.4 ►  28.03.2024 - Playbook</B></summary>
 	
 	▼ Playbook bölümünde yapılan değişiklikler;
 		• Playbook kalıp güncelleme sistemi kaldırıldı. Ana güncellemeye bağlı olarak kalıplar güncellenecek.
