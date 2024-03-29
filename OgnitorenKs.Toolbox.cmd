@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.2.5
+set Version=4.2.6
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -1807,7 +1807,7 @@ Call :Playbook_Reader Component_Setting_2_
 							 echo Call :DEL_Direct "%Windir%\System32\config\systemprofile\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk" >> C:\Playbook.Reset.After.cmd
 							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
 							 FOR /F "skip=2 tokens=1" %%b in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /f "MicrosoftEdgeAutoLaunch" 2^>NUL') do (Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "%%b")
-							 netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
+							 REM netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
 							 Call :Service_Admin "edgeupdate" 4
 							 Call :Service_Admin "edgeupdatem" 4
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\EdgeUpdate"
@@ -3189,7 +3189,8 @@ Call :DEL_Direct "%Konum%\Log\Capabilities"
 Call :DEL_Direct "%Konum%\Log\Features"
 REM -------------------------------------------------------------
 REM Settings.ini dosyasından temizlik işleminin yapılıp yapılmayacağını kontrol eder
-FOR /F "tokens=2" %%a in ('Findstr /i "Setting_2_" %Konum%\Settings.ini 2^>NUL') do (set Value_T=%%a)
+set Value_T=NT
+FOR /F "tokens=2" %%a in ('Findstr /i "Process_Clear_" %PB% 2^>NUL') do (set Value_T=%%a)
 	if "!Value_T!" EQU "0" (Call :DEL_Direct "C:\Playbook.Reset.After.cmd"
 							goto Pass_2
 )
@@ -3211,10 +3212,11 @@ FOR %%a in (
 "%windir%\Containers"
 "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization"
 "%ProgramData%\Package Cache"
-"%SystemDrive%\System Volume Information"
 ) do (
 	Call :RD_Direct %%a
 )
+REM Sistem geri yükleme kayıtlarını temizler
+REM "%SystemDrive%\System Volume Information"
 REM -------------------------------------------------------------
 FOR %%a in (
 "%Windir%\CbsTemp\*"
@@ -3331,7 +3333,6 @@ echo Call :RD_Direct "%%windir%%\Containers"
 echo Call :DEL_Search "%%Windir%%\CbsTemp\*"
 echo Call :DEL_Search "%%windir%%\Logs\*"
 echo Call :RD_Search "%%windir%%\Logs\*"
-echo Call :RD_Direct "%%SystemDrive%%\System Volume Information"
 echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\ReportArchive"
 echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\Temp"
 echo FOR /F "tokens=*" %%%%a in ^('dir /b "%%LocalAppData%%\Packages\*" 2^^^>NUL'^) do ^(
@@ -3358,6 +3359,8 @@ echo Powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -C %%
 echo chcp 65001 ^> NUL 2^>^&1
 echo goto :eof
 ) >> C:\Playbook.Reset.After.cmd
+REM Sistem geri yükleme bölümlerini temizler
+REM echo Call :RD_Direct "%%SystemDrive%%\System Volume Information"
 REM -------------------------------------------------------------
 :Pass_2
 REM Winget üzeri indirme linki alınır ve yükleme işlemi yapılır.

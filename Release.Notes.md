@@ -4,7 +4,17 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.2.5 ►  28.03.2024 - Playbook</B></summary>
+
+<details><B><summary> Versiyon 4.2.6 ►  29.03.2024 - Playbook</B></summary>
+
+	• Playbook bölümü değişiklikler;
+		• Sistem geri yükleme ve bileşenleri playbook kalıbından kaldırıldı. Artık varsayılan olarak bırakılacak. Dileyenler "hizmetleri yönet" bölümünden kapatabilir.
+		• Temizlik bölümünden sistem geri yükleme noktalarını silen komutlar kaldırıldı.
+		• Edge ve edgewebview2'nin otomatik yüklenmesini engellemek için eklenen güvenlik duvarı engelleme komutu iptal edildi.
+		• Playbook içerisindeki bazı özel ayarların yönetimi daha rahat olması için liste başında toplandı.
+		• Playbook sonrası temizlik işlemini atlama ayarı Settings.ini içerisinden, playbook kalıbına eklendi.
+
+</details><details><B><summary> Versiyon 4.2.5 ►  28.03.2024 - Playbook</B></summary>
 
 	• Playbook bölümü internet kontrol komutları kaldırıldı.
 	• Internet kontrol bölümüne www.google.com ve github.com adresleri eklendi.
