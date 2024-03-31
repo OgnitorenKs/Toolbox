@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.2.6
+set Version=4.2.7
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -145,7 +145,7 @@ echo       %R%[90m %Value2%: %Value1% ^| %Value4% ^| %Value3%%R%[0m
 FOR /L %%a in (1,1,4) do (set Value%%a=)
 Call %Dil% :Menu_1_%Win%
 Call :Dil A 2 D0001&set /p Value_M=%R%[32m        !LA2!: %R%[0m
-Call :Upper %Value_M% Value_M
+Call :Upper !Value_M! Value_M
 title 🤖 OgnitorenKs Toolbox 🤖
 	if "!Value_M!" EQU "1" (goto Software_Installer)
 	if "!Value_M!" EQU "2" (goto Service_Menu)
@@ -155,7 +155,7 @@ title 🤖 OgnitorenKs Toolbox 🤖
 	if "!Value_M!" EQU "6" (goto User_Licence_Manager)
 	if "!Value_M!" EQU "7" (goto Sistem_Bilgi)
 	if "!Value_M!" EQU "8" (goto Wifi_Info)
-	if "!Value_M!" EQU "9" (set Error=X&Call :Cleaner)
+	if "!Value_M!" EQU "9" (Call :Cleaner)
 	if "!Value_M!" EQU "10" (Call :Windows_Repair)
 	if "!Value_M!" EQU "11" (goto Playbook_Manager)
 	if "!Value_M!" EQU "Z" (goto Language_Select)
@@ -168,8 +168,16 @@ REM -------------------------------------------------------------
 :Software_Installer
 mode con cols=98 lines=38
 REM Winget sistemini kontrol eder
+Call :Dil A 2 T0013&echo.&echo %R%[92m !LA2! %R%[0m
 Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
-	if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_&echo.&echo %R%[31m !LA2!%R%[0m&Call :Bekle 7&goto Main_Menu)
+	if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_
+							   Call :Dil B 2 Error_5_
+							   echo.&echo %R%[31m !LA2! %R%[0m
+							   echo.&echo %R%[31m !LB2! %R%[0m
+							   Call :Bekle 10&goto Main_Menu
+)
+:Jump_1
+cls
 REM Dil dosyasından ilgili bölüm çağırılır
 Call %Dil% :Menu_2
 REM Boş değişken kullanımında toolbox kapanacağı için değişkeni geçersiz bir değer ile dolduruyoruz.
@@ -223,40 +231,37 @@ FOR %%a in (%Value_M%) do (
 	if %%a EQU 38 (Call :Winget CodecGuide.K-LiteCodecPack.Mega)
 	if %%a EQU 39 (Call :Winget VideoLAN.VLC)
 	if %%a EQU 40 (Call :Winget Daum.PotPlayer)
-	if %%a EQU 41 (Call :Winget AIMP.AIMP)
-	if %%a EQU 42 (Call :Winget Spotify.Spotify)
-	if %%a EQU 43 (Call :Winget SoftDeluxe.FreeDownloadManager)
-	if %%a EQU 44 (Call :Winget subhra74.XtremeDownloadManager)
-	if %%a EQU 45 (Call :Winget AppWork.JDownloader)
-	if %%a EQU 46 (Call :Winget qBittorrent.qBittorrent)
-	if %%a EQU 47 (Call :Winget TheDocumentFoundation.LibreOffice)
-	if %%a EQU 48 (Call :Winget ONLYOFFICE.DesktopEditors)
-	if %%a EQU 49 (Call :Winget Adobe.Acrobat.Reader.64-bit)
-	if %%a EQU 50 (Call :Winget TrackerSoftware.PDF-XChangeEditor)
-	if %%a EQU 51 (Call :Winget calibre.calibre)
-	if %%a EQU 52 (Call :Winget Notepad++.Notepad++)
-	if %%a EQU 53 (Call :Winget Microsoft.VisualStudioCode)
-	if %%a EQU 54 (Call :Winget GitHub.GitHubDesktop)
-	if %%a EQU 55 (Call :Winget Git.Git)
-	if %%a EQU 56 (Call :Winget OpenJS.NodeJS)
-	if %%a EQU 57 (Call :Winget Unity.UnityHub)
-	if %%a EQU 58 (Call :Winget BlenderFoundation.Blender)
-	if %%a EQU 59 (Call :Winget IObit.IObitUnlocker)
-	if %%a EQU 60 (Call :Winget RevoUninstaller.RevoUninstaller)
-	if %%a EQU 61 (Call :7Zip_Default&Call :Winget 7zip.7zip)
-	if %%a EQU 62 (Call :Winget Open-Shell.Open-Shell-Menu)
-	if %%a EQU 63 (Call :Winget AnyDeskSoftwareGmbH.AnyDesk)
-	if %%a EQU 64 (Call :Winget Henry++.MemReduct)
-	if %%a EQU 65 (Call :Winget Guru3D.Afterburner)
-	if %%a EQU 66 (Call :Winget voidtools.Everything)
-	if %%a EQU 67 (Call :Winget LogMeIn.Hamachi)
-	if %%a EQU 68 (Call :Winget GlassWire.GlassWire)
-	if %%a EQU 69 (Call :Winget Safing.Portmaster)
-	if %%a EQU 70 (Call :Winget Stremio.Stremio)
-	if %%a EQU 71 (Call :Winget Flow-Launcher.Flow-Launcher)
-	if %%a EQU 72 (Call :Winget Cloudflare.Warp)
+	if %%a EQU 41 (Call :Winget Spotify.Spotify)
+	if %%a EQU 42 (Call :Winget SoftDeluxe.FreeDownloadManager)
+	if %%a EQU 43 (Call :Winget subhra74.XtremeDownloadManager)
+	if %%a EQU 44 (Call :Winget qBittorrent.qBittorrent)
+	if %%a EQU 45 (Call :Winget TheDocumentFoundation.LibreOffice)
+	if %%a EQU 46 (Call :Winget ONLYOFFICE.DesktopEditors)
+	if %%a EQU 47 (Call :Winget Adobe.Acrobat.Reader.64-bit)
+	if %%a EQU 48 (Call :Winget TrackerSoftware.PDF-XChangeEditor)
+	if %%a EQU 49 (Call :Winget calibre.calibre)
+	if %%a EQU 50 (Call :Winget Notepad++.Notepad++)
+	if %%a EQU 51 (Call :Winget Microsoft.VisualStudioCode)
+	if %%a EQU 52 (Call :Winget GitHub.GitHubDesktop)
+	if %%a EQU 53 (Call :Winget Git.Git)
+	if %%a EQU 54 (Call :Winget OpenJS.NodeJS)
+	if %%a EQU 55 (Call :Winget Unity.UnityHub)
+	if %%a EQU 56 (Call :Winget BlenderFoundation.Blender)
+	if %%a EQU 57 (Call :Winget IObit.IObitUnlocker)
+	if %%a EQU 58 (Call :Winget RevoUninstaller.RevoUninstaller)
+	if %%a EQU 59 (Call :7Zip_Default&Call :Winget 7zip.7zip)
+	if %%a EQU 60 (Call :Winget Open-Shell.Open-Shell-Menu)
+	if %%a EQU 61 (Call :Winget AnyDeskSoftwareGmbH.AnyDesk)
+	if %%a EQU 62 (Call :Winget Henry++.MemReduct)
+	if %%a EQU 63 (Call :Winget Guru3D.Afterburner)
+	if %%a EQU 64 (Call :Winget LogMeIn.Hamachi)
+	if %%a EQU 65 (Call :Winget GlassWire.GlassWire)
+	if %%a EQU 66 (Call :Winget Safing.Portmaster)
+	if %%a EQU 67 (Call :Winget voidtools.Everything)
+	if %%a EQU 68 (Call :Winget Flow-Launcher.Flow-Launcher)
+	if %%a EQU 69 (Call :Winget Stremio.Stremio)
 )
-goto Software_Installer
+goto Jump_1
 REM -------------------------------------------------------------
 :AIO.Runtimes
 cls&Call :Dil B 2 T0018&echo %R%[32m !LB2! %R%[0m
@@ -529,44 +534,45 @@ goto Main_Menu
 REM -------------------------------------------------------------
 :Cleaner
 cls
-if %Error% EQU X (Call :Dil A 2 B0006&echo.&echo %R%[91m !LA2! %R%[0m
-				  Call :Dil B 2 T0030&echo.&echo %R%[32m !LB2! %R%[0m
-)
+Call :Dil A 2 B0006&title !LA2!
+set Show=1
 REM Çöp dosyaları temizleme komutları
 ie4uinit.exe -show
 ie4uinit.exe -ClearIconCache
-taskkill /f /im explorer.exe > NUL 2>&1
+Call :ExplorerResetAsk
+	if "!Explorer_Reset!" EQU "0" (taskkill /f /im explorer.exe > NUL 2>&1)
 Call :DEL_Direct "%LocalAppData%\IconCache.db"
-Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\*"
-Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\IconCacheToDelete\*"
-Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\NotifyIcon\*"
-Call :DEL_Direct "%LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db"
+Call :DEL_Search "%LocalAppData%\Microsoft\Windows\Explorer\*"
+Call :DEL_Search "%LocalAppData%\Microsoft\Windows\Explorer\IconCacheToDelete\*"
+Call :DEL_Search "%LocalAppData%\Microsoft\Windows\Explorer\NotifyIcon\*"
+Call :DEL_Search "%LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db"
 Call :RD_Direct "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache"
 MD "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache" > NUL 2>&1
-Call :DEL_Direct "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\TempState\*"
+Call :DEL_Search "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\TempState\*"
 Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v IconStreams
 Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v PastIconsStream
-Call :Powershell "Start-Process '%Windir%\explorer.exe'"
-REM
-Call :DEL_Direct "%temp%\*"
+	if "!Explorer_Reset!" EQU "0" (Call :Powershell "Start-Process '%Windir%\explorer.exe'")
+REM Temp klasörlerini temizler
+Call :DEL_Search "%temp%\*"
 Call :RD_Search "%temp%\*"
-Call :DEL_Direct "%Windir%\Temp\*"
+Call :DEL_Search "%Windir%\Temp\*"
 Call :RD_Search "%Windir%\Temp\*"
-Call :DEL_Direct "%LocalAppData%\Temp\*"
+Call :DEL_Search "%LocalAppData%\Temp\*"
 Call :RD_Search "%LocalAppData%\Temp\*"
+REM Sistem içerisindeki gereksiz log dosyalarını temizler
 Call :RD_Search "%Windir%\System32\config\systemprofile\AppData\Local\*.tmp"
 Call :DEL_Deep_Search "%systemdrive%\*log"
 Call :DEL_Deep_Search "%Windir%\*etl"
 Call :DEL_Deep_Search "%LocalAppData%\*etl"
 Call :RD_Search "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
-Call :DEL_Direct "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
+Call :DEL_Search "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 Call :RD_Direct "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
-Call :DEL_Direct "%windir%\prefetch\*"
-REM Clear main telemetry file
-Call :DEL_Direct "%ProgramData%\Microsoft\Diagnosis\ETLLogs\AutoLogger\*.etl"
-REM
+Call :DEL_Search "%windir%\prefetch\*"
+REM Telemetri dosyalarını temziler
+Call :DEL_Search "%ProgramData%\Microsoft\Diagnosis\ETLLogs\AutoLogger\*.etl"
+REM Windows'un oluşturduğu gereksiz boş klasörleri temizler
 FOR /F %%a in ('dir /b "%LocalAppData%\tw-*.tmp"') do (Call :RD_Direct "%LocalAppData%\%%a")
-REM
+REM Sistem üzerinde oluşan gereksiz log dosyalarını temizler
 Call :DEL_Direct "%SystemRoot%\DtcInstall.log"
 Call :DEL_Direct "%SystemRoot%\comsetup.log"
 Call :DEL_Direct "%SystemRoot%\PFRO.log"
@@ -578,23 +584,23 @@ Call :DEL_Direct "%SystemRoot%\inf\setupapi.dev.log"
 Call :DEL_Direct "%SystemRoot%\inf\setupapi.offline.log"
 Call :DEL_Direct "%SystemRoot%\Performance\WinSAT\winsat.log"
 Call :DEL_Direct "%SystemRoot%\debug\PASSWD.LOG"
-Call :DEL_Direct "%localappdata%\Microsoft\Windows\WebCache\*.*"
-Call :DEL_Direct "%SystemRoot%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
+Call :DEL_Search "%localappdata%\Microsoft\Windows\WebCache\*.*"
+Call :DEL_Search "%SystemRoot%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
 Call :DEL_Direct "%SystemRoot%\Logs\CBS\CBS.log"
 Call :DEL_Direct "%SystemRoot%\Logs\DISM\DISM.log"
-Call :DEL_Direct "%SystemRoot%\Logs\SIH\*"
-Call :DEL_Direct "%LocalAppData%\Microsoft\CLR_v4.0\UsageTraces\*"
-Call :DEL_Direct "%LocalAppData%\Microsoft\CLR_v4.0_32\UsageTraces\*"
-Call :DEL_Direct "%SystemRoot%\Logs\NetSetup\*"
-Call :DEL_Direct "%SystemRoot%\System32\LogFiles\setupcln\*"
-Call :DEL_Direct "%SystemRoot%\Temp\CBS\*"
+Call :DEL_Search "%SystemRoot%\Logs\SIH\*"
+Call :DEL_Search "%LocalAppData%\Microsoft\CLR_v4.0\UsageTraces\*"
+Call :DEL_Search "%LocalAppData%\Microsoft\CLR_v4.0_32\UsageTraces\*"
+Call :DEL_Search "%SystemRoot%\Logs\NetSetup\*"
+Call :DEL_Search "%SystemRoot%\System32\LogFiles\setupcln\*"
+Call :DEL_Search "%SystemRoot%\Temp\CBS\*"
 Call :DEL_Direct "%SystemRoot%\System32\catroot2\dberr.txt"
 Call :DEL_Direct "%SystemRoot%\System32\catroot2.log"
 Call :DEL_Direct "%SystemRoot%\System32\catroot2.jrs"
 Call :DEL_Direct "%SystemRoot%\System32\catroot2.edb"
 Call :DEL_Direct "%SystemRoot%\System32\catroot2.chk"
-Call :DEL_Direct "%SystemRoot%\Logs\SIH\*"
-Call :DEL_Direct "%SystemRoot%\Traces\WindowsUpdate\*"
+Call :DEL_Search "%SystemRoot%\Logs\SIH\*"
+Call :DEL_Search "%SystemRoot%\Traces\WindowsUpdate\*"
 Call :RD_Direct "%SystemRoot%\Logs\waasmedic"
 REM Windows hata bildirimi
 Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\ReportArchive"
@@ -632,40 +638,43 @@ Call :NET start wuauserv
 REM Call :Powershell "Start-Process cleanmgr -ArgumentList '/verylowdisk /sagerun:5'"
 REM Çöp kutusunu temizler
 Call :RD_Direct "C:\$Recycle.Bin\!CUS!"
-REM
+REM DNS önbelleği temizler
+Call :Dil A 2 T0030&echo ►%R%[32m !LA2! %R%[0m
 ipconfig /flushdns > NUL 2>&1
 ipconfig /release > NUL 2>&1
 ipconfig /renew > NUL 2>&1
-REM
+REM Olay günlüğü temizleniyor
+Call :Dil A 2 T0017&echo ►%R%[32m !LA2! %R%[0m
 FOR /F "tokens=*" %%g in ('wevtutil.exe el') do (wevtutil.exe cl "%%g" > NUL 2>&1)
-REM
+REM Güncelleme artıklarını temizler
+Call :Dil A 2 T0032&echo.&echo %R%[32m !LA2! %R%[0m
 Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+set Show=NT
 goto :eof
 
 REM -------------------------------------------------------------
 :Windows_Repair
-cls&set Error=X&Call :Cleaner&cls
-Call :Dil A 2 B0007&echo.&echo %R%[91m !LA2! %R%[0m
+cls&Call :Cleaner&cls
+Call :Dil A 2 B0007&echo.&echo %R%[93m !LA2! %R%[0m
+title !LA2!
 Call :Dil A 2 T0031&echo.&echo %R%[32m !LA2! %R%[0m
 sfc /scannow
-Call :Dil A 2 T0032&echo.&echo %R%[32m !LA2! %R%[0m
-Dism /Online /Cleanup-Image /StartComponentCleanup 
 Call :Dil A 2 T0033&echo.&echo %R%[32m !LA2! %R%[0m
 DISM /Online /Cleanup-Image /RestoreHealth
 cls
-Call :Dil A 2 B0007&echo.&echo %R%[91m !LA2! %R%[0m
+Call :Dil A 2 B0007&echo.&echo %R%[93m !LA2! %R%[0m
 Call :Dil A 2 T0034&echo.&echo %R%[32m !LA2! %R%[0m
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" "RemoveWindowsStore" REG_DWORD "0"
 REM BITS hizmeti varsayılan hale getiriliyor.
 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" /v "DODownloadMode"
 FOR %%a in (AppXSvc camsvc wuauserv StorSvc LicenseManager trustedinstaller ClipSVC UserDataSvc UnistoreSvc InstallService PushToInstall TimeBrokerSvc TokenBroker) do (
-	Call :Service_Admin %%a 3
+	Call :Service_Admin "%%a" 3
 )
 FOR %%a in (cryptsvc bits OneSyncSvc UsoSvc DoSvc) do (
-	Call :Service_Admin %%a 2
+	Call :Service_Admin "%%a" 2
 )
 FOR %%a in (WFDSConMgrSvc DevicesFlowUserSvc DevicePickerUserSvc ConsentUxUserSvc) do (
-	Call :Service_Admin %%a 3
+	Call :Service_Admin "%%a" 3
 )
 FOR %%a in (softpub.dll wintrust.dll initpki.dll dssenh.dll rsaenh.dll gpkcsp.dll sccbase.dll slbcsp.dll mssip32.dll cryptdlg.dll
 			msxml3.dll comcat.dll Msxml.dll Msxml2.dll mshtml.dll shdocvw.dll browseui.dll msjava.dll shdoc401.dll cdm.dll gpkcsp.dll
@@ -704,36 +713,7 @@ REM For döngüsü içinde renklendirme komutları hataya düşmemesi için bu b
 echo %*
 goto :eof
 
-REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-:Playbook_Reader
-Find "%~1" !PB! > NUL 2>&1
-	if !errorlevel! NEQ 0 (set Playbook=0&goto :eof)
-FOR /F "skip=2 tokens=2" %%p in ('Find "%~1" !PB! 2^>NUL') do (set Playbook=%%p)
-echo [!Playbook!]-"%~1" >> %Konum%\Log\Playbook_Log.txt
-goto :eof
-
 REM -------------------------------------------------------------
-:Playbook_Reader_2
-Findstr /i "%~1" %PB% > NUL 2>&1
-	if "!errorlevel!" EQU "0" (set Playbook=1)
-	if "!errorlevel!" NEQ "0" (set Playbook=0)
-goto :eof
-
-REM -------------------------------------------------------------
-:Playbook_Reader_Special
-set PBSpecial=
-FOR /F "skip=2 tokens=4" %%p in ('Find "%~1" !PB! 2^>NUL') do (set PBSpecial=%%p)
-goto :eof
-
-REM -------------------------------------------------------------
-:Powershell_Playbook
-REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
-chcp 437 > NUL 2>&1
-Powershell %* > NUL 2>&1
-chcp 65001 > NUL 2>&1
-goto :eof
-
-REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Date
 REM Tarih bilgisi için
 FOR /F "tokens=2" %%g in ('echo %date%') do set Date=%%g
@@ -754,6 +734,12 @@ timeout /t %~1 /nobreak > NUL
 goto :eof
 
 REM -------------------------------------------------------------
+:PSDownload
+REM %~1= İndirme konumu
+Call :Powershell "& { iwr %Link% -OutFile %~1 }"
+goto :eof
+
+REM -------------------------------------------------------------
 :Winget
 winget list "%~1" --accept-source-agreements > NUL 2>&1
 	if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1
@@ -762,6 +748,7 @@ winget list "%~1" --accept-source-agreements > NUL 2>&1
 )
 goto :eof
 
+REM -------------------------------------------------------------
 :Winget_Link
 REM %~1 winget program adı
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %PB% 2^>NUL') do (
@@ -770,6 +757,15 @@ FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %PB% 2^>NUL') do (
 FOR /F "tokens=3" %%g in ('Winget show %~1 --accept-source-agreements ^| Find "Installer Url"') do (
 	set Link=%%g
 	set Setup=%%~nxg
+)
+goto :eof
+
+REM -------------------------------------------------------------
+:Link
+set Link=
+FOR /F "delims=> tokens=2" %%z in ('Findstr /i "Link_%~1_" %Konum%\Bin\Extra\Link.txt 2^>NUL') do (
+	set Link=%%z
+	set Setup=%%~nxz
 )
 goto :eof
 
@@ -787,21 +783,6 @@ REM Bu bölüme yönlendirdiğim kelimeleri büyük harf yaptırıyorum.
 chcp 437 > NUL 2>&1
 FOR /F %%g in ('Powershell -command "'%~1'.ToUpper()"') do (set %~2=%%g)
 chcp 65001 > NUL 2>&1
-goto :eof
-
-REM -------------------------------------------------------------
-:Link
-set Link=
-FOR /F "delims=> tokens=2" %%z in ('Findstr /i "Link_%~1_" %Konum%\Bin\Extra\Link.txt 2^>NUL') do (
-	set Link=%%z
-	set Setup=%%~nxz
-)
-goto :eof
-
-REM -------------------------------------------------------------
-:PSDownload
-REM %~1= İndirme konumu
-Call :Powershell "& { iwr %Link% -OutFile %~1 }"
 goto :eof
 
 REM -------------------------------------------------------------
@@ -831,9 +812,39 @@ github.com
 )
 goto :eof
 
+REM -------------------------------------------------------------
+:Ping_M1
+FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M1=%%b)
+set Value_M1=!Value_M1:~0,-2!
+goto :eof
+
+REM -------------------------------------------------------------
+:Ping_M2
+FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M2=%%b)
+set Value_M2=!Value_M2:~0,-2!
+goto :eof
+
+REM -------------------------------------------------------------
+:ExplorerResetAsk
+set Explorer_Reset=NT
+set Value_Reset=NT
+FOR /F "tokens=2" %%l in ('Findstr /i "Setting_2_" %Konum%\Settings.ini 2^>NUL') do (set Value_Reset=%%l)
+	 if "!Value_Reset!" NEQ "0" (set Explorer_Reset=0
+								 set Value_Reset=
+								 goto :eof)
+set Value_Reset=
+Call :Dil A 2 D0008
+echo.
+set /p Value_Reset=►%R%[92m !LA2! %R%[90m[%R%[96m Y%R%[90m │%R%[96m N%R%[90m ]: %R%[0m
+Call :Upper !Value_Reset! Value_Reset
+	if "!Value_Reset!" EQU "Y" (set Explorer_Reset=0)
+set Value_Reset=
+goto :eof
+
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :RD_Direct
 REM Klasör silmek için
+if !Show! EQU 1 (echo %R%[90m [RD_Direct]-%R%[33m[%~1]%R%[0m)
 RD /S /Q "%~1" > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%~1")
 goto :eof
@@ -841,6 +852,7 @@ goto :eof
 :RD_Search
 REM Klasör silmek için (dizin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /AD /B "%~1" 2^>NUL') do (
+	if !Show! EQU 1 (echo %R%[90m [RD_Search]-%R%[33m [%~dp1%%v]%R%[0m)
 	RD /S /Q "%~dp1%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%~dp1%%v")
 )
@@ -849,6 +861,7 @@ goto :eof
 :RD_Deep_Search
 REM Klasör silmek için (derin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /AD /B /S "%~1" 2^>NUL') do (
+	if !Show! EQU 1 (echo %R%[90m [RD_Deep_Search]-%R%[33m [%%v]%R%[0m)
 	RD /S /Q "%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%%v")
 )
@@ -857,12 +870,14 @@ goto :eof
 :DEL_Direct
 REM Dosya silmek için
 DEL /F /Q /A "%~1" > NUL 2>&1
+	if !Show! EQU 1 (echo %R%[90m [DEL_Direct]-%R%[33m [%~1]%R%[0m)
 	if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%~1")
 goto :eof
 
 :DEL_Search
 REM Dosya silmek için (dizin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /A-D /B "%~1" 2^>NUL') do (
+	if !Show! EQU 1 (echo %R%[90m [DEL_Search]-%R%[33m [%~dp1%%v]%R%[0m)
 	DEL /F /Q /A "%~dp1%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%~dp1%%v")
 )
@@ -871,6 +886,7 @@ goto :eof
 :DEL_Deep_Search
 REM Dosya silmek için (derin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /A-D /B /S "%~1" 2^>NUL') do (
+	if !Show! EQU 1 (echo %R%[90m [DEL_Deep_Search]-%R%[33m [%%v]%R%[0m)
 	DEL /F /Q /A "%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%%v")
 )
@@ -894,50 +910,47 @@ REM !Default!= Uzantıları içeren değişken
 REM !AppKey!= Program adı
 REM !AppIcon!= Uygulama simgesi
 REM !AppRoad!= Uygulama .exe'sinin yüklü olduğu dizin
-echo Windows Registry Editor Version 5.00 > %Konum%\Log\DefaultApp.reg
-echo. >> %Konum%\Log\DefaultApp.reg
+echo Windows Registry Editor Version 5.00 > %Konum%\DefaultApp.reg
+echo. >> %Konum%\DefaultApp.reg
 FOR %%g in (!Default!) do (
 	echo [-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.%%g] >> %Konum%\DefaultApp.reg
 	echo [-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g] >> %Konum%\DefaultApp.reg
 	echo [-HKEY_CLASSES_ROOT\.%%g] >> %Konum%\DefaultApp.reg 
 	echo [-HKEY_CLASSES_ROOT\!AppKey!.%%g] >> %Konum%\DefaultApp.reg
-	echo [-HKCU\Software\Classes\.%%g] >> %Konum%\DefaultApp.reg 
-	echo [-HKCU\Software\Classes\!AppKey!.%%g] >> %Konum%\DefaultApp.reg
-	echo [-HKLM\SOFTWARE\Classes\SystemFileAssociations\.%%g] >> %Konum%\DefaultApp.reg 
-	echo [-HKLM\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g] >> %Konum%\DefaultApp.reg
+	echo [-HKEY_CURRENT_USER\Software\Classes\.%%g] >> %Konum%\DefaultApp.reg 
+	echo [-HKEY_CURRENT_USER\Software\Classes\!AppKey!.%%g] >> %Konum%\DefaultApp.reg
+	echo [-HKEY_LOCAL_MACHINE\SOFTWARE\Classes\SystemFileAssociations\.%%g] >> %Konum%\DefaultApp.reg 
+	echo [-HKEY_LOCAL_MACHINE\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g] >> %Konum%\DefaultApp.reg
 )
 regedit /s "%Konum%\DefaultApp.reg" > NUL 2>&1
 Call :DEL_Direct "%Konum%\DefaultApp.reg"
 FOR %%g in (!Default!) do (
-	reg delete "HKCR\.%%g" /f > NUL 2>&1
-	reg delete "HKCR\!AppKey!.%%g" /f > NUL 2>&1
+	Call :RegDel "HKCR\.%%g"
+	Call :RegDel "HKCR\!AppKey!.%%g"
+	Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.%%g"
+	Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g"
+	Call :RegDel "HKCU\Software\Classes\.%%g"
+	Call :RegDel "HKCU\Software\Classes\!AppKey!.%%g"
+	Call :RegDel "HKLM\SOFTWARE\Classes\SystemFileAssociations\.%%g"
+	Call :RegDel "HKLM\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g"
+)
+FOR %%g in (!Default!) do (
 	reg add "HKCR\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
 	reg add "HKCR\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
 	reg add "HKCR\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
-	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
-	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
-	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
-	reg add "HKCU\Software\Classes\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
-	reg add "HKCU\Software\Classes\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
-	reg add "HKCU\Software\Classes\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
-	reg add "HKLM\SOFTWARE\Classes\SystemFileAssociations\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
-	reg add "HKLM\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
-	reg add "HKLM\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
 )
 FOR %%g in (AppRoad AppIcon AppKey Default) do (set %%g=)
-Call :DEL_Direct "%Konum%\Log\DefaultApp.reg"
-goto :eof
-REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-:Ping_M1
-FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M1=%%b)
-set Value_M1=!Value_M1:~0,-2!
 goto :eof
 
-REM -------------------------------------------------------------
-:Ping_M2
-FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M2=%%b)
-set Value_M2=!Value_M2:~0,-2!
-goto :eof
+REM reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
+REM reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
+REM reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
+REM reg add "HKCU\Software\Classes\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
+REM reg add "HKCU\Software\Classes\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
+REM reg add "HKCU\Software\Classes\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
+REM reg add "HKLM\SOFTWARE\Classes\SystemFileAssociations\.%%g" /ve /t REG_SZ /d "!AppKey!.%%g" /f > NUL 2>&1
+REM reg add "HKLM\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g\DefaultIcon" /ve /t REG_SZ /d "!AppIcon!" /f > NUL 2>&1
+REM reg add "HKLM\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g\shell\open\command" /ve /t REG_SZ /d "\"!AppRoad!\" \"%%1\"" /f > NUL 2>&1
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Service_Admin
@@ -961,45 +974,6 @@ reg query "HKLM\SYSTEM\CurrentControlSet\Services\%~1" /v "Start" > NUL 2>&1
 										 Call :NET stop %~1&Call :SC_Remove %~1
 										)
 )
-goto :eof
-REM ► Regedit çalışma değerleri 
-REM	• 0 = Ön yükleme (Boot)
-REM	• 1 = Sistem (System)
-REM	• 2 = Otomatik (Auto)
-REM	• 3 = Manuel (Demand)
-REM	• 4 = Devre dışı (Disable)
-
-REM -------------------------------------------------------------
-:SC_Config
-REM %~1: Hizmet %~2: Hizmet çalışma değeri
-sc config %~1 start= %~2 > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% sc config %~1 start= %~2)
-goto :eof
-
-REM -------------------------------------------------------------
-:SC_Remove
-REM %~1: Hizmet %~2: Hizmet çalışma değeri
-sc delete %~1 > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% sc delete %~1)
-goto :eof
-
-REM -------------------------------------------------------------
-:NET
-REM %~1: start │ stop  %~2: Hizmet
-net %~1 %~2 /y > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% net %~1 %~2 /y)
-goto :eof
-
-REM -------------------------------------------------------------
-:Schtasks
-schtasks /change /TN "%~2" /%~1 > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% schtasks /change /TN "%~2" /%~1)
-goto :eof
-
-REM -------------------------------------------------------------
-:Schtasks-Remove
-schtasks /Delete /TN "%~1" /F > NUL 2>&1
-	if !errorlevel! NEQ 0 (%NSudo% schtasks /Delete /TN "%~1" /F)
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -1153,38 +1127,6 @@ FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-:Ram_Type
-set Value_R=Unkown
-if %~1 EQU 0 (set Value_R=Unkown)
-if %~1 EQU 1 (set Value_R=Other)
-if %~1 EQU 2 (set Value_R=DRAM)
-if %~1 EQU 3 (set Value_R=Senkron Ram)
-if %~1 EQU 4 (set Value_R=Cache Ram)
-if %~1 EQU 5 (set Value_R=EDO)
-if %~1 EQU 6 (set Value_R=EDRAM)
-if %~1 EQU 7 (set Value_R=VRAM)
-if %~1 EQU 8 (set Value_R=SRAM)
-if %~1 EQU 9 (set Value_R=RAM)
-if %~1 EQU 10 (set Value_R=ROM)
-if %~1 EQU 11 (set Value_R=Flash)
-if %~1 EQU 12 (set Value_R=EEPROM)
-if %~1 EQU 13 (set Value_R=FEPR0M)
-if %~1 EQU 14 (set Value_R=EPROM)
-if %~1 EQU 15 (set Value_R=CDRAM)
-if %~1 EQU 16 (set Value_R=3DRAM)
-if %~1 EQU 17 (set Value_R=SDRAM)
-if %~1 EQU 18 (set Value_R=SGRAM)
-if %~1 EQU 19 (set Value_R=RDRAM)
-if %~1 EQU 20 (set Value_R=DDR)
-if %~1 EQU 21 (set Value_R=DDR2)
-if %~1 EQU 22 (set Value_R=DDR2 FB-DIMM)
-if %~1 EQU 24 (set Value_R=DDR3)
-if %~1 EQU 25 (set Value_R=FBD2)
-if %~1 EQU 26 (set Value_R=DDR4)
-if %~1 EQU 27 (set Value_R=DDR5)
-goto :eof
-
-REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Appx_Info
 Call :Powershell "Get-AppxPackage -AllUsers | Select PackageFullName" > %Konum%\Log\Appx_Info1
 Call :Powershell "Get-AppxPackage -AllUsers | Select PackageFamilyName" > %Konum%\Log\Appx_Info2
@@ -1229,21 +1171,29 @@ if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f%R%[0m)
 Reg add "%~1" /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f)
 goto :eof
+
+REM -------------------------------------------------------------
 :RegAdd
 if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4"%R%[0m)
 Reg add "%~1" /f /v "%~2" /t %~3 /d "%~4" > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /v "%~2" /t %~3 /d "%~4")
 goto :eof
+
+REM -------------------------------------------------------------
 :RegVeAdd
 if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "%~1"%R%[90m /f /ve /t%R%[33m %~2%R%[90m /d%R%[33m "%~3"%R%[0m)
 Reg add "%~1" /ve /t %~2 /d "%~3" /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg add "%~1" /f /ve /t %~2 /d "%~3")
 goto :eof
+
+REM -------------------------------------------------------------
 :RegDel
 if !Show! EQU 1 (echo %R%[90mReg delete%R%[33m %* %R%[90m /f%R%[0m)
 Reg delete %* /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg delete %* /f)
 goto :eof
+
+REM -------------------------------------------------------------
 :RegAdd_CCS
 if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\CurrentControlSet\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
 				 echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet001\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
@@ -1256,6 +1206,8 @@ Reg add "HKLM\SYSTEM\ControlSet001\%~1" /f /v "%~2" /t %~3 /d "%~4" > NUL 2>&1
 Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t %~3 /d "%~4" > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg add "HKLM\SYSTEM\ControlSet002\%~1" /f /v "%~2" /t %~3 /d "%~4")
 goto :eof
+
+REM -------------------------------------------------------------
 :Reg_Hide
 FOR /F "skip=2 tokens=3" %%x in ('Reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" 2^>NUL') do (set X_Value=%%x)
 echo !X_Value! | Find "%~1" > NUL 2>&1
@@ -1264,6 +1216,100 @@ echo !X_Value! | Findstr /i "hide:" > NUL 2>&1
 	if !errorlevel! EQU 0 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "SettingsPageVisibility" REG_SZ "!X_Value!;%~1")
 	if !errorlevel! NEQ 0 (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" "SettingsPageVisibility" REG_SZ "hide:%~1")
 set X_Value=
+goto :eof
+
+REM -------------------------------------------------------------
+:SC_Config
+REM %~1: Hizmet %~2: Hizmet çalışma değeri
+sc config %~1 start= %~2 > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% sc config %~1 start= %~2)
+goto :eof
+
+REM -------------------------------------------------------------
+:SC_Remove
+REM %~1: Hizmet %~2: Hizmet çalışma değeri
+sc delete %~1 > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% sc delete %~1)
+goto :eof
+
+REM -------------------------------------------------------------
+:NET
+REM %~1: start │ stop  %~2: Hizmet
+net %~1 %~2 /y > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% net %~1 %~2 /y)
+goto :eof
+
+REM -------------------------------------------------------------
+:Schtasks
+schtasks /change /TN "%~2" /%~1 > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% schtasks /change /TN "%~2" /%~1)
+goto :eof
+
+REM -------------------------------------------------------------
+:Schtasks-Remove
+schtasks /Delete /TN "%~1" /F > NUL 2>&1
+	if !errorlevel! NEQ 0 (%NSudo% schtasks /Delete /TN "%~1" /F)
+goto :eof
+
+REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+:Playbook_Reader
+Find "%~1" !PB! > NUL 2>&1
+	if !errorlevel! NEQ 0 (set Playbook=0&goto :eof)
+FOR /F "skip=2 tokens=2" %%p in ('Find "%~1" !PB! 2^>NUL') do (set Playbook=%%p)
+echo [!Playbook!]-"%~1" >> %Konum%\Log\Playbook_Log.txt
+goto :eof
+
+REM -------------------------------------------------------------
+:Playbook_Reader_2
+Findstr /i "%~1" %PB% > NUL 2>&1
+	if "!errorlevel!" EQU "0" (set Playbook=1)
+	if "!errorlevel!" NEQ "0" (set Playbook=0)
+goto :eof
+
+REM -------------------------------------------------------------
+:Playbook_Reader_Special
+set PBSpecial=
+FOR /F "skip=2 tokens=4" %%p in ('Find "%~1" !PB! 2^>NUL') do (set PBSpecial=%%p)
+goto :eof
+
+REM -------------------------------------------------------------
+:Powershell_Playbook
+REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
+chcp 437 > NUL 2>&1
+Powershell %* > NUL 2>&1
+chcp 65001 > NUL 2>&1
+goto :eof
+
+REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+:Ram_Type
+set Value_R=Unkown
+if %~1 EQU 0 (set Value_R=Unkown)
+if %~1 EQU 1 (set Value_R=Other)
+if %~1 EQU 2 (set Value_R=DRAM)
+if %~1 EQU 3 (set Value_R=Senkron Ram)
+if %~1 EQU 4 (set Value_R=Cache Ram)
+if %~1 EQU 5 (set Value_R=EDO)
+if %~1 EQU 6 (set Value_R=EDRAM)
+if %~1 EQU 7 (set Value_R=VRAM)
+if %~1 EQU 8 (set Value_R=SRAM)
+if %~1 EQU 9 (set Value_R=RAM)
+if %~1 EQU 10 (set Value_R=ROM)
+if %~1 EQU 11 (set Value_R=Flash)
+if %~1 EQU 12 (set Value_R=EEPROM)
+if %~1 EQU 13 (set Value_R=FEPR0M)
+if %~1 EQU 14 (set Value_R=EPROM)
+if %~1 EQU 15 (set Value_R=CDRAM)
+if %~1 EQU 16 (set Value_R=3DRAM)
+if %~1 EQU 17 (set Value_R=SDRAM)
+if %~1 EQU 18 (set Value_R=SGRAM)
+if %~1 EQU 19 (set Value_R=RDRAM)
+if %~1 EQU 20 (set Value_R=DDR)
+if %~1 EQU 21 (set Value_R=DDR2)
+if %~1 EQU 22 (set Value_R=DDR2 FB-DIMM)
+if %~1 EQU 24 (set Value_R=DDR3)
+if %~1 EQU 25 (set Value_R=FBD2)
+if %~1 EQU 26 (set Value_R=DDR4)
+if %~1 EQU 27 (set Value_R=DDR5)
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -1576,8 +1622,14 @@ REM ■■■■■■■■■■■■■■■■■■■■■■■■■�
 :Playbook_Manager
 cls
 REM Winget sistemini kontrol eder
+Call :Dil A 2 T0013&echo.&echo %R%[92m !LA2! %R%[0m
 Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
-	if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_&echo.&echo %R%[31m !LA2!%R%[0m&Call :Bekle 7&goto Main_Menu)
+	if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_
+							   Call :Dil B 2 Error_5_
+							   echo.&echo %R%[31m !LA2! %R%[0m
+							   echo.&echo %R%[31m !LB2! %R%[0m
+							   Call :Bekle 10&goto Main_Menu
+)
 REM Playbook kütüphanesi kontrol edilir. Kalıp sayısına göre pencere ayarı yapılır. Yoksa ana menüye atar.
 set Mode=8
 set CTRL=0
@@ -1624,14 +1676,13 @@ Call :Dil A 2 P4001&echo %R%[36m▼ !LA2! %R%[0m
 Call :Dil A 2 P4002&echo.&echo  •%R%[33m !LA2! %R%[0m
 Call :Dil A 2 P4003&echo  •%R%[33m !LA2! %R%[0m
 Call :Dil A 2 P4004&echo  •%R%[33m !LA2! %R%[0m
-Call :Dil A 2 P4005&echo  •%R%[33m !LA2! %R%[0m
 echo.
+Call :Dil A 2 P4005&echo  •%R%[33m !LA2! %R%[0m
 Call :Dil A 2 P4006&echo  •%R%[33m !LA2! %R%[0m
-Call :Dil A 2 P4007&echo  •%R%[33m !LA2! %R%[0m
 Call :Powershell "Start-Process 'windowsdefender://ThreatSettings'" > NUL 2>&1
 REM Boş tuşlama sonrası işleme devam etmemesi için
 set Value_MM=N
-Call :Dil A 2 P4008&echo.&set /p Value_MM=►%R%[32m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
+Call :Dil A 2 P4007&echo.&set /p Value_MM=►%R%[32m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
 Call :Upper !Value_MM! Value_MM
 	if "!Value_MM!" EQU "N" (set Error=X&goto Main_Menu)
 set Value_MM=
@@ -2731,8 +2782,8 @@ REM Farklı işlemci markasına ait hizmetleri devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_15_
 	if "!Playbook!" EQU "1" (Call :Powershell "Get-CimInstance -ClassName Win32_Processor | Select-Object -Property Name | format-list" > %Konum%\Log\Brand
 							 FOR /F "tokens=3" %%a in ('Findstr /i "Name" %Konum%\Log\Brand') do (
-								if "%%a" EQU "AMD" (FOR %%b in (intelpep Telemetry iai2c iaLPSS2i_I2C iaLPSS2i_I2C_BXT_P iaLPSS2i_I2C_CNL iaLPSS2i_I2C_GLK iaLPSS2i_GPIO2_GLK iaLPSS2i_GPIO2_CNL iaLPSS2i_GPIO2_BXT_P iaLPSS2i_GPIO2 iaLPSSi_GPIO intelpmax iagpio iaStorV intelppm) do (Call :Service_Check %%b))
-								if "%%a" NEQ "AMD" (FOR %%b in (amdgpio2 amdi2c AmdPPM AmdK8 amdsata amdsbs amdxata) do (Call :Service_Check %%b))
+								if "%%a" EQU "AMD" (FOR %%b in (intelpep Telemetry iai2c iaLPSS2i_I2C iaLPSS2i_I2C_BXT_P iaLPSS2i_I2C_CNL iaLPSS2i_I2C_GLK iaLPSS2i_GPIO2_GLK iaLPSS2i_GPIO2_CNL iaLPSS2i_GPIO2_BXT_P iaLPSS2i_GPIO2 iaLPSSi_GPIO intelpmax iagpio iaStorV intelppm) do (Call :Service_Admin "%%b" 4))
+								if "%%a" NEQ "AMD" (FOR %%b in (amdgpio2 amdi2c AmdPPM AmdK8 amdsata amdsbs amdxata) do (Call :Service_Admin "%%b" 4))
 							 )
 							 Call :DEL_Direct "%Konum%\Log\Brand"
 )
@@ -3196,6 +3247,8 @@ FOR /F "tokens=2" %%a in ('Findstr /i "Process_Clear_" %PB% 2^>NUL') do (set Val
 )
 REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1006&title OgnitorenKs Playbook │ 6/7 │ !LA2!
+set Show=1
+Call :Dil K 2 T0008
 FOR %%a in (
 "%windir%\*.log"
 "%windir%\CbsTemp\*"
@@ -3237,16 +3290,18 @@ Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\IE"
 Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Low"
 Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Virtualized"
 Call :RD_Direct "%Windir%\System32\config\systemprofile\AppData\Local\Microsoft\Windows\INetCache\IE"
+
 REM -------------------------------------------------------------
 Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\ReportArchive"
 Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\Temp"
-Call :RD_Direct "%ProgramFiles%\$Recycle.Bin"
+Call :RD_Direct "%ProgramFiles%\$Recycle.Bin\!CUS!"
 REM -------------------------------------------------------------
 net stop wuauserv > NUL 2>&1
 Call :RD_Direct "%windir%\SoftwareDistribution"
 net start wuauserv > NUL 2>&1
-gpupdate /force > NUL 2>&1
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "OgnitorenKs_Playbook" REG_SZ "C:\Playbook.Reset.After.cmd"
+set Show=NT
+Call :Dil A 2 P5001&echo %R%[33m !LA2! %R%[0m
 (
 echo ie4uinit.exe -show
 echo ie4uinit.exe -ClearIconCache
@@ -3361,6 +3416,7 @@ echo goto :eof
 ) >> C:\Playbook.Reset.After.cmd
 REM Sistem geri yükleme bölümlerini temizler
 REM echo Call :RD_Direct "%%SystemDrive%%\System Volume Information"
+set Show=NT
 REM -------------------------------------------------------------
 :Pass_2
 REM Winget üzeri indirme linki alınır ve yükleme işlemi yapılır.

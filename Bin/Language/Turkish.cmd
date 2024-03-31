@@ -30,41 +30,42 @@ echo        %R%[90m│%R%[32m 7%R%[90m-%R%[33m Sistem hakkında %R%[90m         
 echo        %R%[90m└────────────────────────────────────────┴───────────────────────────────────────────┘%R%[0m
 goto :eof
 
+
 :Menu_2
 set ogniogniogniogniognio=%R%[90m ▼
 echo.
 echo   %R%[90m┌──────────────────────────────┬──────────────────────────────┬──────────────────────────────┐%R%[0m
-echo   %R%[90m│%R%[32m  1%R%[90m-%R%[33m All in One Runtimes      %R%[90m│%R%[32m 28%R%[90m-%R%[33m Shoutcut                 %R%[90m│%R%[32m 55%R%[90m-%R%[33m Git                      %R%[90m│%R%[0m
-echo   %R%[90m│%ogniogniogniogniognio% Mesaj                      %R%[90m│%R%[32m 39%R%[90m-%R%[33m Krita                    %R%[90m│%R%[32m 56%R%[90m-%R%[33m Node.JS                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  2%R%[90m-%R%[36m Discord                  %R%[90m│%R%[32m 30%R%[90m-%R%[33m Gimp                     %R%[90m│%R%[32m 57%R%[90m-%R%[33m Unity Hub                %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  3%R%[90m-%R%[36m Whatsapp                 %R%[90m│%R%[32m 31%R%[90m-%R%[33m Jpegview                 %R%[90m│%R%[32m 58%R%[90m-%R%[33m Blender                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  4%R%[90m-%R%[36m Signal                   %R%[90m│%R%[32m 32%R%[90m-%R%[33m OBS Studio               %R%[90m│%ogniogniogniogniognio% Temizlik                   %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  5%R%[90m-%R%[36m Telegram                 %R%[90m│%R%[32m 33%R%[90m-%R%[33m ShareX                   %R%[90m│%R%[32m 59%R%[90m-%R%[33m Unlocker                 %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  6%R%[90m-%R%[36m Zoom                     %R%[90m│%R%[32m 34%R%[90m-%R%[33m LightShot                %R%[90m│%R%[32m 60%R%[90m-%R%[33m Revo Uninstaller         %R%[90m│%R%[0m
-echo   %R%[90m│%ogniogniogniogniognio% Oyun Kütüphane             %R%[90m│%R%[32m 35%R%[90m-%R%[33m Audacity                 %R%[90m│%ogniogniogniogniognio% Diğer                      %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  7%R%[90m-%R%[33m Epic Games               %R%[90m│%R%[32m 36%R%[90m-%R%[33m HandBrake                %R%[90m│%R%[32m 61%R%[90m-%R%[36m 7-Zip                    %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  8%R%[90m-%R%[33m Steam                    %R%[90m│%R%[32m 37%R%[90m-%R%[33m FileConverter            %R%[90m│%R%[32m 62%R%[90m-%R%[36m OpenShell                %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m  9%R%[90m-%R%[33m GOG Galaxy               %R%[90m│%ogniogniogniogniognio% Video-Ses Oynatıcı         %R%[90m│%R%[32m 63%R%[90m-%R%[36m AnyDesk                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 10%R%[90m-%R%[33m Ubisoft Connect          %R%[90m│%R%[32m 38%R%[90m-%R%[36m K-Lite Codec             %R%[90m│%R%[32m 64%R%[90m-%R%[36m Mem Reduct               %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 11%R%[90m-%R%[33m EA Games/Origin          %R%[90m│%R%[32m 39%R%[90m-%R%[36m VLC Media Player         %R%[90m│%R%[32m 65%R%[90m-%R%[36m MSI Afterburner          %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 12%R%[90m-%R%[33m Playnite                 %R%[90m│%R%[32m 40%R%[90m-%R%[36m PotPlayer                %R%[90m│%R%[32m 66%R%[90m-%R%[36m Everything               %R%[90m│%R%[0m
-echo   %R%[90m│%ogniogniogniogniognio% Tarayıcı                   %R%[90m│%R%[32m 41%R%[90m-%R%[36m Aimp                     %R%[90m│%R%[32m 67%R%[90m-%R%[36m Hamachi                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 13%R%[90m-%R%[36m Chromium [Sync]          %R%[90m│%R%[32m 42%R%[90m-%R%[36m Spotify                  %R%[90m│%R%[32m 68%R%[90m-%R%[36m Glasswire                %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 14%R%[90m-%R%[36m Chromium [UnSync]        %R%[90m│%ogniogniogniogniognio% İndirme Araçları           %R%[90m│%R%[32m 69%R%[90m-%R%[36m PortMaster               %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 15%R%[90m-%R%[36m Google Chrome            %R%[90m│%R%[32m 43%R%[90m-%R%[33m Free Download Manager    %R%[90m│%R%[32m 70%R%[90m-%R%[36m Stremio                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%R%[32m 71%R%[90m-%R%[36m Flow Launcher            %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%R%[32m 45%R%[90m-%R%[33m JDownloader 2            %R%[90m│%R%[32m 72%R%[90m-%R%[36m CloudFlare WARP          %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%R%[32m 46%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m Maxthon                  %R%[90m│%R%[32m 47%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 21%R%[90m-%R%[36m Opera                    %R%[90m│%R%[32m 48%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 22%R%[90m-%R%[36m Opera-GX                 %R%[90m│%R%[32m 49%R%[90m-%R%[36m Adobe Reader             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 23%R%[90m-%R%[36m Mozilla Firefox          %R%[90m│%R%[32m 50%R%[90m-%R%[36m PDF X-Change Editor      %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 24%R%[90m-%R%[36m LibreWolf                %R%[90m│%R%[32m 51%R%[90m-%R%[36m Calibre                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 25%R%[90m-%R%[36m Tor                      %R%[90m│%ogniogniogniogniognio% Geliştirme                 %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%ogniogniogniogniognio% Multimedya                 %R%[90m│%R%[32m 52%R%[90m-%R%[33m Notepad++                %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 26%R%[90m-%R%[33m Kdenlive                 %R%[90m│%R%[32m 53%R%[90m-%R%[33m Visual Studio Code       %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 27%R%[90m-%R%[33m Openshot                 %R%[90m│%R%[32m 54%R%[90m-%R%[33m Github                   %R%[90m│%R%[32m  X%R%[90m-%R%[37m Menu                     %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  1%R%[90m-%R%[33m All in One Runtimes      %R%[90m│%R%[32m 28%R%[90m-%R%[33m Shoutcut                 %R%[90m│%R%[32m 55%R%[90m-%R%[33m Unity Hub                %R%[90m│%R%[0m
+echo   %R%[90m│%ogniogniogniogniognio% Mesaj                      %R%[90m│%R%[32m 39%R%[90m-%R%[33m Krita                    %R%[90m│%R%[32m 56%R%[90m-%R%[33m Blender                  %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  2%R%[90m-%R%[36m Discord                  %R%[90m│%R%[32m 30%R%[90m-%R%[33m Gimp                     %R%[90m│%ogniogniogniogniognio% Temizlik                   %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  3%R%[90m-%R%[36m Whatsapp                 %R%[90m│%R%[32m 31%R%[90m-%R%[33m Jpegview                 %R%[90m│%R%[32m 57%R%[90m-%R%[33m Unlocker                 %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  4%R%[90m-%R%[36m Signal                   %R%[90m│%R%[32m 32%R%[90m-%R%[33m OBS Studio               %R%[90m│%R%[32m 58%R%[90m-%R%[33m Revo Uninstaller         %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  5%R%[90m-%R%[36m Telegram                 %R%[90m│%R%[32m 33%R%[90m-%R%[33m ShareX                   %R%[90m│%ogniogniogniogniognio% Diğer                      %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  6%R%[90m-%R%[36m Zoom                     %R%[90m│%R%[32m 34%R%[90m-%R%[33m LightShot                %R%[90m│%R%[32m 59%R%[90m-%R%[36m 7-Zip                    %R%[90m│%R%[0m
+echo   %R%[90m│%ogniogniogniogniognio% Oyun Kütüphane             %R%[90m│%R%[32m 35%R%[90m-%R%[33m Audacity                 %R%[90m│%R%[32m 60%R%[90m-%R%[36m OpenShell                %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  7%R%[90m-%R%[33m Epic Games               %R%[90m│%R%[32m 36%R%[90m-%R%[33m HandBrake                %R%[90m│%R%[32m 61%R%[90m-%R%[36m AnyDesk                  %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  8%R%[90m-%R%[33m Steam                    %R%[90m│%R%[32m 37%R%[90m-%R%[33m FileConverter            %R%[90m│%R%[32m 62%R%[90m-%R%[36m Mem Reduct               %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m  9%R%[90m-%R%[33m GOG Galaxy               %R%[90m│%ogniogniogniogniognio% Video-Ses Oynatıcı         %R%[90m│%R%[32m 63%R%[90m-%R%[36m MSI Afterburner          %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 10%R%[90m-%R%[33m Ubisoft Connect          %R%[90m│%R%[32m 38%R%[90m-%R%[36m K-Lite Codec             %R%[90m│%R%[32m 64%R%[90m-%R%[36m Hamachi                  %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 11%R%[90m-%R%[33m EA Games/Origin          %R%[90m│%R%[32m 39%R%[90m-%R%[36m VLC Media Player         %R%[90m│%R%[32m 65%R%[90m-%R%[36m Glasswire                %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 12%R%[90m-%R%[33m Playnite                 %R%[90m│%R%[32m 40%R%[90m-%R%[36m PotPlayer                %R%[90m│%R%[32m 66%R%[90m-%R%[36m PortMaster               %R%[90m│%R%[0m
+echo   %R%[90m│%ogniogniogniogniognio% Tarayıcı                   %R%[90m│%R%[32m 41%R%[90m-%R%[36m Spotify                  %R%[90m│%R%[32m 67%R%[90m-%R%[36m Everything               %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 13%R%[90m-%R%[36m Chromium [Sync]          %R%[90m│%ogniogniogniogniognio% İndirme Araçları           %R%[90m│%R%[32m 68%R%[90m-%R%[36m Flow Launcher            %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 14%R%[90m-%R%[36m Chromium [UnSync]        %R%[90m│%R%[32m 42%R%[90m-%R%[33m Free Download Manager    %R%[90m│%R%[32m 69%R%[90m-%R%[36m Stremio                  %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 15%R%[90m-%R%[36m Google Chrome            %R%[90m│%R%[32m 43%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%R%[32m 45%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%R%[32m 46%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m Maxthon                  %R%[90m│%R%[32m 47%R%[90m-%R%[36m Adobe Reader             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 21%R%[90m-%R%[36m Opera                    %R%[90m│%R%[32m 48%R%[90m-%R%[36m PDF X-Change Editor      %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 22%R%[90m-%R%[36m Opera-GX                 %R%[90m│%R%[32m 49%R%[90m-%R%[36m Calibre                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 23%R%[90m-%R%[36m Mozilla Firefox          %R%[90m│%ogniogniogniogniognio% Geliştirme                 %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 24%R%[90m-%R%[36m LibreWolf                %R%[90m│%R%[32m 50%R%[90m-%R%[33m Notepad++                %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 25%R%[90m-%R%[36m Tor                      %R%[90m│%R%[32m 51%R%[90m-%R%[33m Visual Studio Code       %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%ogniogniogniogniognio% Multimedya                 %R%[90m│%R%[32m 52%R%[90m-%R%[33m Github                   %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 26%R%[90m-%R%[33m Kdenlive                 %R%[90m│%R%[32m 53%R%[90m-%R%[33m Git                      %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 27%R%[90m-%R%[33m Openshot                 %R%[90m│%R%[32m 54%R%[90m-%R%[33m Node.JS                  %R%[90m│%R%[32m  X%R%[90m-%R%[37m Menu                     %R%[90m│%R%[0m
 echo   %R%[90m└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘%R%[0m
 set ogniogniogniogniognio=
 goto :eof
@@ -75,7 +76,7 @@ Error_1_>HATA! Klasör yolunda Türkçe karakter tespit edildi>
 Error_2_>HATA! Klasör yolunda boşluk tespit edildi>
 Error_3_>HATA! Sistem mimariniz x64 değil>
 Error_4_>Uygulama yükleyici güncel değil, lütfen Microsoft Store'dan güncelleyin>
-Error_5_>>
+Error_5_>Uygulamayı zaten güncellediyseniz internet bağlantınızda veya güvenlik duvarında sorun olabilir>
 Error_6_>>
 Error_7_>Toolbox, Windows 10/11 sistemlerde çalışmaktadır>
 Error_8_>Toolbox, Windows güncel sürümlerinde çalışmaktadır>
@@ -89,13 +90,14 @@ D0004>Dakika cinsinden kapanma süresini giriniz>
 D0005>Kullanıcı Adı>
 D0006>Lisans>
 D0007>Kalıp dosyasını seçiniz>
+D0008>Dosya gezgininin yeniden başlatılması gerekiyor, onaylıyor musunuz?>
 ::███████████████████████████████████████████████████████████████████
 B0001>Hizmet Yönetimi>
 B0002>Özellik Yönetimi>
 B0003>Ping Ölçer>
 B0004>Sistem Hakkında>
 B0005>Kayıtlı Wifi Bilgileri>
-B0006>Sistem temizleniyor>
+B0006>Sistem temizleniyor, işlem bitince ana menüye aktarılacaksınız>
 B0007>Windows - Market bileşenleri onarılıyor>
 B0008>Windows Performans Sistem Düzenlemesi [Playbook]>
 B0009>Dil Değiştirme>
@@ -112,11 +114,11 @@ T0009>Ping ölçümü yapmak istediğiniz site adresini yazabilirsiniz>
 T0010>Açık>Kapalı>Kaldırılmış>Kısmen açık>Kapalı hizmet var>Eksik hizmet var>Eksik ve kapalı hizmet var>
 T0011>yükleniyor>
 T0012>düzenleniyor>
-T0013>>
+T0013>Winget sistemi kontrol ediliyor>
 T0014>>
 T0015>>
 T0016>>
-T0017>>
+T0017>Olay günlüğü temizleniyor>
 T0018>All in One Runtimes yükleniyor>
 T0019>Net Framework 3.5 yükleniyor>
 T0020>Net Framework 4.5+ yükleniyor>
@@ -129,7 +131,7 @@ T0026>Kaldırılan bileşenlere bağlı olarak Windows Update ve farklı özelli
 T0027>Yaptığınız işlemlerden sonra sistemi yeniden başlatmayı unutmayın>
 T0028>Menüye gitmek için herhangi bir tuşa basınız>
 T0029>Kayıtlı Wifi bilgisi bulunamadı>
-T0030>Menüye aktarılana kadar bekleyiniz>
+T0030>DNS önbelleği temizleniyor>
 T0031>Sfc /Scannow komutu çalışıyor>
 T0032>WinSxS Temizleniyor>
 T0033>'DISM /Online /Cleanup-Image /RestoreHealth' komutu çalışıyor>
@@ -157,11 +159,12 @@ P2008>Başlat menüsü devre dışı bırakılıyor>
 P4001>Uyarılar ve Yönlendirmeler>
 P4002>Açılan ekrandan 'Defender' yüklü ise ayarları devre dışı bırakın>
 P4003>Sistem üzerinde kaldırılan bileşenler yeniden yüklenmeyebilir>
-P4004>Sistem geri yükleme veya ayarları geri alma seçeneği yoktur>
-P4005>Yeni yüklenmiş temiz sistemde uygulayınız. Sorun gözlemlemiyorsanız kullanmaya başlayın>
-P4006>İşlem bittikten sonra sistem yeniden başlatılacak>
-P4007>Sistem açıldıktan sonra temizlik işlemi için komut ekranı açılacak, işlem bitince otomatik kapanacak>
-P4008>İşleme devam etmek istiyor musunuz?>
+P4004>Yeni yüklenmiş temiz sistemde uygulayınız. Sorun gözlemlemiyorsanız kullanmaya başlayın>
+P4005>İşlem bittikten sonra sistem yeniden başlatılacak>
+P4006>Sistem açıldıktan sonra temizlik işlemi için komut ekranı açılacak, işlem bitince otomatik kapanacak>
+P4007>İşleme devam etmek istiyor musunuz?>
+::
+P5001>Yeniden başlatma sonrası temizlik dosyası oluşturuluyor...>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>

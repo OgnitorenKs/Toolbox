@@ -4,10 +4,26 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.2.7 ►  31.03.2024</B></summary>
 
-<details><B><summary> Versiyon 4.2.6 ►  29.03.2024 - Playbook</B></summary>
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• "Optimization_Setting_15_" bölümündeki başlık hatası giderildi.
+		• Kalıpta liste başında yer alan kişisel ayarlara alt bölümde kalan bazı ayarlar taşındı. Uygulama kaldırma ayarı gizlilik ayarlarının üzerine eklendi.
+		• Temizlik komutlarında yapılan işlemleri göstermesi için echo komutları eklendi.
+	▼ Uygulama yükleyici bölümünde yapılan değişiklikler;
+		• "Aimp" uygulaması kaldırıldı. Resmi sitesine Türkiye'den ulaşılamıyor. VPN ile girilebiliyor. Sorun uzun zamandır devam ettiği için kaldırıldı.
+		• "CloudFlare WARP" yükleme sorunlarından dolayı kaldırıldı.
+		• "Diğer" bölümünde program listesi değiştirildi.
+		• "JDownloader 2" kurulum sorunlarından dolayı listeden kaldırıldı.
+	▼ Genel değişiklikler;
+		• Winget kontrol sistemindeki hata mesajına yeni bilgi mesajı eklendi.
+		• Varsayılan uygulama düzenleme bölümündeki kodlar düzenlendi. Bir kaç yol hatası giderildi.
+		• "Sistem temizliği" bölümündeki işlemler görünür hale getirildi ve bilgilendirici mesajlar eklendi.
+		• "Sistem temizliği" bölümünde dosya gezgini yeniden başlatılması gerektiği yerde kullanıcıdan onay alacak şekilde ayarlama yapıldı.
 
-	• Playbook bölümü değişiklikler;
+</details><details><B><summary> Versiyon 4.2.6 ►  29.03.2024 - Playbook</B></summary>
+
+	▼ Playbook bölümü değişiklikler;
 		• Sistem geri yükleme ve bileşenleri playbook kalıbından kaldırıldı. Artık varsayılan olarak bırakılacak. Dileyenler "hizmetleri yönet" bölümünden kapatabilir.
 		• Temizlik bölümünden sistem geri yükleme noktalarını silen komutlar kaldırıldı.
 		• Edge ve edgewebview2'nin otomatik yüklenmesini engellemek için eklenen güvenlik duvarı engelleme komutu iptal edildi.
