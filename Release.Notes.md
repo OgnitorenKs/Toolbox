@@ -4,7 +4,15 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.2.7 ►  31.03.2024</B></summary>
+<details><B><summary> Versiyon 4.2.8 ►  03.04.2024 - Playbook</B></summary>
+
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• "Taskschd_Update_Setting" bölümündeki komutlar düzenlendi. Ayrıca Edge ile alakalı komutlar bu bölümü eklendi.
+		• Edge kaldırma bölümüde güvenlik duvarı engelleme komutu kaldırıldı.
+		• Playbook bölümünün kapanmasına neden olan sorun giderildi.
+		
+
+</details><details><B><summary> Versiyon 4.2.7 ►  31.03.2024</B></summary>
 
 	▼ Playbook bölümünde yapılan değişiklikler;
 		• "Optimization_Setting_15_" bölümündeki başlık hatası giderildi.

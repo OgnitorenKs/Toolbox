@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.2.7
+set Version=4.2.8
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -649,7 +649,7 @@ FOR /F "tokens=*" %%g in ('wevtutil.exe el') do (wevtutil.exe cl "%%g" > NUL 2>&
 REM Güncelleme artıklarını temizler
 Call :Dil A 2 T0032&echo.&echo %R%[32m !LA2! %R%[0m
 Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
-set Show=NT
+set Show=0
 goto :eof
 
 REM -------------------------------------------------------------
@@ -844,15 +844,16 @@ goto :eof
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :RD_Direct
 REM Klasör silmek için
-if !Show! EQU 1 (echo %R%[90m [RD_Direct]-%R%[33m[%~1]%R%[0m)
+if !Show! EQU 1 echo %R%[90m [RD_Direct]-%R%[33m[%~1]%R%[0m
 RD /S /Q "%~1" > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%~1")
+set RemoveValue=
 goto :eof
 
 :RD_Search
 REM Klasör silmek için (dizin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /AD /B "%~1" 2^>NUL') do (
-	if !Show! EQU 1 (echo %R%[90m [RD_Search]-%R%[33m [%~dp1%%v]%R%[0m)
+	if !Show! EQU 1 echo %R%[90m [RD_Search]-%R%[33m [%~dp1%%v]%R%[0m
 	RD /S /Q "%~dp1%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%~dp1%%v")
 )
@@ -861,7 +862,7 @@ goto :eof
 :RD_Deep_Search
 REM Klasör silmek için (derin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /AD /B /S "%~1" 2^>NUL') do (
-	if !Show! EQU 1 (echo %R%[90m [RD_Deep_Search]-%R%[33m [%%v]%R%[0m)
+	if !Show! EQU 1 echo %R%[90m [RD_Deep_Search]-%R%[33m [%%v]%R%[0m
 	RD /S /Q "%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% RD /S /Q "%%v")
 )
@@ -870,14 +871,14 @@ goto :eof
 :DEL_Direct
 REM Dosya silmek için
 DEL /F /Q /A "%~1" > NUL 2>&1
-	if !Show! EQU 1 (echo %R%[90m [DEL_Direct]-%R%[33m [%~1]%R%[0m)
+	if !Show! EQU 1 echo %R%[90m [DEL_Direct]-%R%[33m [%~1]%R%[0m
 	if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%~1")
 goto :eof
 
 :DEL_Search
 REM Dosya silmek için (dizin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /A-D /B "%~1" 2^>NUL') do (
-	if !Show! EQU 1 (echo %R%[90m [DEL_Search]-%R%[33m [%~dp1%%v]%R%[0m)
+	if !Show! EQU 1 echo %R%[90m [DEL_Search]-%R%[33m [%~dp1%%v]%R%[0m
 	DEL /F /Q /A "%~dp1%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%~dp1%%v")
 )
@@ -886,7 +887,7 @@ goto :eof
 :DEL_Deep_Search
 REM Dosya silmek için (derin aramalı)
 FOR /F "tokens=*" %%v in ('Dir /A-D /B /S "%~1" 2^>NUL') do (
-	if !Show! EQU 1 (echo %R%[90m [DEL_Deep_Search]-%R%[33m [%%v]%R%[0m)
+	if !Show! EQU 1 echo %R%[90m [DEL_Deep_Search]-%R%[33m [%%v]%R%[0m
 	DEL /F /Q /A "%%v" > NUL 2>&1
 		if !errorlevel! NEQ 0 (%NSudo% DEL /F /Q /A "%%v")
 )
@@ -1858,12 +1859,10 @@ Call :Playbook_Reader Component_Setting_2_
 							 echo Call :DEL_Direct "%Windir%\System32\config\systemprofile\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk" >> C:\Playbook.Reset.After.cmd
 							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
 							 FOR /F "skip=2 tokens=1" %%b in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /f "MicrosoftEdgeAutoLaunch" 2^>NUL') do (Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "%%b")
-							 REM netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
 							 Call :Service_Admin "edgeupdate" 4
 							 Call :Service_Admin "edgeupdatem" 4
-							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\EdgeUpdate"
-							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\EdgeUpdate"
 )
+pause
 REM -------------------------------------------------------------
 REM EdgeWebView2 kaldır
 Call :Playbook_Reader Component_Setting_3_
@@ -1917,9 +1916,8 @@ cls
 REM Windows defender devre dışı bırak
 Call :Playbook_Reader Change_App_1_
 	if "!Playbook!" EQU "1" (Call :Dil A 2 P2006&echo ►%R%[32m !LA2! %R%[0m
-							 Call :Check_Rename "%Windir%\System32\smartscreen.exe"
-							 Taskkill /f /im smartscreen.exe > NUL 2>&1
-							 %NSudo% rename "%Windir%\System32\smartscreen.exe" "smartscreen_OLD.exe"
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\CompatTelRunner.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\smartscreen.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
 							 Call :Defender_Regedit 4
 )
 REM Görev çubuğu arama bileşenini devre dışı bırak
@@ -3123,31 +3121,50 @@ REM DevHomeUpdate devre dışı bırak [Microsoft proje yönetim uygulamasının
 Call :Playbook_Reader Taskschd_Update_Setting_1_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\DevHomeUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\DevHomeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
 REM IA devre dışı bırak [Microsoft güncelleştirme kanalı üzerinden Market için kritik güncelleştirmeleri yapar]
 Call :Playbook_Reader Taskschd_Update_Setting_2_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\IA"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\IA"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
 REM LXP devre dışı bırak [Yerel deneyim paketleri - Dil paket güncelleştirmelerini market güncelleştirme kanalından sunar]
 Call :Playbook_Reader Taskschd_Update_Setting_3_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\LXP"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\LXP"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
 REM MACUpdate devre dışı bırak [Bu konuda bilgi bulamadım ancak tahminimce Windows yüklü MAC cihazlar için bir özellik güncelleştirmesi içeriyor]
 Call :Playbook_Reader Taskschd_Update_Setting_4_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\MACUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\MACUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
 REM OutlookUpdate devre dışı bırak [Yeni Outlook uygulamasının otomatik kurulmasını engeller]
 Call :Playbook_Reader Taskschd_Update_Setting_5_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\OutlookUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
 REM TFLUpdate devre dışı bırak [Londra şehrinin ulaşım hizmetleri hakkında bilgi veren Market tabanlı uygulamanın yüklenmesini sağlar. Bölgelese çalışdığını düşünüyorum ancak siz kapatmayı ihmal etmeyin. Microsoft bildiğimiz gibi :D]
 Call :Playbook_Reader Taskschd_Update_Setting_6_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\TFLUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\TFLUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM Edge otomatik yüklemeyi devre dışı bırakır.
+Call :Playbook_Reader Taskschd_Update_Setting_7_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\EdgeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\EdgeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
 REM Masaüstü duvar kağıdı görüntü kalitesini değiştir
 Call :Playbook_Reader Special_Setting_1_
@@ -3167,7 +3184,7 @@ Call :Playbook_Reader Special_Setting_3_
 REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 5/7 │ !LA2!
 REM Regedit kayıtlarının çıktılarını gizlemek için
-set Show=NT
+set Show=0
 REM Playbook.ini CMD komutları uygulama bölümü
 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command" %PB% 2^>NUL') do (
 	%%a > NUL 2>&1
@@ -3300,7 +3317,7 @@ net stop wuauserv > NUL 2>&1
 Call :RD_Direct "%windir%\SoftwareDistribution"
 net start wuauserv > NUL 2>&1
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "OgnitorenKs_Playbook" REG_SZ "C:\Playbook.Reset.After.cmd"
-set Show=NT
+set Show=0
 Call :Dil A 2 P5001&echo %R%[33m !LA2! %R%[0m
 (
 echo ie4uinit.exe -show
@@ -3416,7 +3433,6 @@ echo goto :eof
 ) >> C:\Playbook.Reset.After.cmd
 REM Sistem geri yükleme bölümlerini temizler
 REM echo Call :RD_Direct "%%SystemDrive%%\System Volume Information"
-set Show=NT
 REM -------------------------------------------------------------
 :Pass_2
 REM Winget üzeri indirme linki alınır ve yükleme işlemi yapılır.
