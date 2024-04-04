@@ -114,7 +114,7 @@ T0010>On>Off>Removed>Partly open>Closed service>Incomplete service>Incomplete an
 T0011>installing>
 T0012>is being organized>
 T0013>Checking the Winget system>
-T0014>>
+T0014>Installing EdgeWebView2>
 T0015>>
 T0016>>
 T0017>Clearing the event log>
@@ -143,8 +143,7 @@ P1002>Uninstalling apps>
 P1003>Services are organized>
 P1004>Editing regedit records>
 P1005>Installing apps>
-P1006>Loading components>
-P1007>Final adjustments are being made>
+P1006>Final settings are being made. Installing applications...>
 ::
 P2001>Uninstalling Defender>
 P2002>Uninstalling Edge>
@@ -163,7 +162,13 @@ P4005>The system will reboot after the process is finished>
 P4006>After the system is turned on, the command screen for the cleaning process will open, and it will automatically shut down when the process is finished>
 P4007>Do you want to continue the process?>
 ::
-P5001>Creating cleanup file after reboot...>
+P6001>Customized commands are being implemented...>
+P6002>Setting the sections to hide from the settings menu...>
+P6003>Applying task scheduler settings...>
+P6004>Applying devmainview settings...>
+P6005>Changing the system boot name...>
+P6006>Adding a custom power setting...>
+P6007>Customizing the wallpaper...>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>
@@ -196,7 +201,7 @@ SL_28_>Game DVR and Broadcast User>Need: Xbox screen recording>
 SL_29_>System Restore>Connected: File History>
 SL_30_>Mixed reality>Connected: Virtual reality glasses, VR>
 SL_31_>Xbox> >
-SL_32_>Delivery optimization>Connected: Store, Xbox>
+SL_32_>Delivery optimization>Connected: Store, Xbox, Update>
 SL_33_>Remote desktop> >
 SL_34_>Screen capture>Connected: Screen excerpt>
 SL_35_>Parental controls> >

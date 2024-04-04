@@ -30,7 +30,6 @@ echo        %R%[90m│%R%[32m 7%R%[90m-%R%[33m Sistem hakkında %R%[90m         
 echo        %R%[90m└────────────────────────────────────────┴───────────────────────────────────────────┘%R%[0m
 goto :eof
 
-
 :Menu_2
 set ogniogniogniogniognio=%R%[90m ▼
 echo.
@@ -115,7 +114,7 @@ T0010>Açık>Kapalı>Kaldırılmış>Kısmen açık>Kapalı hizmet var>Eksik hiz
 T0011>yükleniyor>
 T0012>düzenleniyor>
 T0013>Winget sistemi kontrol ediliyor>
-T0014>>
+T0014>EdgeWebView2 yükleniyor>
 T0015>>
 T0016>>
 T0017>Olay günlüğü temizleniyor>
@@ -144,8 +143,7 @@ P1002>Uygulamalar kaldırılıyor...>
 P1003>Hizmetler düzenleniyor...>
 P1004>Regedit kayıtları düzenleniyor...>
 P1005>Özel ayarlar uygulanıyor...>
-P1006>Temizlik işlemi yapılıyor, ilk açılış temizlik dosyası oluşturuluyor...>
-P1007>Uygulamalar yükleniyor...>
+P1006>Son ayarlar yapılıyor. Uygulamalar yükleniyor...>
 ::
 P2001>Defender kaldırılıyor>
 P2002>Edge kaldırılıyor>
@@ -164,7 +162,13 @@ P4005>İşlem bittikten sonra sistem yeniden başlatılacak>
 P4006>Sistem açıldıktan sonra temizlik işlemi için komut ekranı açılacak, işlem bitince otomatik kapanacak>
 P4007>İşleme devam etmek istiyor musunuz?>
 ::
-P5001>Yeniden başlatma sonrası temizlik dosyası oluşturuluyor...>
+P6001>Özelleştirilmiş komutlar uygulanıyor...>
+P6002>Ayarlar menüsünden gizlenecek bölümler ayarlanıyor...>
+P6003>Görev zamanlayıcı ayarları uygulanıyor...>
+P6004>Devmainview ayarları uygulanıyor...>
+P6005>Sistem açılış adı değiştiriliyor...>
+P6006>Özel güç ayarı ekleniyor...>
+P6007>Duvar kağıdı özelleştiriliyor...>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>
@@ -197,7 +201,7 @@ SL_28_>Oyun DVR ve Yayın Kullanıcı>İhtiyaç: Xbox ekran kayıt>
 SL_29_>Sistem Geri Yükleme>Bağlı: Dosya geçmişi>
 SL_30_>Karma gerçeklik>Bağlı: Sanal gerçeklik gözlükleri, VR>
 SL_31_>Xbox> >
-SL_32_>Teslim en iyileştirme>Bağlı: Market, Xbox>
+SL_32_>Teslim en iyileştirme>Bağlı: Market, Xbox, Güncelleştirmeler>
 SL_33_>Uzak masaüstü> >
 SL_34_>Ekran yakalama>Bağlı: Ekran alıntısı>
 SL_35_>Ebeveyn denetimleri> >

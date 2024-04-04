@@ -4,7 +4,17 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.2.8 ►  03.04.2024 - Playbook</B></summary>
+<details><B><summary> Versiyon 4.2.9 ►  04.04.2024 - Playbook</B></summary>
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• "Taskschd_Update_Setting_8_" ayarı eklendi. Cihazlar arası deneyim (Crossdevice) uygulamasının oto yüklenmesini devre dışı bırakır.
+		• "Taskschd_Update_Setting" ayarlarına yeni eklemeler yapıldı.
+		• All in One Runtimes bölümüne EdgeWebView2 eklendi.
+		• Temizlik komutları yenilendi. Artık yalnızca yeniden başladıktan sonra temizlik işlemi yapılacak. İşlem adımları toplamda 6 olarak ayarlandı. Öncesinde 7 işlemdi. 
+		• Edge işleminden sonra pause komutu kaldırıldı. Test işlemlerinde unutulmuş kod :)
+		• Özel ayarlar uygulanıyor bölümünde detaylı bilgi mesajları eklendi. Şuanki kalıpta bu bölümle ilgili çok bir ayar yok ancak tek mesajla geçmek istemedim.
+		
+
+</details><details><B><summary> Versiyon 4.2.8 ►  03.04.2024 - Playbook</B></summary>
 
 	▼ Playbook bölümünde yapılan değişiklikler;
 		• "Taskschd_Update_Setting" bölümündeki komutlar düzenlendi. Ayrıca Edge ile alakalı komutlar bu bölümü eklendi.

@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.2.8
+set Version=4.2.9
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -311,6 +311,10 @@ Microsoft.DirectX
 	Call :Echo_Print %R%[32m !LB2! %R%[0m
 	Call :Winget %%g
 )
+Call :Dil B 2 T0014&echo.&echo %R%[92m !LB2! %R%[0m
+Call :Winget_Link "Microsoft.EdgeWebView2Runtime" "exe" "/silent /install"
+Call :PSDownload "!Setup!"
+"!Setup!" !Silent!
 REM Loglar silinir
 FOR %%g in (Capabilities Features) do (Call :DEL_Direct "%Konum%\Log\%%g")
 goto :eof
@@ -749,7 +753,7 @@ winget list "%~1" --accept-source-agreements > NUL 2>&1
 goto :eof
 
 REM -------------------------------------------------------------
-:Winget_Link
+:Winget_Link_Playbook
 REM %~1 winget program adı
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %PB% 2^>NUL') do (
 	set Silent=%%g
@@ -757,6 +761,19 @@ FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %PB% 2^>NUL') do (
 FOR /F "tokens=3" %%g in ('Winget show %~1 --accept-source-agreements ^| Find "Installer Url"') do (
 	set Link=%%g
 	set Setup=%%~nxg
+)
+goto :eof
+
+REM -------------------------------------------------------------
+:Winget_Link
+set Silent=%~3
+Winget show %~1 --accept-source-agreements > %Konum%\Log\Winget_Link.txt
+FOR /F "tokens=3" %%g in ('Find "Installer Url" %Konum%\Log\Winget_Link.txt') do (
+	FOR /F "tokens=3" %%k in ('Find "Installer Type" %Konum%\Log\Winget_Link.txt') do (
+		set Link=%%g
+		set Setup=%Konum%\Log\%~1.%~2
+		if "%%k" NEQ "%~2" (set Setup=%~1.%%k&set Silent=/Passive)
+	)	
 )
 goto :eof
 
@@ -1189,7 +1206,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :RegDel
-if !Show! EQU 1 (echo %R%[90mReg delete%R%[33m %* %R%[90m /f%R%[0m)
+if !Show! EQU 1 (echo %R%[90mReg delete%R%[33m %* %R%[90m/f%R%[0m)
 Reg delete %* /f > NUL 2>&1
 	if !errorlevel! NEQ 0 (%NSudo% Reg delete %* /f)
 goto :eof
@@ -1748,7 +1765,7 @@ echo.
 echo :Delete
 ) > C:\Playbook.Reset.After.cmd
 REM -------------------------------------------------------------
-cls&Call :Dil A 2 P1001&title OgnitorenKs Playbook │ 1/7 │ !LA2!
+cls&Call :Dil A 2 P1001&title OgnitorenKs Playbook │ 1/6 │ !LA2!
 REM Bileşen kaldırma bölümü
 REM Capabilities ve packages bileşenleri için Dism ile verileri alır.
 Call :DEL_Direct "%Konum%\Log\C_Packages"
@@ -1862,7 +1879,6 @@ Call :Playbook_Reader Component_Setting_2_
 							 Call :Service_Admin "edgeupdate" 4
 							 Call :Service_Admin "edgeupdatem" 4
 )
-pause
 REM -------------------------------------------------------------
 REM EdgeWebView2 kaldır
 Call :Playbook_Reader Component_Setting_3_
@@ -1946,7 +1962,7 @@ Call :Playbook_Reader Change_App_3_
 )
 REM -------------------------------------------------------------
 REM Uygulama kaldır
-cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 2/7 │ !LA2!
+cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 2/6 │ !LA2!
 Call :Appx_Info
 Call :Dil B 2 T0008
 FOR /F "tokens=4" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
@@ -1959,7 +1975,7 @@ FOR /F "tokens=4" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
 )
 REM -------------------------------------------------------------
 REM Hizmet Yönetimi
-cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/7 │ !LA2!
+cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/6 │ !LA2!
 Call :Dil A 2 T0012
 FOR /F "tokens=4" %%a in ('Findstr /i "Service_Manager" %PB%') do (
 	FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a ►" %PB%') do (
@@ -1972,7 +1988,7 @@ FOR /F "tokens=4" %%a in ('Findstr /i "Service_Manager" %PB%') do (
 REM -------------------------------------------------------------
 REM Uygulanan regedit ayarlarını gösterir
 set Show=1
-cls&Call :Dil A 2 P1004&title OgnitorenKs Playbook │ 4/7 │ !LA2!
+cls&Call :Dil A 2 P1004&title OgnitorenKs Playbook │ 4/6 │ !LA2!
 REM Başlat menüsünde en son eklenenleri kaldır
 Call :Playbook_Reader Taskbar_Setting_1_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" "HideRecentlyAddedApps" REG_DWORD 1
@@ -3121,6 +3137,7 @@ REM DevHomeUpdate devre dışı bırak [Microsoft proje yönetim uygulamasının
 Call :Playbook_Reader Taskschd_Update_Setting_1_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\DevHomeUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\DevHomeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\DevHomeUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
@@ -3128,6 +3145,7 @@ REM IA devre dışı bırak [Microsoft güncelleştirme kanalı üzerinden Marke
 Call :Playbook_Reader Taskschd_Update_Setting_2_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\IA"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\IA"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\IA"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
@@ -3135,6 +3153,7 @@ REM LXP devre dışı bırak [Yerel deneyim paketleri - Dil paket güncelleştir
 Call :Playbook_Reader Taskschd_Update_Setting_3_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\LXP"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\LXP"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\LXP"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
@@ -3149,6 +3168,7 @@ REM OutlookUpdate devre dışı bırak [Yeni Outlook uygulamasının otomatik ku
 Call :Playbook_Reader Taskschd_Update_Setting_5_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\OutlookUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\OutlookUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
@@ -3156,6 +3176,7 @@ REM TFLUpdate devre dışı bırak [Londra şehrinin ulaşım hizmetleri hakkın
 Call :Playbook_Reader Taskschd_Update_Setting_6_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\TFLUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\TFLUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\TFLUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
@@ -3163,6 +3184,15 @@ REM Edge otomatik yüklemeyi devre dışı bırakır.
 Call :Playbook_Reader Taskschd_Update_Setting_7_
 	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\EdgeUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\EdgeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\EdgeUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+)
+REM CrossDeviceUpdate devre dışı bırakır. Cihazlar arası deneyim güncellemesini devre dışı bırakır
+Call :Playbook_Reader Taskschd_Update_Setting_8_
+	if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\CrossDeviceUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\CrossDeviceUpdate"
+							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\CrossDeviceUpdate"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
 							 Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
 )
@@ -3182,54 +3212,73 @@ Call :Playbook_Reader Special_Setting_3_
 							 Call :RegAdd "HKCU\Control Panel\Mouse" "MouseHoverTime" REG_SZ !PBSpecial!
 )
 REM -------------------------------------------------------------
-cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 5/7 │ !LA2!
+cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 5/6 │ !LA2!
 REM Regedit kayıtlarının çıktılarını gizlemek için
 set Show=0
 REM Playbook.ini CMD komutları uygulama bölümü
-FOR /F "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command" %PB% 2^>NUL') do (
-	%%a > NUL 2>&1
-		if !errorlevel! NEQ 0 (%NSudo% %%a)
+Call :Dil B 2 P6001
+Call :Playbook_Reader_2 "CMD_Command"
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command" %PB% 2^>NUL') do (
+								%%a > NUL 2>&1
+								if !errorlevel! NEQ 0 (%NSudo% %%a)
+							)
 )
 REM -------------------------------------------------------------
 REM Playbook.ini Powershell komutları uygulama bölümü
-FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Powershell_Command" %PB% 2^>NUL') do (
-	Call :Powershell_Playbook %%a > NUL 2>&1
-		if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
+Call :Dil B 2 P6001
+Call :Playbook_Reader_2 "Powershell_Command"
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Powershell_Command" %PB% 2^>NUL') do (
+								Call :Powershell_Playbook %%a > NUL 2>&1
+								if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
+							)
 )
 REM -------------------------------------------------------------
 REM Ayarlardan gizlenecek bölümler yapılandırılıyor
 REM İlgili ayar playbook bölümünde yer almıyorsa işlemi gerçekleştirmez
+Call :Dil B 2 P6002
 Call :Playbook_Reader_2 "Settings_Hide"
-	if "!Playbook!" EQU "1" (FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Settings_Hide" %PB%') do (Call :Reg_Hide "%%a")
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Settings_Hide" %PB%') do (Call :Reg_Hide "%%a")
 )
 REM -------------------------------------------------------------
 REM Görev zamanlayıcısı ayarları yapılandırılıyor
-Findstr /i "Task_Scheduler_Setting" %PB% > NUL 2>&1
-	if "!errorlevel!" EQU "0" (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Task_Scheduler_Setting" %PB%') do (
-								   FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
-									   if "%%b" EQU "1" (Call :Schtasks "Disable" "%%a")
-									   if "%%b" EQU "2" (Call :Schtasks-Remove "%%a")
-								   )
-							   )
+Call :Dil B 2 P6003
+Call :Playbook_Reader_2 "Task_Scheduler_Setting"
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Task_Scheduler_Setting" %PB%') do (
+								 FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
+									 if "%%b" EQU "1" (Call :Schtasks "Disable" "%%a")
+									 if "%%b" EQU "2" (Call :Schtasks-Remove "%%a")
+								)
+							)
 )
 REM -------------------------------------------------------------
 REM Aygıt yöneticisi - Devmainview
-FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Devmainview_Setting" %PB%') do (
-	FOR /F "skip=2 tokens=2" %%b in ('Find "%%a" %PB%') do (
-		if "%%b" EQU "1" (%Konum%\Bin\DevManView.exe /disable "%%a" > NUL 2>&1)
+Call :Dil B 2 P6004
+Call :Playbook_Reader_2 "Devmainview_Setting"
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Devmainview_Setting" %PB% 2^>NUL') do (
+								FOR /F "skip=2 tokens=2" %%b in ('Find "%%a" %PB%') do (
+									if "%%b" EQU "1" (%Konum%\Bin\DevManView.exe /disable "%%a" > NUL 2>&1)
+							)
 	)
 )
 REM -------------------------------------------------------------
 REM Sistem açılış ismi değiştir
+Call :Dil B 2 P6005
 Call :Playbook_Reader_2 "System_New_Name"
-	if "!Playbook!" EQU "1" (FOR /F "delims='=' tokens=2" %%a in ('Findstr /i "System_New_Name" %PB%') do (bcdedit /set {current} description "%%a" > NUL 2>&1)
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims='=' tokens=2" %%a in ('Findstr /i "System_New_Name" %PB%') do (bcdedit /set {current} description "%%a" > NUL 2>&1)
 )
 
 REM -------------------------------------------------------------
-echo ►%R%[92m !LA2! %R%[0m
 REM Özel güç ayarı ekleme bölümü
+Call :Dil B 2 P6006
 Call :Playbook_Reader_2 "Power_Link_"
-	if "!Playbook!" EQU "1" (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Power_Link_" %PB%') do (
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Power_Link_" %PB%') do (
 								FOR /F "delims=► tokens=3" %%b in ('Findstr /i "Power_Link_" %PB%') do (
 									Call :Powershell "& { iwr '%%a' -OutFile '%Temp%\%%b' }"
 									powercfg -import "%Temp%\%%b" 12345678-1234-1234-1234-123456789012 > NUL 2>&1
@@ -3239,8 +3288,10 @@ Call :Playbook_Reader_2 "Power_Link_"
 							)
 )
 REM Özel masaüstü resmi entegre etme
+Call :Dil B 2 P6007
 Call :Playbook_Reader_2 "Wallpaper_Link_"
-	if "!Playbook!" EQU "1" (FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Wallpaper_Link_" %PB%') do (
+	if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
+							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Wallpaper_Link_" %PB%') do (
 								FOR /F "delims=► tokens=3" %%b in ('Findstr /i "Wallpaper_Link_" %PB%') do (
 									Call :Powershell "& { iwr '%%a' -OutFile 'C:\Users\%username%\Pictures\%%b' }"
 									Call :RegAdd "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "Wallpaper" REG_SZ "C:\Users\%username%\Pictures\%%b"
@@ -3256,69 +3307,9 @@ Call :DEL_Direct "%Konum%\Log\C_Capabilities"
 Call :DEL_Direct "%Konum%\Log\Capabilities"
 Call :DEL_Direct "%Konum%\Log\Features"
 REM -------------------------------------------------------------
-REM Settings.ini dosyasından temizlik işleminin yapılıp yapılmayacağını kontrol eder
-set Value_T=NT
-FOR /F "tokens=2" %%a in ('Findstr /i "Process_Clear_" %PB% 2^>NUL') do (set Value_T=%%a)
-	if "!Value_T!" EQU "0" (Call :DEL_Direct "C:\Playbook.Reset.After.cmd"
-							goto Pass_2
-)
-REM -------------------------------------------------------------
-cls&Call :Dil A 2 P1006&title OgnitorenKs Playbook │ 6/7 │ !LA2!
-set Show=1
-Call :Dil K 2 T0008
-FOR %%a in (
-"%windir%\*.log"
-"%windir%\CbsTemp\*"
-"%windir%\Logs\*"
-"%Windir%\System32\LogFiles\WMI\*"
-"%Windir%\System32\LogFiles\Scm\*"
-) do (
-	Call :DEL_Search %%a
-)
-REM -------------------------------------------------------------
-FOR %%a in (
-"%windir%\WinSxS\Temp"
-"%windir%\WinSxS\Backup"
-"%windir%\Containers"
-"%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization"
-"%ProgramData%\Package Cache"
-) do (
-	Call :RD_Direct %%a
-)
+cls&Call :Dil A 2 P1005&title OgnitorenKs Playbook │ 6/6 │ !LA2!
 REM Sistem geri yükleme kayıtlarını temizler
 REM "%SystemDrive%\System Volume Information"
-REM -------------------------------------------------------------
-FOR %%a in (
-"%Windir%\CbsTemp\*"
-"%windir%\Logs\*"
-"%Windir%\assembly\NativeImage*"
-) do (
-	Call :RD_Search %%a
-)
-REM -------------------------------------------------------------
-FOR /F "tokens=*" %%a in ('dir /ad /b "%LocalAppData%\Packages\*" 2^>NUL') do (
-	%NSudo% RD /S /Q "%LocalAppData%\Packages\%%a\AC\INetCache"
-	%NSudo% RD /S /Q "%LocalAppData%\Packages\%%a\AC\Temp"
-)
-Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\IE"
-Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\Low"
-Call :RD_Direct "%LocalAppData%\Microsoft\Windows\INetCache\Virtualized"
-Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\IE"
-Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Low"
-Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Virtualized"
-Call :RD_Direct "%Windir%\System32\config\systemprofile\AppData\Local\Microsoft\Windows\INetCache\IE"
-
-REM -------------------------------------------------------------
-Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\ReportArchive"
-Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\Temp"
-Call :RD_Direct "%ProgramFiles%\$Recycle.Bin\!CUS!"
-REM -------------------------------------------------------------
-net stop wuauserv > NUL 2>&1
-Call :RD_Direct "%windir%\SoftwareDistribution"
-net start wuauserv > NUL 2>&1
-Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "OgnitorenKs_Playbook" REG_SZ "C:\Playbook.Reset.After.cmd"
-set Show=0
-Call :Dil A 2 P5001&echo %R%[33m !LA2! %R%[0m
 (
 echo ie4uinit.exe -show
 echo ie4uinit.exe -ClearIconCache
@@ -3340,8 +3331,10 @@ echo Call :DEL_Search "%%Windir%%\Temp\*"
 echo Call :RD_Search "%%Windir%%\Temp\*"
 echo Call :DEL_Search "%%LocalAppData%%\Temp\*"
 echo Call :RD_Search "%%LocalAppData%%\Temp\*"
+echo Call :RD_Direct "%%windir%%\WinSxS\Temp"
+echo Call :RD_Direct "%%windir%%\WinSxS\Backup"
 echo Call :DEL_Search "%%Windir%%\System32\config\systemprofile\AppData\Local\*.tmp"
-echo Call :DEL_Deep_Search "%%systemdrive%%\*log"
+echo Call :DEL_Deep_Search "%%systemdrive%%\*.log"
 echo Call :DEL_Deep_Search "%%Windir%%\*etl"
 echo Call :DEL_Deep_Search "%%LocalAppData%%\*etl"
 echo FOR %%%%g in ^(msi msp^) do ^(Call :DEL_Deep_Search "%%Windir%%\Installer\*.%%%%g"^)
@@ -3350,24 +3343,13 @@ echo Call :RD_Search "%%Windir%%\Installer\$PatchCache$\Managed\*"
 echo Call :RD_Search "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 echo Call :DEL_Search "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 echo Call :RD_Direct "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
+echo Call :RD_Direct "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization"
 echo Call :DEL_Search "%%Windir%%\prefetch\*"
 echo Call :DEL_Search "%%ProgramData%%\Microsoft\Diagnosis\ETLLogs\AutoLogger\*.etl"
 echo Call :DEL_Search "%%LocalAppData%%\tw-*.tmp"
-echo Call :DEL_Direct "%%SystemRoot%%\DtcInstall.log"
-echo Call :DEL_Direct "%%SystemRoot%%\comsetup.log"
-echo Call :DEL_Direct "%%SystemRoot%%\PFRO.log"
-echo Call :DEL_Direct "%%SystemRoot%%\setupact.log"
-echo Call :DEL_Direct "%%SystemRoot%%\setupapi.log"
-echo Call :DEL_Direct "%%SystemRoot%%\Panther\*"
-echo Call :DEL_Direct "%%SystemRoot%%\inf\setupapi.app.log"
-echo Call :DEL_Direct "%%SystemRoot%%\inf\setupapi.dev.log"
-echo Call :DEL_Direct "%%SystemRoot%%\inf\setupapi.offline.log"
-echo Call :DEL_Direct "%%SystemRoot%%\Performance\WinSAT\winsat.log"
-echo Call :DEL_Direct "%%SystemRoot%%\debug\PASSWD.LOG"
+echo Call :DEL_Search "%%SystemRoot%%\Panther\*"
 echo Call :DEL_Search "%%localappdata%%\Microsoft\Windows\WebCache\*.*"
 echo Call :DEL_Search "%%SystemRoot%%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
-echo Call :DEL_Direct "%%SystemRoot%%\Logs\CBS\CBS.log"
-echo Call :DEL_Direct "%%SystemRoot%%\Logs\DISM\DISM.log"
 echo Call :DEL_Search "%%SystemRoot%%\Logs\SIH\*"
 echo Call :DEL_Search "%%LocalAppData%%\Microsoft\CLR_v4.0\UsageTraces\*"
 echo Call :DEL_Search "%%LocalAppData%%\Microsoft\CLR_v4.0_32\UsageTraces\*"
@@ -3375,7 +3357,6 @@ echo Call :DEL_Search "%%SystemRoot%%\Logs\NetSetup\*"
 echo Call :DEL_Search "%%SystemRoot%%\System32\LogFiles\setupcln\*"
 echo Call :DEL_Search "%%SystemRoot%%\Temp\CBS\*"
 echo Call :DEL_Direct "%%SystemRoot%%\System32\catroot2\dberr.txt"
-echo Call :DEL_Direct "%%SystemRoot%%\System32\catroot2.log"
 echo Call :DEL_Direct "%%SystemRoot%%\System32\catroot2.jrs"
 echo Call :DEL_Direct "%%SystemRoot%%\System32\catroot2.edb"
 echo Call :DEL_Direct "%%SystemRoot%%\System32\catroot2.chk"
@@ -3387,26 +3368,7 @@ echo Call :RD_Direct "%%systemdrive%%\AMD"
 echo Call :RD_Direct "%%systemdrive%%\NVIDIA"
 echo Call :RD_Direct "%%systemdrive%%\INTEL"
 echo Call :RD_Direct "%%systemdrive%%\$WinREAgent"
-echo Call :RD_Direct "C:\$Recycle.Bin\!CUS!"
-echo net stop wuauserv /y ^> NUL 2^>^&1
-echo Call :RD_Direct "%%windir%%\SoftwareDistribution"
-echo net start wuauserv /y ^> NUL 2^>^&1
-echo Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
-echo ipconfig /flushdns ^> NUL 2^>^&1
-echo ipconfig /release ^> NUL 2^>^&1
-echo ipconfig /renew ^> NUL 2^>^&1
-echo FOR /F "tokens=*" %%%%g in ^('wevtutil.exe el'^) do ^(wevtutil.exe cl "%%%%g" ^> NUL 2^>^&1^)
-echo Call :RD_Direct "%%windir%%\WinSxS\Temp"
-echo Call :RD_Direct "%%windir%%\WinSxS\Backup"
-echo Call :RD_Search "%%Windir%%\assembly\NativeImage*"
-echo Call :DEL_Search "%%Windir%%\System32\LogFiles\WMI\*"
-echo Call :DEL_Search "%%Windir%%\System32\LogFiles\Scm\*"
-echo Call :RD_Direct "%%windir%%\Containers"
-echo Call :DEL_Search "%%Windir%%\CbsTemp\*"
-echo Call :DEL_Search "%%windir%%\Logs\*"
-echo Call :RD_Search "%%windir%%\Logs\*"
-echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\ReportArchive"
-echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\Temp"
+echo Call :RD_Direct "%%systemdrive%%\$Recycle.Bin\!CUS!"
 echo FOR /F "tokens=*" %%%%a in ^('dir /b "%%LocalAppData%%\Packages\*" 2^^^>NUL'^) do ^(
 echo    Call :RD_Direct "%%LocalAppData%%\Packages\%%%%a\AC\INetCache"
 echo    Call :RD_Direct "%%LocalAppData%%\Packages\%%%%a\AC\Temp"
@@ -3418,9 +3380,24 @@ echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\Temporary Internet File
 echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\Temporary Internet Files\Low"
 echo Call :RD_Direct "%%LocalAppData%%\Microsoft\Windows\Temporary Internet Files\Virtualized"
 echo Call :RD_Direct "%%Windir%%\System32\config\systemprofile\AppData\Local\Microsoft\Windows\INetCache\IE"
-echo chcp 437 ^> NUL
-echo PowerShell -ExecutionPolicy Unrestricted -Command "$bin = (New-Object -ComObject Shell.Application).NameSpace(10); $bin.items() | ForEach {; Write-Host "^^^""Deleting $($_.Name) from Recycle Bin"^^^""; Remove-Item $_.Path -Recurse -Force; }"
-echo chcp 65001 ^> NUL
+echo Call :RD_Search "%%Windir%%\assembly\NativeImage*"
+echo Call :DEL_Search "%%Windir%%\System32\LogFiles\WMI\*"
+echo Call :DEL_Search "%%Windir%%\System32\LogFiles\Scm\*"
+echo Call :RD_Direct "%%windir%%\Containers"
+echo Call :RD_Search "%%Windir%%\CbsTemp\*"
+echo Call :DEL_Search "%%Windir%%\CbsTemp\*"
+echo Call :DEL_Search "%%windir%%\Logs\*"
+echo Call :RD_Search "%%windir%%\Logs\*"
+echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\ReportArchive"
+echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\WER\Temp"
+echo FOR /F "tokens=*" %%%%g in ^('wevtutil.exe el'^) do ^(wevtutil.exe cl "%%%%g" ^> NUL 2^>^&1^)
+echo net stop wuauserv /y ^> NUL 2^>^&1
+echo Call :RD_Direct "%%windir%%\SoftwareDistribution"
+echo net start wuauserv /y ^> NUL 2^>^&1
+echo Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+echo ipconfig /flushdns ^> NUL 2^>^&1
+echo ipconfig /release ^> NUL 2^>^&1
+echo ipconfig /renew ^> NUL 2^>^&1
 echo.
 echo reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OgnitorenKs_Playbook" /f ^> NUL 2^>^&1
 echo DEL /F /Q /A "C:\Playbook.Reset.After.cmd" ^> NUL 2^>^&1
@@ -3431,18 +3408,25 @@ echo Powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -C %%
 echo chcp 65001 ^> NUL 2^>^&1
 echo goto :eof
 ) >> C:\Playbook.Reset.After.cmd
+Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "OgnitorenKs_Playbook" REG_SZ "C:\Playbook.Reset.After.cmd"
 REM Sistem geri yükleme bölümlerini temizler
 REM echo Call :RD_Direct "%%SystemDrive%%\System Volume Information"
 REM -------------------------------------------------------------
-:Pass_2
+REM Settings.ini dosyasından temizlik işleminin yapılıp yapılmayacağını kontrol eder
+set Value_T=NT
+FOR /F "tokens=2" %%a in ('Findstr /i "Process_Clear_" %PB% 2^>NUL') do (
+	if "%%a" EQU "0" (Call :DEL_Direct "C:\Playbook.Reset.After.cmd"
+					  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OgnitorenKs_Playbook"
+					 )
+)
+REM -------------------------------------------------------------
 REM Winget üzeri indirme linki alınır ve yükleme işlemi yapılır.
-cls&Call :Dil A 2 P1005&title OgnitorenKs Playbook │ 7/7 │ !LA2!
 Call :Dil B 2 T0011
 Call :Playbook_Reader_2 "Download_Application"
 	if "!Playbook!" EQU "1" (FOR /F "tokens=4" %%b in ('Findstr /i "Download_Application" %PB% 2^>NUL') do (
 								FOR /F "tokens=2" %%c in ('Findstr /i "► %%b" %PB% 2^>NUL') do (
 									if "%%c" EQU "1" (winget list "%%b" --accept-source-agreements > NUL 2>&1
-														if "!errorlevel!" NEQ "0" (Call :Winget_Link "%%b"
+														if "!errorlevel!" NEQ "0" (Call :Winget_Link_Playbook "%%b"
 																				   Call :Echo_Print ►%R%[33m !Setup!%R%[37m !LB2! %R%[0m
 																				   Call :PSDownload "%Konum%\Log\!Setup!"
 																				   "%Konum%\Log\!Setup!" !Silent!
