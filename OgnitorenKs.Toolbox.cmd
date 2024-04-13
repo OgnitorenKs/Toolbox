@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.2.9
+set Version=4.3.0
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -364,10 +364,10 @@ echo !Value_S! | Findstr /i "X" > NUL 2>&1
 cls
 FOR %%a in (!Value_S!) do (
 	Call :Service_Management %%a
+	if %%a EQU 13 (Call :SS_13)
 	if %%a EQU 16 (Call :SS_16)
 	if %%a EQU 29 (Call :SS_29)
 )
-REM İşlem bitince menüye gönderiyorum.
 goto Service_Menu
 
 REM -------------------------------------------------------------
@@ -643,16 +643,18 @@ REM Call :Powershell "Start-Process cleanmgr -ArgumentList '/verylowdisk /sageru
 REM Çöp kutusunu temizler
 Call :RD_Direct "C:\$Recycle.Bin\!CUS!"
 REM DNS önbelleği temizler
-Call :Dil A 2 T0030&echo ►%R%[32m !LA2! %R%[0m
-ipconfig /flushdns > NUL 2>&1
-ipconfig /release > NUL 2>&1
-ipconfig /renew > NUL 2>&1
+REM Call :Dil A 2 T0030&echo ►%R%[32m !LA2! %R%[0m
+REM ipconfig /flushdns > NUL 2>&1
+REM ipconfig /release > NUL 2>&1
+REM ipconfig /renew > NUL 2>&1
 REM Olay günlüğü temizleniyor
 Call :Dil A 2 T0017&echo ►%R%[32m !LA2! %R%[0m
 FOR /F "tokens=*" %%g in ('wevtutil.exe el') do (wevtutil.exe cl "%%g" > NUL 2>&1)
 REM Güncelleme artıklarını temizler
 Call :Dil A 2 T0032&echo.&echo %R%[32m !LA2! %R%[0m
 Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+Call :RD_Direct "%Windir%\WinSxS\Temp"
+Call :RD_Direct "%Windir%\WinSxS\Backup"
 set Show=0
 goto :eof
 
@@ -827,6 +829,30 @@ github.com
 	ping -n 1 %%n -w 1000 > NUL
 		if !errorlevel! EQU 0 (set Internet=Online)
 )
+goto :eof
+
+REM -------------------------------------------------------------
+:Laptop_Warning
+set LV=NT
+Call :Powershell "Get-WmiObject -Class Win32_SystemEnclosure | Select-Object -Property ChassisTypes" > %Konum%\Log\CheckPC.txt
+FOR /F "delims={} tokens=2" %%g in ('Findstr /i "ChassisTypes" %Konum%\Log\CheckPC.txt') do (
+	if "%%g" EQU "16" (set LV=1)
+	if "%%g" EQU "17" (set LV=1)
+)
+if "!LV!" EQU "1" (Call :Dil A 2 P5001
+				   Call :Dil B 2 %~1
+				   Call :Dil C 2 P5002
+				   Call :Dil D 2 P5003
+				   echo.&echo %R%[90m═══════════════════════════════════════════════════════════════════%R%[0m
+				   echo.&echo •%R%[33m !LA2! %R%[0m
+				   echo •%R%[36m "!LB2!"%R%[33m !LC2! %R%[0m
+				   echo.
+				   set /p LaptopValue=►%R%[92m !LD2! %R%[90m[%R%[92m Y %R%[90m│%R%[92m N %R%[90m]: %R%[0m
+				   Call :Upper !LaptopValue! LaptopValue
+)
+if "!LaptopValue!" NEQ "Y" (set LaptopValue=NT)
+if "!LV!" EQU "NT" (set LaptopValue=0)
+set LV=
 goto :eof
 
 REM -------------------------------------------------------------
@@ -1960,6 +1986,16 @@ Call :Playbook_Reader Change_App_3_
 							 %NSudo% rename "C:\Windows\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\StartMenuExperienceHost.exe" "StartMenuExperienceHost_OLD.exe"
 							 %NSudo% taskkill /f /im "StartMenuExperienceHost.exe"
 )
+REM Bing uygulamalarının otomatik kurulmasını engelle
+Call :Playbook_Reader Change_App_4_
+	if "!Playbook!" EQU "1" (taskkill /f /im "BingChatInstaller.EXE" > NUL 2>&1
+							 taskkill /f /im "BCILauncher.EXE" > NUL 2>&1
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\BingChatInstaller.EXE" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\BCILauncher.EXE" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
+							 Call :DEL_Direct "%Windir%\Temp\MUBSTemp\BingChatInstaller.EXE"
+							 Call :DEL_Direct "%Windir%\Temp\MUBSTemp\BCILauncher.EXE"
+							 Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v "!BCILauncher"
+)
 REM -------------------------------------------------------------
 REM Uygulama kaldır
 cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 2/6 │ !LA2!
@@ -2063,6 +2099,10 @@ Call :Playbook_Reader Taskbar_Setting_14_
 REM Başlangıç menüsü - ipuçları, kısayollar, yeni uygulamalar ve daha fazlası için önerileri kapat
 Call :Playbook_Reader Taskbar_Setting_15_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_IrisRecommendations" REG_DWORD 0
+)
+REM Görev çubuğu - Copilot simgesini gizle
+Call :Playbook_Reader Taskbar_Setting_16_
+	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowCopilotButton" REG_DWORD 0
 )
 REM ContentDeliveryManager - Ayarlar uygulamasında önerilen içeriği kapat
 Call :Playbook_Reader Privacy_Setting_1_
@@ -2708,7 +2748,9 @@ Call :Playbook_Reader Optimization_Setting_6_
 )
 REM Güç azaltmayı kapat
 Call :Playbook_Reader Optimization_Setting_7_
-	if "!Playbook!" EQU "1" (Call :RegAdd_CCS "Control\Power\PowerThrottling" "PowerThrottlingOff" REG_DWORD 1 
+	if "!Playbook!" EQU "1" (Call :Laptop_Warning P5006
+								if "!LaptopValue!" EQU "Y" (Call :RegAdd_CCS "Control\Power\PowerThrottling" "PowerThrottlingOff" REG_DWORD 1)
+								if "!LaptopValue!" EQU "0" (Call :RegAdd_CCS "Control\Power\PowerThrottling" "PowerThrottlingOff" REG_DWORD 1)
 )
 REM Sessiz saatleri etkinleştir
 Call :Playbook_Reader Optimization_Setting_8_
@@ -2720,15 +2762,28 @@ Call :Playbook_Reader Optimization_Setting_9_
 )
 REM Nihai performans ekle ve aktifleştir [Yalnızca Türkçe sistemlerde çalışır] [Sistemi tam güçte çalıştıracağı için ısı değerleri artacaktır.]
 Call :Playbook_Reader Optimization_Setting_10_
-	if "!Playbook!" EQU "1" (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 97777777-8777-7777-6777-577777777777 > NUL 2>&1
-							 powercfg /SETACTIVE "97777777-8777-7777-6777-577777777777" > NUL 2>&1
+	if "!Playbook!" EQU "1" (Call :Laptop_Warning P5004
+								if "!LaptopValue!" EQU "Y" (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 97777777-8777-7777-6777-577777777777 > NUL 2>&1
+															powercfg /SETACTIVE "97777777-8777-7777-6777-577777777777" > NUL 2>&1
+														   )
+								if "!LaptopValue!" EQU "0" (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 97777777-8777-7777-6777-577777777777 > NUL 2>&1
+															powercfg /SETACTIVE "97777777-8777-7777-6777-577777777777" > NUL 2>&1
+														   )
+							 
 )
 REM İşlemci çekirdek uyku modunu kapat [Core parking] [İşlemci sıcaklık değerlerini yükseltecektir]
 Call :Playbook_Reader Optimization_Setting_11_
-	if "!Playbook!" EQU "1" (Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
-							 Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMin" REG_DWORD 0
-							 Call :RegAdd_CCS "Control\Power" "CoreParkingDisabled" REG_DWORD 0
+	if "!Playbook!" EQU "1" (Call :Laptop_Warning P5005
+							 if "!LaptopValue!" EQU "Y" (Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
+														 Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMin" REG_DWORD 0
+														 Call :RegAdd_CCS "Control\Power" "CoreParkingDisabled" REG_DWORD 0
+														)
+							 if "!LaptopValue!" EQU "0" (Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
+														 Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMin" REG_DWORD 0
+														 Call :RegAdd_CCS "Control\Power" "CoreParkingDisabled" REG_DWORD 0
+														)
 )
+set LaptopValue=
 REM Kapanmayı engelleyen programlar hemen kapatılsın
 Call :Playbook_Reader Optimization_Setting_12_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "AllowBlockingAppsAtShutdown" REG_DWORD 0
@@ -3607,6 +3662,28 @@ Call :Schtasks "Disable" "\Microsoft\Windows\Windows Defender\Windows Defender V
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+:SS_13
+if !Value! EQU E (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableSensors" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocation" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocationScripting" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableWindowsLocationProvider" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\FindMyDevice" "AllowFindMyDevice" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" "AllowSearchToUseLocation" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\System" "AllowLocation" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Microsoft\MdmCommon\SettingValues" "LocationSyncEnabled" REG_DWORD 1
+)
+if !Value! EQU D (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableSensors" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocation" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocationScripting" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableWindowsLocationProvider" REG_DWORD 1
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\FindMyDevice" "AllowFindMyDevice" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" "AllowSearchToUseLocation" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\System" "AllowLocation" REG_DWORD 0
+				  Call :RegAdd "HKLM\SOFTWARE\Microsoft\MdmCommon\SettingValues" "LocationSyncEnabled" REG_DWORD 0
+)
+goto :eof
+
 :SS_16
 if !Value! EQU E (set VR=1)
 if !Value! EQU D (set VR=0)

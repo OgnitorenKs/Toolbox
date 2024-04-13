@@ -162,6 +162,13 @@ P4005>The system will reboot after the process is finished>
 P4006>After the system is turned on, the command screen for the cleaning process will open, and it will automatically shut down when the process is finished>
 P4007>Do you want to continue the process?>
 ::
+P5001>It was detected that you applied the Playbook process on a laptop>
+P5002>setting will increase the temperature value>
+P5003>Are you sure you want to implement it?>
+P5004>Ultimate performance>
+P5005>Core parking disable>
+P5006>Turn off power reduction>
+::
 P6001>Customized commands are being implemented...>
 P6002>Setting the sections to hide from the settings menu...>
 P6003>Applying task scheduler settings...>

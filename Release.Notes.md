@@ -4,7 +4,32 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.2.9 ►  04.04.2024 - Playbook</B></summary>
+<details><B><summary> Versiyon 4.3.0 ►  13.04.2024 - Playbook</B></summary>
+
+	▼ Genel değişiklikler;
+		• Sistem temizleyici bölümündeki DNS önbellek temizleme işlemi kaldırıldı. Uygulandığında anlık olarak internet gidip geldiği için sorun çıkarma potansiyeline sahipti.
+	▼ Hizmetleri yönet bölümünde yapılan değişiklikler;
+		• "Konum" hizmetinde detaylı işlem yapması için regedit kayıtları eklendi. Açıp kapatırken ilgili regedit kayıtlarınıda değiştirecek. Daha sorunsuz ve genel kullanım için uygun hale getirildi.
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• Optimization_Setting_7,10,11 işlemlerine laptop uyarı mesajları eklendi. 
+			• Ayarlar Laptop/AllinOne cihazında uygulanıyorsa sıcaklık yapar uyarısı verecek ve uygulanması için kullanıcıdan onay isteyecek.
+			• Eğer cihaz normal PC'de uygulanıyorsa uyarı vermeden kalıptaki seçeneği uygulayacak.
+		• "Taskbar_Setting_16_" ayarı Copilot simgesini gizlemek için eklendi.
+		• "Change_App_4_" Bing uygulamalarının otomatik yüklenmesini engellemek için eklendi. (Copilot yüklenmesini engeller)
+	▼ Playbook kalıbında yapılan değişiklikler;
+		• Microsoft Edge artık doğrudan kaldırmayacak ayar pasif olarak bırakıldı. Dileyenler kalıptan düzenleyebilir yada sonrasında Hibit Uninstaller ile kaldırabilir.
+			• Arkaplanda çalışır, kullanmıyorsanız kaldırmanızı tavsiye ederim.
+		• Yazıcı hizmetleri varsayılan olarak bırakıldı. Dileyenler kalıptan düzenleyebilir yada playbook işlemi sonrası hizmet yönetimi bölümünden kapatabilir.
+			• Arkaplanda çalışır, kullanmıyorsanız kapatmanızı tavsiye ederim.
+		• Konum hizmeti varsayılan olarak bırakıldı. Dileyenler kalıptan düzenleyebilir yada playbook işlemi sonrası hizmet yönetimi bölümünden kapatabilir.
+			• Arkaplanda çalışır, kullanmıyorsanız kapatmanızı tavsiye ederim.
+		• IPV6 hizmetleri varsayılan olarak bırakıldı. Dileyenler kalıptan düzenleyebilir yada playbook işlemi sonrası hizmet yönetimi bölümünden kapatabilir.
+			• Arkaplanda çalışır, kullanmıyorsanız kapatmanızı tavsiye ederim.
+		• Karma gerçeklik hizmetleri varsayılan olarak bırakıldı. Dileyenler kalıptan düzenleyebilir yada playbook işlemi sonrası hizmet yönetimi bölümünden kapatabilir.
+		• Kalem hizmeti varsayılan olarak bırakıldı. Dileyenler kalıptan düzenleyebilir yada playbook işlemi sonrası hizmet yönetimi bölümünden kapatabilir.
+		• Görev çubuğunu sola hizalama işlemi varsayılan olarak bırakıldı. Dileyenler kalıptan düzenleyerek aktifleştirebilir.
+	
+</details><details><B><summary> Versiyon 4.2.9 ►  04.04.2024 - Playbook</B></summary>
 	▼ Playbook bölümünde yapılan değişiklikler;
 		• "Taskschd_Update_Setting_8_" ayarı eklendi. Cihazlar arası deneyim (Crossdevice) uygulamasının oto yüklenmesini devre dışı bırakır.
 		• "Taskschd_Update_Setting" ayarlarına yeni eklemeler yapıldı.
@@ -13,7 +38,6 @@
 		• Edge işleminden sonra pause komutu kaldırıldı. Test işlemlerinde unutulmuş kod :)
 		• Özel ayarlar uygulanıyor bölümünde detaylı bilgi mesajları eklendi. Şuanki kalıpta bu bölümle ilgili çok bir ayar yok ancak tek mesajla geçmek istemedim.
 		
-
 </details><details><B><summary> Versiyon 4.2.8 ►  03.04.2024 - Playbook</B></summary>
 
 	▼ Playbook bölümünde yapılan değişiklikler;
@@ -21,7 +45,6 @@
 		• Edge kaldırma bölümüde güvenlik duvarı engelleme komutu kaldırıldı.
 		• Playbook bölümünün kapanmasına neden olan sorun giderildi.
 		
-
 </details><details><B><summary> Versiyon 4.2.7 ►  31.03.2024</B></summary>
 
 	▼ Playbook bölümünde yapılan değişiklikler;

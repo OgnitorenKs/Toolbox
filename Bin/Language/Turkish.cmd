@@ -162,6 +162,13 @@ P4005>İşlem bittikten sonra sistem yeniden başlatılacak>
 P4006>Sistem açıldıktan sonra temizlik işlemi için komut ekranı açılacak, işlem bitince otomatik kapanacak>
 P4007>İşleme devam etmek istiyor musunuz?>
 ::
+P5001>Playbook işlemini Laptop da uyguladığınız tespit edildi>
+P5002>ayarı sıcaklık değerini arttıracaktır>
+P5003>Uygulamak istediğinize emin misiniz?>
+P5004>Nihai performans>
+P5005>İşlemci çekirdek uyku modunu kapat>
+P5006>Güç azaltmayı kapat>
+::
 P6001>Özelleştirilmiş komutlar uygulanıyor...>
 P6002>Ayarlar menüsünden gizlenecek bölümler ayarlanıyor...>
 P6003>Görev zamanlayıcı ayarları uygulanıyor...>
