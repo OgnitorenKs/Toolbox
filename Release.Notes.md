@@ -4,7 +4,18 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.3.0 ►  13.04.2024 - Playbook</B></summary>
+
+<details><B><summary> Versiyon 4.3.1 ►  17.04.2024 - Playbook</B></summary>
+
+	▼ Genel değişiklikler;
+		• Sistem temizliği bölümünde kodlar optimize edildi. Yeni eklemeler yapıldı.
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• Kullanım şekline göre farklılık gösterecek ayarlar için yönetim paneli oluşturuldu.
+		• Laptoplar için eklenen uyarılar kaldırıldı.
+		• Openshell uygulama yükleme ayarı başlat menüsü ayarına bağlı hale getirildi. Bu ayar uygulanmadan Openshell uygulaması artık yüklenemeyecek.
+		• Gereksiz başlıklar kaldırıldı.
+		
+</details><details><B><summary> Versiyon 4.3.0 ►  13.04.2024 - Playbook</B></summary>
 
 	▼ Genel değişiklikler;
 		• Sistem temizleyici bölümündeki DNS önbellek temizleme işlemi kaldırıldı. Uygulandığında anlık olarak internet gidip geldiği için sorun çıkarma potansiyeline sahipti.

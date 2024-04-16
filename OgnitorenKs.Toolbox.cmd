@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.0
+set Version=4.3.1
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -551,61 +551,46 @@ Call :DEL_Search "%LocalAppData%\Microsoft\Windows\Explorer\IconCacheToDelete\*"
 Call :DEL_Search "%LocalAppData%\Microsoft\Windows\Explorer\NotifyIcon\*"
 Call :DEL_Search "%LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db"
 Call :RD_Direct "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache"
-MD "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache" > NUL 2>&1
+if %Win% EQU 10 (MD "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\AppIconCache" > NUL 2>&1)
 Call :DEL_Search "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\TempState\*"
-Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v IconStreams
-Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v PastIconsStream
+Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v "IconStreams"
+Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v "PastIconsStream"
 	if "!Explorer_Reset!" EQU "0" (Call :Powershell "Start-Process '%Windir%\explorer.exe'")
 REM Temp klasörlerini temizler
-Call :DEL_Search "%temp%\*"
-Call :RD_Search "%temp%\*"
+Call :DEL_Search "%Temp%\*"
+Call :RD_Search "%Temp%\*"
 Call :DEL_Search "%Windir%\Temp\*"
 Call :RD_Search "%Windir%\Temp\*"
 Call :DEL_Search "%LocalAppData%\Temp\*"
 Call :RD_Search "%LocalAppData%\Temp\*"
 REM Sistem içerisindeki gereksiz log dosyalarını temizler
 Call :RD_Search "%Windir%\System32\config\systemprofile\AppData\Local\*.tmp"
-Call :DEL_Deep_Search "%systemdrive%\*log"
-Call :DEL_Deep_Search "%Windir%\*etl"
-Call :DEL_Deep_Search "%LocalAppData%\*etl"
+Call :DEL_Deep_Search "%SystemDrive%\*.log"
+Call :DEL_Deep_Search "%SystemDrive%\*.etl"
+REM Teslim en iyileştirme çöp dosyalarını temizler
 Call :RD_Search "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 Call :DEL_Search "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 Call :RD_Direct "%Windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
 Call :DEL_Search "%windir%\prefetch\*"
-REM Telemetri dosyalarını temziler
-Call :DEL_Search "%ProgramData%\Microsoft\Diagnosis\ETLLogs\AutoLogger\*.etl"
 REM Windows'un oluşturduğu gereksiz boş klasörleri temizler
 FOR /F %%a in ('dir /b "%LocalAppData%\tw-*.tmp"') do (Call :RD_Direct "%LocalAppData%\%%a")
 REM Sistem üzerinde oluşan gereksiz log dosyalarını temizler
-Call :DEL_Direct "%SystemRoot%\DtcInstall.log"
-Call :DEL_Direct "%SystemRoot%\comsetup.log"
-Call :DEL_Direct "%SystemRoot%\PFRO.log"
-Call :DEL_Direct "%SystemRoot%\setupact.log"
-Call :DEL_Direct "%SystemRoot%\setupapi.log"
-Call :DEL_Direct "%SystemRoot%\Panther\*"
-Call :DEL_Direct "%SystemRoot%\inf\setupapi.app.log"
-Call :DEL_Direct "%SystemRoot%\inf\setupapi.dev.log"
-Call :DEL_Direct "%SystemRoot%\inf\setupapi.offline.log"
-Call :DEL_Direct "%SystemRoot%\Performance\WinSAT\winsat.log"
-Call :DEL_Direct "%SystemRoot%\debug\PASSWD.LOG"
+Call :DEL_Search "%Windir%\Panther\*"
 Call :DEL_Search "%localappdata%\Microsoft\Windows\WebCache\*.*"
-Call :DEL_Search "%SystemRoot%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
-Call :DEL_Direct "%SystemRoot%\Logs\CBS\CBS.log"
-Call :DEL_Direct "%SystemRoot%\Logs\DISM\DISM.log"
-Call :DEL_Search "%SystemRoot%\Logs\SIH\*"
+Call :DEL_Search "%Windir%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
+Call :RD_Direct "%Windir%\Logs"
+Call :DEL_Search "%Windir%\Performance\WinSAT\DataStore\*"
 Call :DEL_Search "%LocalAppData%\Microsoft\CLR_v4.0\UsageTraces\*"
 Call :DEL_Search "%LocalAppData%\Microsoft\CLR_v4.0_32\UsageTraces\*"
-Call :DEL_Search "%SystemRoot%\Logs\NetSetup\*"
-Call :DEL_Search "%SystemRoot%\System32\LogFiles\setupcln\*"
-Call :DEL_Search "%SystemRoot%\Temp\CBS\*"
-Call :DEL_Direct "%SystemRoot%\System32\catroot2\dberr.txt"
-Call :DEL_Direct "%SystemRoot%\System32\catroot2.log"
-Call :DEL_Direct "%SystemRoot%\System32\catroot2.jrs"
-Call :DEL_Direct "%SystemRoot%\System32\catroot2.edb"
-Call :DEL_Direct "%SystemRoot%\System32\catroot2.chk"
-Call :DEL_Search "%SystemRoot%\Logs\SIH\*"
-Call :DEL_Search "%SystemRoot%\Traces\WindowsUpdate\*"
-Call :RD_Direct "%SystemRoot%\Logs\waasmedic"
+Call :DEL_Search "%Windir%\Logs\NetSetup\*"
+Call :DEL_Search "%Windir%\System32\LogFiles\setupcln\*"
+Call :DEL_Direct "%Windir%\System32\catroot2\dberr.txt"
+Call :DEL_Direct "%Windir%\System32\catroot2.jrs"
+Call :DEL_Direct "%Windir%\System32\catroot2.edb"
+Call :DEL_Direct "%Windir%\System32\catroot2.chk"
+Call :DEL_Search "%Windir%\Logs\SIH\*"
+Call :DEL_Search "%Windir%\Traces\WindowsUpdate\*"
+Call :RD_Direct "%Windir%\Logs\waasmedic"
 REM Windows hata bildirimi
 Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\ReportArchive"
 Call :RD_Direct "%ProgramData%\Microsoft\Windows\WER\Temp"
@@ -620,7 +605,17 @@ FOR %%g in (msi msp) do (Call :DEL_Deep_Search "%Windir%\Installer\*.%%g")
 Call :DEL_Deep_Search "%Windir%\Installer\SourceHash*"
 Call :RD_Search "%Windir%\Installer\$PatchCache$\Managed\*"
 REM Ekran kartı kurulum dosyaları
+REM AMD sürücü artıkları ve log temizleme kayıtları
 Call :RD_Direct "%systemdrive%\AMD"
+Call :RD_Direct "%ProgramFiles%\AMD\CIM\Log"
+Call :RD_Direct "%ProgramFiles%\AMD\CIM\Reports"
+Call :RD_Direct "%SystemDrive%\Users\%Username%\AppData\LocalLow\AMD\DxCache"
+Call :RD_Direct "%LocalAppData%\AMD\VkCache"
+Call :RD_Direct "%LocalAppData%\AMD\DxcCache"
+Call :RD_Direct "%LocalAppData%\AMD\DxCache"
+Call :RD_Direct "%Windir%\System32\AMD\EeuDumps"
+Call :RD_Direct "%Windir%\System32\AMD\MmdDumps"
+REM Diğer kartlar
 Call :RD_Direct "%systemdrive%\NVIDIA"
 Call :RD_Direct "%systemdrive%\INTEL"
 REM WinINet Web önbelleği
@@ -755,18 +750,6 @@ winget list "%~1" --accept-source-agreements > NUL 2>&1
 goto :eof
 
 REM -------------------------------------------------------------
-:Winget_Link_Playbook
-REM %~1 winget program adı
-FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %PB% 2^>NUL') do (
-	set Silent=%%g
-)
-FOR /F "tokens=3" %%g in ('Winget show %~1 --accept-source-agreements ^| Find "Installer Url"') do (
-	set Link=%%g
-	set Setup=%%~nxg
-)
-goto :eof
-
-REM -------------------------------------------------------------
 :Winget_Link
 set Silent=%~3
 Winget show %~1 --accept-source-agreements > %Konum%\Log\Winget_Link.txt
@@ -829,30 +812,6 @@ github.com
 	ping -n 1 %%n -w 1000 > NUL
 		if !errorlevel! EQU 0 (set Internet=Online)
 )
-goto :eof
-
-REM -------------------------------------------------------------
-:Laptop_Warning
-set LV=NT
-Call :Powershell "Get-WmiObject -Class Win32_SystemEnclosure | Select-Object -Property ChassisTypes" > %Konum%\Log\CheckPC.txt
-FOR /F "delims={} tokens=2" %%g in ('Findstr /i "ChassisTypes" %Konum%\Log\CheckPC.txt') do (
-	if "%%g" EQU "16" (set LV=1)
-	if "%%g" EQU "17" (set LV=1)
-)
-if "!LV!" EQU "1" (Call :Dil A 2 P5001
-				   Call :Dil B 2 %~1
-				   Call :Dil C 2 P5002
-				   Call :Dil D 2 P5003
-				   echo.&echo %R%[90m═══════════════════════════════════════════════════════════════════%R%[0m
-				   echo.&echo •%R%[33m !LA2! %R%[0m
-				   echo •%R%[36m "!LB2!"%R%[33m !LC2! %R%[0m
-				   echo.
-				   set /p LaptopValue=►%R%[92m !LD2! %R%[90m[%R%[92m Y %R%[90m│%R%[92m N %R%[90m]: %R%[0m
-				   Call :Upper !LaptopValue! LaptopValue
-)
-if "!LaptopValue!" NEQ "Y" (set LaptopValue=NT)
-if "!LV!" EQU "NT" (set LaptopValue=0)
-set LV=
 goto :eof
 
 REM -------------------------------------------------------------
@@ -1296,6 +1255,15 @@ schtasks /Delete /TN "%~1" /F > NUL 2>&1
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+:Playbook_Check
+Find "%~1" !PB! > NUL 2>&1
+	if "!errorlevel!" NEQ "0" (set Check=%R%[91m█%R%[0m&goto :eof)
+	if "!errorlevel!" EQU "0" (set Check=%R%[92m♦%R%[0m)
+FOR /F "skip=2 tokens=2" %%p in ('Find "%~1" !PB! 2^>NUL') do (
+	if "%%p" EQU "0" (set Check=%R%[90m█%R%[0m)
+)
+goto :eof
+REM -------------------------------------------------------------
 :Playbook_Reader
 Find "%~1" !PB! > NUL 2>&1
 	if !errorlevel! NEQ 0 (set Playbook=0&goto :eof)
@@ -1729,8 +1697,94 @@ set Value_MM=N
 Call :Dil A 2 P4007&echo.&set /p Value_MM=►%R%[32m !LA2!%R%[90m [%R%[36m Y%R%[90m │%R%[36m N%R%[90m ]: %R%[0m
 Call :Upper !Value_MM! Value_MM
 	if "!Value_MM!" EQU "N" (set Error=X&goto Main_Menu)
-set Value_MM=
 REM -------------------------------------------------------------
+:Playbook_Manager_Menu
+set Value_MM=
+REM Son özelleştirme bölümü
+mode con cols=130 lines=35
+echo.
+Call :Dil A 2 P5003&echo ►%R%[96m !LA2! %R%[0m
+Call :Dil B 2 T0004
+Call :Dil B 3 T0004
+Call :Dil C 2 T0005
+echo %R%[90m   E: !LB2! │ D: !LB3! │ !LC2!: E,1,4,5,D,6,10,14 %R%[0m
+Call :Dil A 2 T0010
+Call :Dil A 3 T0010
+Call :Dil A 4 T0010
+echo %R%[92m   ♦%R%[90m = !LA2! │ █ = !LA3! │%R%[91m █%R%[90m = !LA4! %R%[0m
+echo.
+Call :Playbook_Check Taskbar_Setting_12_&Call :Dil A 2 P7001
+echo %R%[32m   1%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Explorer_Setting_14_&Call :Dil A 2 P7002
+echo %R%[32m   2%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Explorer_Setting_30_&Call :Dil A 2 P7003
+echo %R%[32m   3%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Explorer_Setting_34_&Call :Dil A 2 P7004
+echo %R%[32m   4%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Explorer_Setting_31_&Call :Dil A 2 P7005
+echo %R%[32m   5%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Change_App_1_&Call :Dil A 2 P7006
+echo %R%[32m   6%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Component_Setting_2_&Call :Dil A 2 P7007
+echo %R%[32m   7%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Change_App_2_&Call :Dil A 2 P7008
+echo %R%[32m   8%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Change_App_3_&Call :Dil A 2 P7009
+echo %R%[32m   9%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Download_Application_1_&Call :Dil A 2 P7010
+echo %R%[32m  10%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Change_App_4_&Call :Dil A 2 P7011
+echo %R%[32m  11%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Dil A 2 P5001
+Call :Dil B 2 P5002
+echo %R%[90m  • !LA2! %R%[0m
+echo %R%[90m  • !LB2! %R%[0m
+Call :Playbook_Check Optimization_Setting_10_&Call :Dil A 2 P7012
+echo %R%[32m  12%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Optimization_Setting_11_&Call :Dil A 2 P7013
+echo %R%[32m  13%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Optimization_Setting_7_&Call :Dil A 2 P7014
+echo %R%[32m  14%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Dil A 2 P5005
+echo %R%[32m   Q%R%[90m-%R%[96m   !LA2! %R%[0m
+Call :Dil A 2 P5004
+echo %R%[32m   Y%R%[90m-%R%[96m   !LA2! %R%[0m
+echo.
+Call :Dil A 2 D0002&set /p Value_NN=►%R%[92m !LA2! %R%[90m[E,1,2,3,D,6,7,8] : %R%[0m
+Call :Upper "!Value_NN!" "Value_NN"
+	if "!Value_NN!" EQU "X" (set Error=X&goto Main_Menu)
+	if "!Value_NN!" EQU "Q" (Call :Powershell "Start-Process '%PB%'")
+	if "!Value_NN!" EQU "Y" (goto Pass_2)
+Call :Dil A 2 P5006&echo ►%R%[33m !LA2! %R%[0m
+FOR %%a in (!Value_NN!) do (
+	Call :Pattern_Manager %%a
+)
+goto Playbook_Manager_Menu
+
+:Pattern_Manager
+if "%~1" EQU "E" (set Value=1&goto :eof)
+if "%~1" EQU "D" (set Value=0&goto :eof)
+if "%~1" EQU "1" (set Value2=Taskbar_Setting_12_)
+if "%~1" EQU "2" (set Value2=Explorer_Setting_14_)
+if "%~1" EQU "3" (set Value2=Explorer_Setting_30_)
+if "%~1" EQU "4" (set Value2=Explorer_Setting_34_)
+if "%~1" EQU "5" (set Value2=Explorer_Setting_31_)
+if "%~1" EQU "6" (set Value2=Change_App_1_)
+if "%~1" EQU "7" (set Value2=Component_Setting_2_)
+if "%~1" EQU "8" (set Value2=Change_App_2_)
+if "%~1" EQU "9" (set Value2=Change_App_3_)
+if "%~1" EQU "10" (set Value2=Download_Application_1_)
+if "%~1" EQU "11" (set Value2=Change_App_4_)
+if "%~1" EQU "12" (set Value2=Optimization_Setting_10_)
+if "%~1" EQU "13" (set Value2=Optimization_Setting_11_)
+if "%~1" EQU "14" (set Value2=Optimization_Setting_7_)
+FOR /F "skip=2 tokens=2" %%g in ('Find "!Value2!" !PB! 2^>NUL') do (
+	Call :Powershell "(Get-Content '!PB!') | ForEach-Object { $_ -replace '!Value2!= %%g', '!Value2!= !Value!' } | Set-Content '!PB!'"
+)
+goto :eof
+REM -------------------------------------------------------------
+:Pass_2
+set Value_MM=
 REM UAC kapatır
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "ConsentPromptBehaviorAdmin" REG_DWORD 0
 REM Uygulama artıklarını silebilmek için WindowsApps klasürünün yetkisini alıyorum.
@@ -1985,7 +2039,16 @@ Call :Playbook_Reader Change_App_3_
 							 %NSudo% taskkill /f /im "StartMenuExperienceHost.exe"
 							 %NSudo% rename "C:\Windows\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\StartMenuExperienceHost.exe" "StartMenuExperienceHost_OLD.exe"
 							 %NSudo% taskkill /f /im "StartMenuExperienceHost.exe"
-)
+							 Call :Playbook_Reader Download_Application_1_
+								if "!Playbook!" EQU "1" (winget list "Open-Shell.Open-Shell-Menu" --accept-source-agreements > NUL 2>&1
+															if "!errorlevel!" NEQ "0" (Call :Openshell_Setting
+																					   Call :Winget_Link "Open-Shell.Open-Shell-Menu" "exe" "/passive ADDLOCAL=StartMenu"
+																					   Call :PSDownload "!Setup!"
+																					   "!Setup!" !Silent!
+																					   Call :DEL_Direct "!Setup!"
+																					  )
+														)
+)					
 REM Bing uygulamalarının otomatik kurulmasını engelle
 Call :Playbook_Reader Change_App_4_
 	if "!Playbook!" EQU "1" (taskkill /f /im "BingChatInstaller.EXE" > NUL 2>&1
@@ -2748,9 +2811,7 @@ Call :Playbook_Reader Optimization_Setting_6_
 )
 REM Güç azaltmayı kapat
 Call :Playbook_Reader Optimization_Setting_7_
-	if "!Playbook!" EQU "1" (Call :Laptop_Warning P5006
-								if "!LaptopValue!" EQU "Y" (Call :RegAdd_CCS "Control\Power\PowerThrottling" "PowerThrottlingOff" REG_DWORD 1)
-								if "!LaptopValue!" EQU "0" (Call :RegAdd_CCS "Control\Power\PowerThrottling" "PowerThrottlingOff" REG_DWORD 1)
+	if "!Playbook!" EQU "1" (Call :RegAdd_CCS "Control\Power\PowerThrottling" "PowerThrottlingOff" REG_DWORD 1
 )
 REM Sessiz saatleri etkinleştir
 Call :Playbook_Reader Optimization_Setting_8_
@@ -2762,28 +2823,15 @@ Call :Playbook_Reader Optimization_Setting_9_
 )
 REM Nihai performans ekle ve aktifleştir [Yalnızca Türkçe sistemlerde çalışır] [Sistemi tam güçte çalıştıracağı için ısı değerleri artacaktır.]
 Call :Playbook_Reader Optimization_Setting_10_
-	if "!Playbook!" EQU "1" (Call :Laptop_Warning P5004
-								if "!LaptopValue!" EQU "Y" (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 97777777-8777-7777-6777-577777777777 > NUL 2>&1
-															powercfg /SETACTIVE "97777777-8777-7777-6777-577777777777" > NUL 2>&1
-														   )
-								if "!LaptopValue!" EQU "0" (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 97777777-8777-7777-6777-577777777777 > NUL 2>&1
-															powercfg /SETACTIVE "97777777-8777-7777-6777-577777777777" > NUL 2>&1
-														   )
-							 
+	if "!Playbook!" EQU "1" (powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 97777777-8777-7777-6777-577777777777 > NUL 2>&1
+							 powercfg /SETACTIVE "97777777-8777-7777-6777-577777777777" > NUL 2>&1
 )
 REM İşlemci çekirdek uyku modunu kapat [Core parking] [İşlemci sıcaklık değerlerini yükseltecektir]
 Call :Playbook_Reader Optimization_Setting_11_
-	if "!Playbook!" EQU "1" (Call :Laptop_Warning P5005
-							 if "!LaptopValue!" EQU "Y" (Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
-														 Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMin" REG_DWORD 0
-														 Call :RegAdd_CCS "Control\Power" "CoreParkingDisabled" REG_DWORD 0
-														)
-							 if "!LaptopValue!" EQU "0" (Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
-														 Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMin" REG_DWORD 0
-														 Call :RegAdd_CCS "Control\Power" "CoreParkingDisabled" REG_DWORD 0
-														)
+	if "!Playbook!" EQU "1" (Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMax" REG_DWORD 0
+							 Call :RegAdd_CCS "Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583" "ValueMin" REG_DWORD 0
+							 Call :RegAdd_CCS "Control\Power" "CoreParkingDisabled" REG_DWORD 0
 )
-set LaptopValue=
 REM Kapanmayı engelleyen programlar hemen kapatılsın
 Call :Playbook_Reader Optimization_Setting_12_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "AllowBlockingAppsAtShutdown" REG_DWORD 0
@@ -3474,27 +3522,6 @@ FOR /F "tokens=2" %%a in ('Findstr /i "Process_Clear_" %PB% 2^>NUL') do (
 					  Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OgnitorenKs_Playbook"
 					 )
 )
-REM -------------------------------------------------------------
-REM Winget üzeri indirme linki alınır ve yükleme işlemi yapılır.
-Call :Dil B 2 T0011
-Call :Playbook_Reader_2 "Download_Application"
-	if "!Playbook!" EQU "1" (FOR /F "tokens=4" %%b in ('Findstr /i "Download_Application" %PB% 2^>NUL') do (
-								FOR /F "tokens=2" %%c in ('Findstr /i "► %%b" %PB% 2^>NUL') do (
-									if "%%c" EQU "1" (winget list "%%b" --accept-source-agreements > NUL 2>&1
-														if "!errorlevel!" NEQ "0" (Call :Winget_Link_Playbook "%%b"
-																				   Call :Echo_Print ►%R%[33m !Setup!%R%[37m !LB2! %R%[0m
-																				   Call :PSDownload "%Konum%\Log\!Setup!"
-																				   "%Konum%\Log\!Setup!" !Silent!
-																				   echo %%b | Findstr /i "Open-Shell" > NUL 2>&1
-																						if "!errorlevel!" EQU "0" (Call :Openshell_Setting)
-																				   Call :DEL_Direct "%Konum%\Log\!Setup!"
-																				   )
-			)
-		)
-	)
-)
-REM İşi biten değişkenleri sıfırlıyorum
-FOR %%a in (Silent Setup Link) do (set %%a=)
 REM -------------------------------------------------------------
 REM Uygulama yükleyici
 Call :Dil B 2 T0011

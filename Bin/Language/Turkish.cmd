@@ -162,12 +162,12 @@ P4005>İşlem bittikten sonra sistem yeniden başlatılacak>
 P4006>Sistem açıldıktan sonra temizlik işlemi için komut ekranı açılacak, işlem bitince otomatik kapanacak>
 P4007>İşleme devam etmek istiyor musunuz?>
 ::
-P5001>Playbook işlemini Laptop da uyguladığınız tespit edildi>
-P5002>ayarı sıcaklık değerini arttıracaktır>
-P5003>Uygulamak istediğinize emin misiniz?>
-P5004>Nihai performans>
-P5005>İşlemci çekirdek uyku modunu kapat>
-P5006>Güç azaltmayı kapat>
+P5001>'Laptop' ve 'All in One' cihaz kullananlar aşağıdaki ayarlara dikkat etsinler>
+P5002>Sıcaklık değerini yükseltip, pil ömrünü erken tüketmesine neden olacaktır>
+P5003>Playbook kalıp yönetimi>
+P5004>Playbook işlemlerini uygulamaya başla>
+P5005>Kalıp dosyasını detaylı düzenlemek için not defteri ile aç>
+P5006>Kalıptaki ayarlar düzenleniyor...>
 ::
 P6001>Özelleştirilmiş komutlar uygulanıyor...>
 P6002>Ayarlar menüsünden gizlenecek bölümler ayarlanıyor...>
@@ -176,6 +176,21 @@ P6004>Devmainview ayarları uygulanıyor...>
 P6005>Sistem açılış adı değiştiriliyor...>
 P6006>Özel güç ayarı ekleniyor...>
 P6007>Duvar kağıdı özelleştiriliyor...>
+::
+P7001>Görev çubuğu - başlat menüsünü sola hizala [Win11]>
+P7002>Masaüstü simgelerini aktifleştir [Ağ hariç]>
+P7003>Modern beyaz fare simgesini yükle>
+P7004>Modern siyah fare simgesini yükle>
+P7005>Windows koyu mod aktifleştir>
+P7006>Defender devre dışı bırak>
+P7007>Edge tarayıcısını kaldır>
+P7008>Görev çubuğu arama özelliğini devre dışı bırak>
+P7009>Başlat menüsü devre dışı bırak>
+P7010>Openshell başlat menüsü uygulamasını yükle>
+P7011>Copilot otomatik yükleme işlemini devre dışı bırak>
+P7012>Nihai performans ekle ve aktifleştir>
+P7013>İşlemci çekirdek uyku modunu kapat>
+P7014>Güç azaltmayı kapat>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>

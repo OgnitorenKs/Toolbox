@@ -162,12 +162,12 @@ P4005>The system will reboot after the process is finished>
 P4006>After the system is turned on, the command screen for the cleaning process will open, and it will automatically shut down when the process is finished>
 P4007>Do you want to continue the process?>
 ::
-P5001>It was detected that you applied the Playbook process on a laptop>
-P5002>setting will increase the temperature value>
-P5003>Are you sure you want to implement it?>
-P5004>Ultimate performance>
-P5005>Core parking disable>
-P5006>Turn off power reduction>
+P5001>'Laptop' and 'All in One' device users should pay attention to the following settings>
+P5002>It will raise the temperature value and cause early battery life depletion>
+P5003>Playbook pattern management>
+P5004>Start implementing Playbook operations>
+P5005>Open the pattern file with notepad for detailed editing>
+P5006>Adjusting the settings in the mold...>
 ::
 P6001>Customized commands are being implemented...>
 P6002>Setting the sections to hide from the settings menu...>
@@ -176,6 +176,21 @@ P6004>Applying devmainview settings...>
 P6005>Changing the system boot name...>
 P6006>Adding a custom power setting...>
 P6007>Customizing the wallpaper...>
+::
+P7001>Taskbar - align start menu to the left [Win11]>
+P7002>Activate desktop icons [Except Network]>
+P7003>Install modern white mouse icon>
+P7004>Install modern black mouse icon>
+P7005>Activate Windows dark mode>
+P7006>Disable Defender>
+P7007>Uninstall Edge browser>
+P7008>Disable taskbar search feature>
+P7009>Disable Start menu>
+P7010>Install Openshell start menu app>
+P7011>Disable Copilot autoload>
+P7012>Add and activate ultimate performance>
+P7013>Turn off processor core sleep mode>
+P7014>Turn off power reduction>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>
