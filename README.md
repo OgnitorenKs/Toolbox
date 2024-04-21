@@ -118,7 +118,7 @@ Streamlines Windows 10/11 22H2+ systems by performing system tuning.
 Adjusts privacy and performance settings. All settings have been tested.
 For detailed information about the subject, you can review my blog page; https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
-![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.png)
+![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.png)
 
 Once you get past the warnings and prompts section, you can quickly change a few settings in the toolbox that may differ for different users.
 You can also choose to edit the pattern file from the routing information for more extensive customization.
