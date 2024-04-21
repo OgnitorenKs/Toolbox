@@ -4,8 +4,16 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.3.2 ►  21.04.2024 - Playbook</B></summary>
 
-<details><B><summary> Versiyon 4.3.1 ►  17.04.2024 - Playbook</B></summary>
+	▼ Genel değişiklikler;
+		• Dil kontrol bölümü kodları optimize edildi.
+		• İnternet kontrol komutları kaldırıldı.
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• Taskbar_Setting_16_ (Copilot) bölümüne yeni regedit kayıtları eklendi.
+		• Openshell bölümündeki program regedit kayıtlarını uygulamadan önce kapatıp açmaya yarayan komutlar kaldırıldı.
+
+</details><details><B><summary> Versiyon 4.3.1 ►  17.04.2024 - Playbook</B></summary>
 
 	▼ Genel değişiklikler;
 		• Sistem temizliği bölümünde kodlar optimize edildi. Yeni eklemeler yapıldı.

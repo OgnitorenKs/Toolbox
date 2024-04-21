@@ -5,11 +5,10 @@
 - ► Mail: ognitorenks@gmail.com
 - ► Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 - Supported languages = English │ Turkish
-- Türkçe açıklama: [https://github.com/OgnitorenKs/Toolbox/blob/main/README-TR.md](README-TR.md)
+- Toolbox hakkında (Türkçe): [https://github.com/OgnitorenKs/Toolbox/blob/main/README-TR.md](README-TR.md)
 
 - Update notes [Superficial]: https://github.com/OgnitorenKs/Toolbox/blob/main/Release.Notes.md
 - Update notes [Detailed]: https://github.com/OgnitorenKs/Toolbox/commits/main/
-- Update notes playbook patterns [Superficial]: https://github.com/OgnitorenKs/Toolbox/blob/main/Playbook_Release.Notes.md
 
 All rights of the work belong to Hüseyin UZUNYAYLA. It is forbidden to develop, copy, change the content of the work. If you want to share the application on different platforms, you need to get permission from me.
 
@@ -34,7 +33,7 @@ All rights of the work belong to Hüseyin UZUNYAYLA. It is forbidden to develop,
 <B><summary> 1 - Application Installer</B></summary>
 
 The programs in this section are selected among free applications. The All in One Runtimes section includes C++ 2005-2022 / Java / XNA Framework / OpenAL / DirectX. Other programs are detailed by categories.
-- When installing some programs, we may need to install without administrator authorization. We do this authorization process with NSudo. If the program does not install, there is a problem with the UAC settings. To solve this, activate the setting in the 'Control Panel' ► 'UAC' section and restart the system. After the system is turned on, you can turn off 'UAC'.
+o. If the program does not install, there is a problem with the UAC settings. To solve this, activate the setting in the 'Control Panel' ► 'UAC' section and restart the system. After the system is turned on, you can turn off 'UAC'.
 
 ![Tool1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/1.png)
 
@@ -113,16 +112,21 @@ On Windows systems, it checks and applies repair options for conditions that Mic
 <details>
 <B><summary> 11 - System optimization [Playbook]</B></summary>
 
-It streamlines Windows 10/11 22H2+ systems by performing a system tune-up.
-Does not delete components except Edge and OneDrive. 
-Adjusts privacy and performance settings. All settings are tested. No unnecessary settings are applied.
-For detailed information on the subject, you can review my blog page; https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
+![Playbook](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/playbook.png)
+
+Streamlines Windows 10/11 22H2+ systems by performing system tuning.
+Adjusts privacy and performance settings. All settings have been tested.
+For detailed information about the subject, you can review my blog page; https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
 ![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.png)
-![Tool11.2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/playbook.png)
+
+Once you get past the warnings and prompts section, you can quickly change a few settings in the toolbox that may differ for different users.
+You can also choose to edit the pattern file from the routing information for more extensive customization.
+WARNING: The content of the pattern file is in Turkish.
+
+![Tool11.2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/11.2.png)
 
 </details>
-
 
 <details>
 <B><summary> Z - Change language</B></summary>

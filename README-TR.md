@@ -112,13 +112,20 @@ Windows sistemlerinde Microsoft'un önerdiği ve benim tespit ettiğim durumlar�
 <details>
 <B><summary> 11 - Sistem optimizasyonu [Playbook]</B></summary>
 
+![Playbook](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/playbook.png)
+
 Sistem üzerinde düzenleme işlemi yaparak Windows 10/11 22H2+ sistemleri akıcı bir hale getirir.
-Edge ve OneDrive dışında bileşen silmez. 
-Gizlilik ve performans ayarlarını yapar. Tüm ayarlar test edilmiştir. Gereksiz bir ayar uygulanmamaktadır.
+Gizlilik ve performans ayarlarını yapar. Tüm ayarlar test edilmiştir.
 Konu hakkında detaylı bilgi için blogsayfamdaki konumu inceleyebilirsiniz; https://ognitorenks.blogspot.com/2023/08/windows-10-11-performans-duzenlemesi.html
 
 ![Tool11](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.png)
-![Tool11.2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/playbook.png)
+
+Uyarılar ve yönledirmeler bölümünü geçtikten sonra toolbox üzerinden kullanıcılar için farklılık gösterebilecek bir kaç ayarı hızlıca değiştirebilirsiniz.
+Dilerseniz yönlendirme bilgilerinden kalıp dosyasını düzenlemeyi seçerek daha kapsamlı bir özelleştirme yapabilirsiniz.
+UYARI: Kalıp dosyasının içeriği Türkçedir.
+
+![Tool11.2](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/11.2.png)
+
 
 </details>
 

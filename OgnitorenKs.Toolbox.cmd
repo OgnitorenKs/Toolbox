@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.1
+set Version=4.3.2
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -59,13 +59,14 @@ Call :CurrentUserName
 REM -------------------------------------------------------------
 REM Yönetici yetkisi
 reg query "HKU\S-1-5-19" > NUL 2>&1
-	if !errorlevel! NEQ 0 (Call :Powershell "Start-Process '%Konum%\OgnitorenKs.Toolbox.cmd' -Verb Runas"&exit)
+	if !errorlevel! NEQ 0 (Call :Powershell "Start-Process '%Konum%\OgnitorenKs.Toolbox.cmd' -Verb Runas"&exit
+)
 
 REM -------------------------------------------------------------
 REM Settings.ini dosyası içine dil bilgisi kayıtlı ise onu alır. Yok ise sistem varsayılan diline göre atama yapar.
-Call :Default_System_Language
 Findstr /i "Language_Pack" %Konum%\Settings.ini > NUL 2>&1
-	if !errorlevel! NEQ 0 (if "!DefaultLang!" EQU "tr-TR" (echo. >> %Konum%\Settings.ini
+	if !errorlevel! NEQ 0 (Call :Default_System_Language
+						   if "!DefaultLang!" EQU "tr-TR" (echo. >> %Konum%\Settings.ini
 														   echo ► Language_Pack^= Turkish >> %Konum%\Settings.ini
 														   set Dil=%Konum%\Bin\Language\Turkish.cmd
 														  )
@@ -93,11 +94,6 @@ REM Sistem bilgileri
 Call :Powershell "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,InstallDate,OSArchitecture,RegisteredUser,CSName | FL" > %Konum%\Log\OS
 FOR /F "tokens=5" %%a in ('Findstr /i "Caption" %Konum%\Log\OS') do set Win=%%a
 
-REM -------------------------------------------------------------
-:Kontrol
-REM İnternet bağlantı durumunu kontrol ediyorum
-Call :Check_Internet
-	if "%Internet%" EQU "Offline" (goto Main_Menu)
 REM -------------------------------------------------------------
 REM Toolbox güncelleştirme bölümü
 REM Github reposundan indirdiğim Link.txt dosyası içnideki version ile toolbox versiyonunu karşılaştırıyorum. Farklı ise güncel sürümü indiriyorum.
@@ -802,19 +798,6 @@ chcp 65001 > NUL
 goto :eof
 
 REM -------------------------------------------------------------
-:Check_Internet
-set Internet=Offline
-FOR %%n in (
-www.google.com
-www.bing.com
-github.com
-) do (
-	ping -n 1 %%n -w 1000 > NUL
-		if !errorlevel! EQU 0 (set Internet=Online)
-)
-goto :eof
-
-REM -------------------------------------------------------------
 :Ping_M1
 FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M1=%%b)
 set Value_M1=!Value_M1:~0,-2!
@@ -959,22 +942,28 @@ REM ■■■■■■■■■■■■■■■■■■■■■■■■■�
 :Service_Admin
 reg query "HKLM\SYSTEM\CurrentControlSet\Services\%~1" /v "Start" > NUL 2>&1
 	if !errorlevel! EQU 0 (if %~2 EQU 0 (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%~1" "Start" REG_DWORD 0
-										 Call :SC_Config %~1 Boot&Call :NET start %~1
+										 Call :SC_Config %~1 Boot
+										 Call :NET start %~1
 										)
 						   if %~2 EQU 1 (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%~1" "Start" REG_DWORD 1
-										 Call :SC_Config %~1 System&Call :NET start %~1
+										 Call :SC_Config %~1 System
+										 Call :NET start %~1
 										)
 						   if %~2 EQU 2 (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%~1" "Start" REG_DWORD 2
-										 Call :SC_Config %~1 Auto&Call :NET start %~1
+										 Call :SC_Config %~1 Auto
+										 Call :NET start %~1
 										)
 						   if %~2 EQU 3 (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%~1" "Start" REG_DWORD 3
-										 Call :SC_Config %~1 Demand&Call :NET start %~1
+										 Call :SC_Config %~1 Demand
+										 Call :NET start %~1
 										)
 						   if %~2 EQU 4 (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%~1" "Start" REG_DWORD 4
-										 Call :SC_Config %~1 Disable&Call :NET stop %~1
+										 Call :SC_Config %~1 Disable
+										 Call :NET stop %~1
 										)
 						   if %~2 EQU 6 (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%~1" "Start" REG_DWORD 4
-										 Call :NET stop %~1&Call :SC_Remove %~1
+										 Call :NET stop %~1
+										 Call :SC_Remove %~1
 										)
 )
 goto :eof
@@ -2166,6 +2155,11 @@ Call :Playbook_Reader Taskbar_Setting_15_
 REM Görev çubuğu - Copilot simgesini gizle
 Call :Playbook_Reader Taskbar_Setting_16_
 	if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ShowCopilotButton" REG_DWORD 0
+							 Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" "TurnOffWindowsCopilot" REG_DWORD 1
+							 Call :RegAdd "HKLM\Software\Policies\Microsoft\Windows\WindowsCopilot" "TurnOffWindowsCopilot" REG_DWORD 1
+							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Edge" "HubsSidebarEnabled" REG_DWORD 0
+							 Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\Explorer" "DisableSearchBoxSuggestions" REG_DWORD 1
+							 Call :RegAdd "HKLM\Software\Policies\Microsoft\Windows\Explorer" "DisableSearchBoxSuggestions" REG_DWORD 1
 )
 REM ContentDeliveryManager - Ayarlar uygulamasında önerilen içeriği kapat
 Call :Playbook_Reader Privacy_Setting_1_
@@ -3567,8 +3561,6 @@ Copy /y "%Konum%\Bin\Icon\JPEGView.ini" "%AppData%\JPEGView" > NUL 2>&1
 goto :eof
 
 :Openshell_Setting
-"C:\Program Files\Open-Shell\StartMenu.exe" -exit > NUL 2>&1
-Taskkill /f im "StartMenu.exe" > NUL 2>&1
 Call :RegAdd "HKLM\SOFTWARE\OpenShell\StartMenu" "MenuStyle_Default" REG_SZ "Win7"
 Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "GlassOverride" REG_DWORD 1
 Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "GlassColor" REG_DWORD 0
@@ -3584,7 +3576,6 @@ Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "SkinVariationW7"
 Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "SkipMetro" REG_DWORD 1
 reg add "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" /f /v "SkinOptionsW7" /t REG_MULTI_SZ /d "USER_IMAGE=1"\0"SMALL_ICONS=0"\0"LARGE_FONT=0"\0"DISABLE_MASK=1"\0"OPAQUE=0"\0"TRANSPARENT_LESS=1"\0"TRANSPARENT_MORE=0"\0"WHITE_SUBMENUS2=1" > NUL 2>&1
 reg add "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" /f /v "MenuItems7" /t REG_MULTI_SZ /d "Item1.Command=user_files"\0"Item1.Settings=TRACK_RECENT"\0"Item2.Command=user_documents"\0"Item2.Settings=ITEM_DISABLED"\0"Item3.Command=user_pictures"\0"Item3.Settings=ITEM_DISABLED"\0"Item4.Command=user_music"\0"Item4.Settings=ITEM_DISABLED"\0"Item5.Command=user_videos"\0"Item5.Settings=ITEM_DISABLED"\0"Item6.Command=downloads"\0"Item6.Settings=ITEM_DISABLED"\0"Item7.Command=homegroup"\0"Item7.Settings=ITEM_DISABLED"\0"Item8.Command=separator"\0"Item9.Command=games"\0"Item9.Settings=TRACK_RECENT|NOEXPAND|ITEM_DISABLED"\0"Item10.Command=favorites"\0"Item10.Settings=ITEM_DISABLED"\0"Item11.Command=recent_documents"\0"Item11.Settings=ITEM_DISABLED"\0"Item12.Command=computer"\0"Item12.Settings=NOEXPAND"\0"Item13.Command=network"\0"Item13.Settings=ITEM_DISABLED"\0"Item14.Command=network_connections"\0"Item14.Settings=ITEM_DISABLED"\0"Item15.Command=separator"\0"Item15.Settings=ITEM_DISABLED"\0"Item16.Command=control_panel"\0"Item16.Settings=TRACK_RECENT"\0"Item17.Command=pc_settings"\0"Item17.Settings=TRACK_RECENT"\0"Item18.Command=admin"\0"Item18.Settings=TRACK_RECENT"\0"Item19.Command=devices"\0"Item19.Settings=ITEM_DISABLED"\0"Item20.Command=defaults"\0"Item20.Settings=ITEM_DISABLED"\0"Item21.Command=help"\0"Item21.Settings=ITEM_DISABLED"\0"Item22.Command=run"\0"Item22.Settings=ITEM_DISABLED"\0"Item23.Command=apps"\0"Item24.Command=windows_security"\0"Item24.Settings=ITEM_DISABLED"\0" > NUL 2>&1
-Call :Powershell "Start-Process '%ProgramFiles%\Open-Shell\StartMenu.exe'"
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
