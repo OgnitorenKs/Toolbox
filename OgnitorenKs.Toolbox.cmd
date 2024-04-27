@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.2
+set Version=4.3.3
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -284,6 +284,14 @@ FOR /F "tokens=3" %%g in ('findstr /C:"DirectPlay" %Konum%\Log\Features') do (
 )
 REM Winget üzerinden All in One Runtimes bileşenlerinin tamamını indirir ve yükler
 Call :Dil B 2 T0018
+REM Java 1603 hatasını giderir
+Call :RD_Direct "%ProgramFiles(x86)%\Java"
+REM Visual C++ 2015-2022 kurulum hatasının giderir
+FOR /F "tokens=*" %%g in ('reg query HKLM\SOFTWARE\Classes\Installer\Products /s /f "Microsoft Visual C++" ^| Findstr /i "Hkey"') do (Call :RegDel "%%g")
+REM NET Desktop Runtime kurulum hatasını giderir
+FOR /F "tokens=*" %%g in ('reg query HKLM\SOFTWARE\Classes\Installer\Products /s /f "Microsoft .NET Host" ^| Findstr /i "Hkey"') do (Call :RegDel "%%g")
+Call :RD_Search "%ProgramData%\Package Cache\{*"
+REM Uygulamaları yükler
 FOR %%g in (
 Microsoft.VCRedist.2005.x86
 Microsoft.VCRedist.2005.x64
@@ -307,10 +315,6 @@ Microsoft.DirectX
 	Call :Echo_Print %R%[32m !LB2! %R%[0m
 	Call :Winget %%g
 )
-Call :Dil B 2 T0014&echo.&echo %R%[92m !LB2! %R%[0m
-Call :Winget_Link "Microsoft.EdgeWebView2Runtime" "exe" "/silent /install"
-Call :PSDownload "!Setup!"
-"!Setup!" !Silent!
 REM Loglar silinir
 FOR %%g in (Capabilities Features) do (Call :DEL_Direct "%Konum%\Log\%%g")
 goto :eof
@@ -1623,13 +1627,16 @@ REM ■■■■■■■■■■■■■■■■■■■■■■■■■�
 :Playbook_Manager
 cls
 REM Winget sistemini kontrol eder
-Call :Dil A 2 T0013&echo.&echo %R%[92m !LA2! %R%[0m
-Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
-	if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_
-							   Call :Dil B 2 Error_5_
-							   echo.&echo %R%[31m !LA2! %R%[0m
-							   echo.&echo %R%[31m !LB2! %R%[0m
-							   Call :Bekle 10&goto Main_Menu
+FOR /F "tokens=2" %%g in ('Findstr /i "Setting_3_" %Konum%\Settings.ini 2^>NUL') do (
+	 if "%%g" EQU "0" (Call :Dil A 2 T0013&echo.&echo %R%[92m !LA2! %R%[0m
+					   Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
+							if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_
+													   Call :Dil B 2 Error_5_
+													   echo.&echo %R%[31m !LA2! %R%[0m
+													   echo.&echo %R%[31m !LB2! %R%[0m
+													   Call :Bekle 10&goto Main_Menu
+													  )
+	)
 )
 REM Playbook kütüphanesi kontrol edilir. Kalıp sayısına göre pencere ayarı yapılır. Yoksa ana menüye atar.
 set Mode=8
@@ -1944,6 +1951,8 @@ Call :Playbook_Reader Component_Setting_2_
 							 echo Call :RD_Direct "C:\Users\OgnitorenKs\AppData\Local\Microsoft\Edge" >> C:\Playbook.Reset.After.cmd
 							 echo Call :DEL_Direct "%Windir%\System32\config\systemprofile\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk" >> C:\Playbook.Reset.After.cmd
 							 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge" "PreventFirstRunPage" REG_DWORD 0
+							 netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
 							 FOR /F "skip=2 tokens=1" %%b in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /f "MicrosoftEdgeAutoLaunch" 2^>NUL') do (Call :RegDel "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "%%b")
 							 Call :Service_Admin "edgeupdate" 4
 							 Call :Service_Admin "edgeupdatem" 4

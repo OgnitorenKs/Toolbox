@@ -4,7 +4,19 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.3.2 ►  21.04.2024 - Playbook</B></summary>
+<details><B><summary> Versiyon 4.3.3 ►  27.04.2024 - Playbook</B></summary>
+
+	▼ Uygulama yükleyici bölümündeki değişiklikler;
+		• "All in One Runtimes" bölümündeki değişiklikler;
+			• '.NET 8', 'C++ 2015-2022' ve 'Java' paketlerindeki kurulum hatasına neden olabilecek sorunlar için ek önlemler alındı.
+				• Bu uygulamaladaki sorunlar kodlardan veya winget sisteminden kaynaklanmamaktadır. Kurulum dosyalarını hazırlayan insanların basit hatalar yapmasından kaynaklıdır.
+			• EdgeWebView2 yükleme komutları kaldırıldı. Microsoft'un Edge tarayıcısı konusundaki vahşi politikasından dolayı böyle bir karar aldım. EdgeWebView2 altyapısını kullanan programları da kullanmayıp var ise tespit ettikçe Toolbox'tan kaldıracağım.
+			• OpenAL programının kurulumunda winget sisteminden kaynaklı bir sorun bulunmaktadır.
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• Winget konrol komutlarını geçmeniz için "Settings.ini" içerisine "Setting_3_" ayarı eklendi.
+		• Edge tarayıcısının yeniden yüklenmesini engellemek için güvenlik duvarı engelleme komutu yeniden eklendi. Ayrıca tetiklenmesini engelleyecek yeni regedit kaydı eklendi.
+	
+</details><details><B><summary> Versiyon 4.3.2 ►  21.04.2024 - Playbook</B></summary>
 
 	▼ Genel değişiklikler;
 		• Dil kontrol bölümü kodları optimize edildi.

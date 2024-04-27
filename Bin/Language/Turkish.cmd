@@ -114,7 +114,7 @@ T0010>Açık>Kapalı>Kaldırılmış>Kısmen açık>Kapalı hizmet var>Eksik hiz
 T0011>yükleniyor>
 T0012>düzenleniyor>
 T0013>Winget sistemi kontrol ediliyor>
-T0014>EdgeWebView2 yükleniyor>
+T0014>>
 T0015>>
 T0016>>
 T0017>Olay günlüğü temizleniyor>

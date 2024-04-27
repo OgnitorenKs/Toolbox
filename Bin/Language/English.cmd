@@ -114,7 +114,7 @@ T0010>On>Off>Removed>Partly open>Closed service>Incomplete service>Incomplete an
 T0011>installing>
 T0012>is being organized>
 T0013>Checking the Winget system>
-T0014>Installing EdgeWebView2>
+T0014>>
 T0015>>
 T0016>>
 T0017>Clearing the event log>
