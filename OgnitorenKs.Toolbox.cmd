@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.3
+set Version=4.3.4
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -1687,6 +1687,8 @@ Call :Dil A 2 P4004&echo  •%R%[33m !LA2! %R%[0m
 echo.
 Call :Dil A 2 P4005&echo  •%R%[33m !LA2! %R%[0m
 Call :Dil A 2 P4006&echo  •%R%[33m !LA2! %R%[0m
+echo.
+Call :Dil A 2 T0014&echo  •%R%[33m !LA2!=%R%[37m !PB! %R%[0m 
 Call :Powershell "Start-Process 'windowsdefender://ThreatSettings'" > NUL 2>&1
 REM Boş tuşlama sonrası işleme devam etmemesi için
 set Value_MM=N
@@ -1723,24 +1725,26 @@ Call :Playbook_Check Change_App_1_&Call :Dil A 2 P7006
 echo %R%[32m   6%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
 Call :Playbook_Check Component_Setting_2_&Call :Dil A 2 P7007
 echo %R%[32m   7%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
-Call :Playbook_Check Change_App_2_&Call :Dil A 2 P7008
+Call :Playbook_Check Component_Setting_3_&Call :Dil A 2 P7008
 echo %R%[32m   8%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
-Call :Playbook_Check Change_App_3_&Call :Dil A 2 P7009
+Call :Playbook_Check Change_App_2_&Call :Dil A 2 P7009
 echo %R%[32m   9%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
-Call :Playbook_Check Download_Application_1_&Call :Dil A 2 P7010
+Call :Playbook_Check Change_App_3_&Call :Dil A 2 P7010
 echo %R%[32m  10%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
-Call :Playbook_Check Change_App_4_&Call :Dil A 2 P7011
+Call :Playbook_Check Download_Application_1_&Call :Dil A 2 P7011
 echo %R%[32m  11%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Change_App_4_&Call :Dil A 2 P7012
+echo %R%[32m  12%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
 Call :Dil A 2 P5001
 Call :Dil B 2 P5002
 echo %R%[90m  • !LA2! %R%[0m
 echo %R%[90m  • !LB2! %R%[0m
-Call :Playbook_Check Optimization_Setting_10_&Call :Dil A 2 P7012
-echo %R%[32m  12%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
-Call :Playbook_Check Optimization_Setting_11_&Call :Dil A 2 P7013
+Call :Playbook_Check Optimization_Setting_10_&Call :Dil A 2 P7013
 echo %R%[32m  13%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
-Call :Playbook_Check Optimization_Setting_7_&Call :Dil A 2 P7014
+Call :Playbook_Check Optimization_Setting_11_&Call :Dil A 2 P7014
 echo %R%[32m  14%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
+Call :Playbook_Check Optimization_Setting_7_&Call :Dil A 2 P7015
+echo %R%[32m  15%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m
 Call :Dil A 2 P5005
 echo %R%[32m   Q%R%[90m-%R%[96m   !LA2! %R%[0m
 Call :Dil A 2 P5004
@@ -1757,6 +1761,7 @@ FOR %%a in (!Value_NN!) do (
 )
 goto Playbook_Manager_Menu
 
+REM -------------------------------------------------------------
 :Pattern_Manager
 if "%~1" EQU "E" (set Value=1&goto :eof)
 if "%~1" EQU "D" (set Value=0&goto :eof)
@@ -1767,17 +1772,18 @@ if "%~1" EQU "4" (set Value2=Explorer_Setting_34_)
 if "%~1" EQU "5" (set Value2=Explorer_Setting_31_)
 if "%~1" EQU "6" (set Value2=Change_App_1_)
 if "%~1" EQU "7" (set Value2=Component_Setting_2_)
-if "%~1" EQU "8" (set Value2=Change_App_2_)
-if "%~1" EQU "9" (set Value2=Change_App_3_)
-if "%~1" EQU "10" (set Value2=Download_Application_1_)
-if "%~1" EQU "11" (set Value2=Change_App_4_)
-if "%~1" EQU "12" (set Value2=Optimization_Setting_10_)
-if "%~1" EQU "13" (set Value2=Optimization_Setting_11_)
-if "%~1" EQU "14" (set Value2=Optimization_Setting_7_)
-FOR /F "skip=2 tokens=2" %%g in ('Find "!Value2!" !PB! 2^>NUL') do (
-	Call :Powershell "(Get-Content '!PB!') | ForEach-Object { $_ -replace '!Value2!= %%g', '!Value2!= !Value!' } | Set-Content '!PB!'"
-)
+if "%~1" EQU "8" (set Value2=Component_Setting_3_)
+if "%~1" EQU "9" (set Value2=Change_App_2_)
+if "%~1" EQU "10" (set Value2=Change_App_3_)
+if "%~1" EQU "11" (set Value2=Download_Application_1_)
+if "%~1" EQU "12" (set Value2=Change_App_4_)
+if "%~1" EQU "13" (set Value2=Optimization_Setting_10_)
+if "%~1" EQU "14" (set Value2=Optimization_Setting_11_)
+if "%~1" EQU "15" (set Value2=Optimization_Setting_7_)
+FOR /F "skip=2 tokens=2" %%g in ('Find "!Value2!" !PB! 2^>NUL') do (set Value3=%%g)
+Call :Powershell "(Get-Content '!PB!') | ForEach-Object { $_ -replace '!Value2!= !Value3!', '!Value2!= !Value!' } | Set-Content '!PB!'"
 goto :eof
+
 REM -------------------------------------------------------------
 :Pass_2
 set Value_MM=
@@ -2062,8 +2068,8 @@ REM Uygulama kaldır
 cls&Call :Dil A 2 P1002&title OgnitorenKs Playbook │ 2/6 │ !LA2!
 Call :Appx_Info
 Call :Dil B 2 T0008
-FOR /F "tokens=4" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
-	FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a ►" %PB% 2^>NUL') do (
+FOR /F "delims=► tokens=2" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
+	FOR /F "skip=2 tokens=2" %%b in ('Find "►%%a►" %PB% 2^>NUL') do (
 		if "%%b" EQU "1" (echo ► %R%[92m "%%a"%R%[37m !LB2! %R%[0m
 						  echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
 						  Call :NonRemoved "%%a"
@@ -2074,8 +2080,8 @@ REM -------------------------------------------------------------
 REM Hizmet Yönetimi
 cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/6 │ !LA2!
 Call :Dil A 2 T0012
-FOR /F "tokens=4" %%a in ('Findstr /i "Service_Manager" %PB%') do (
-	FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a ►" %PB%') do (
+FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Service_Manager" %PB%') do (
+	FOR /F "skip=2 tokens=2" %%b in ('Find "►%%a►" %PB%') do (
 		if "%%b" NEQ "5" (echo ► %R%[92m "%%a"%R%[37m !LA2! %R%[0m
 						  echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
 						  Call :Service_Admin "%%a" "%%b"
@@ -2812,7 +2818,7 @@ Call :Playbook_Reader Optimization_Setting_6_
 							 Call :Schtasks "Disable" "\Microsoft\Windows\DiskCleanup\SilentCleanup"
 							 Call :Schtasks "Disable" "\Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem"
 )
-REM Güç azaltmayı kapat
+REM Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat
 Call :Playbook_Reader Optimization_Setting_7_
 	if "!Playbook!" EQU "1" (Call :RegAdd_CCS "Control\Power\PowerThrottling" "PowerThrottlingOff" REG_DWORD 1
 )

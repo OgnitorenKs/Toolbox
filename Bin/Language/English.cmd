@@ -114,7 +114,7 @@ T0010>On>Off>Removed>Partly open>Closed service>Incomplete service>Incomplete an
 T0011>installing>
 T0012>is being organized>
 T0013>Checking the Winget system>
-T0014>>
+T0014>Selected pattern>
 T0015>>
 T0016>>
 T0017>Clearing the event log>
@@ -184,13 +184,14 @@ P7004>Install modern black mouse icon>
 P7005>Activate Windows dark mode>
 P7006>Disable Defender>
 P7007>Uninstall Edge browser>
-P7008>Disable taskbar search feature>
-P7009>Disable Start menu>
-P7010>Install Openshell start menu app>
-P7011>Disable Copilot autoload>
-P7012>Add and activate ultimate performance>
-P7013>Turn off processor core sleep mode>
-P7014>Turn off power reduction>
+P7008>Uninstall EdgeWebView2>
+P7009>Disable taskbar search feature>
+P7010>Disable Start menu>
+P7011>Install Openshell start menu app>
+P7012>Disable Copilot autoload>
+P7013>Add and activate ultimate performance>
+P7014>Turn off processor core sleep mode>
+P7015>Reduce the power usage of apps running in the background [Battery saver]>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>

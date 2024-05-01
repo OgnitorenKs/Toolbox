@@ -4,7 +4,23 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.3.3 ►  27.04.2024 - Playbook</B></summary>
+
+<details><B><summary> Versiyon 4.3.4 ►  01.05.2024 - Playbook</B></summary>
+
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• Hizmet düzenleme ve uygulama silme bölümündeki kalıptaki anahtar kelime komutlarında değişiklik yapıldı.
+			• Blog sayfamda playbook kalıp düzenleme konusunda konu bütünlüğü için bu iki bölüm değiştirilmiştir.
+			• Eski kalıpları kullananlar bu bölümleri düzenlemeleri gerekmektedir. Yoksa bu bölümlerdeki ayarlamaları uygulamayacaktır.
+			• Aşağıda örnek ile önceki sonraki haline bakınız.
+				•  Önceki hali: Service_Manager= 4 ► DPS ► Tanılama İlkesi Hizmeti
+				• Sonraki hali: Service_Manager= 4 ►DPS► Tanılama İlkesi Hizmeti
+				•  Önceki hali: RemoveApp= 1 ► ZuneVideo ► Video oynatıcı
+				• Sonraki hali: RemoveApp= 1 ►ZuneVideo► Video oynatıcı
+		• Uyarılar ve yönlendirmeler ekranına seçilen kalıbın bilgisi eklendi.
+		• Playbook özelleştirme ekranına EdgeWebView2 ayarı eklendi.
+		• "Güç azaltmayı kapat" ayarı "Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat" olarak düzenlendi.
+
+</details><details><B><summary> Versiyon 4.3.3 ►  27.04.2024 - Playbook</B></summary>
 
 	▼ Uygulama yükleyici bölümündeki değişiklikler;
 		• "All in One Runtimes" bölümündeki değişiklikler;

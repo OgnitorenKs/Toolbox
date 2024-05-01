@@ -114,7 +114,7 @@ T0010>Açık>Kapalı>Kaldırılmış>Kısmen açık>Kapalı hizmet var>Eksik hiz
 T0011>yükleniyor>
 T0012>düzenleniyor>
 T0013>Winget sistemi kontrol ediliyor>
-T0014>>
+T0014>Seçilen kalıp>
 T0015>>
 T0016>>
 T0017>Olay günlüğü temizleniyor>
@@ -184,13 +184,14 @@ P7004>Modern siyah fare simgesini yükle>
 P7005>Windows koyu mod aktifleştir>
 P7006>Defender devre dışı bırak>
 P7007>Edge tarayıcısını kaldır>
-P7008>Görev çubuğu arama özelliğini devre dışı bırak>
-P7009>Başlat menüsü devre dışı bırak>
-P7010>Openshell başlat menüsü uygulamasını yükle>
-P7011>Copilot otomatik yükleme işlemini devre dışı bırak>
-P7012>Nihai performans ekle ve aktifleştir>
-P7013>İşlemci çekirdek uyku modunu kapat>
-P7014>Güç azaltmayı kapat>
+P7008>EdgeWebView2 kaldır>
+P7009>Görev çubuğu arama özelliğini devre dışı bırak>
+P7010>Başlat menüsü devre dışı bırak>
+P7011>Openshell başlat menüsü uygulamasını yükle>
+P7012>Copilot otomatik yükleme işlemini devre dışı bırak>
+P7013>Nihai performans ekle ve aktifleştir>
+P7014>İşlemci çekirdek uyku modunu kapat>
+P7015>Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>
