@@ -191,7 +191,7 @@ P7011>Install Openshell start menu app>
 P7012>Disable Copilot autoload>
 P7013>Add and activate ultimate performance>
 P7014>Turn off processor core sleep mode>
-P7015>Reduce the power usage of apps running in the background [Battery saver]>
+P7015>Turn off reduce power usage of apps running in the background>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>
