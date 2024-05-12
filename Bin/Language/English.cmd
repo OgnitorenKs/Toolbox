@@ -177,21 +177,21 @@ P6005>Changing the system boot name...>
 P6006>Adding a custom power setting...>
 P6007>Customizing the wallpaper...>
 ::
-P7001>Taskbar - align start menu to the left [Win11]>
-P7002>Activate desktop icons [Except Network]>
-P7003>Install modern white mouse icon>
-P7004>Install modern black mouse icon>
-P7005>Activate Windows dark mode>
-P7006>Disable Defender>
-P7007>Uninstall Edge browser>
-P7008>Uninstall EdgeWebView2>
-P7009>Disable taskbar search feature>
-P7010>Disable Start menu>
-P7011>Install Openshell start menu app>
-P7012>Disable Copilot autoload>
-P7013>Add and activate ultimate performance>
-P7014>Turn off processor core sleep mode>
-P7015>Turn off reduce power usage of apps running in the background>
+P7_1_>Taskbar - align start menu to the left [Win11]>
+P7_2_>Activate desktop icons [Except Network]>
+P7_3_>Install modern white mouse icon>
+P7_4_>Install modern black mouse icon>
+P7_5_>Activate Windows dark mode>
+P7_6_>Disable Defender>
+P7_7_>Uninstall Edge browser>
+P7_8_>Uninstall EdgeWebView2>
+P7_9_>Disable taskbar search feature>
+P7_10_>Disable Start menu>
+P7_11_>Install Openshell start menu app>
+P7_12_>Disable Copilot autoload>
+P7_13_>Add and activate ultimate performance>
+P7_14_>Turn off processor core sleep mode>
+P7_15_>Turn off reduce power usage of apps running in the background>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>

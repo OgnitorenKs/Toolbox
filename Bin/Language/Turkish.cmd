@@ -177,21 +177,21 @@ P6005>Sistem açılış adı değiştiriliyor...>
 P6006>Özel güç ayarı ekleniyor...>
 P6007>Duvar kağıdı özelleştiriliyor...>
 ::
-P7001>Görev çubuğu - başlat menüsünü sola hizala [Win11]>
-P7002>Masaüstü simgelerini aktifleştir [Ağ hariç]>
-P7003>Modern beyaz fare simgesini yükle>
-P7004>Modern siyah fare simgesini yükle>
-P7005>Windows koyu mod aktifleştir>
-P7006>Defender devre dışı bırak>
-P7007>Edge tarayıcısını kaldır>
-P7008>EdgeWebView2 kaldır>
-P7009>Görev çubuğu arama özelliğini devre dışı bırak>
-P7010>Başlat menüsü devre dışı bırak>
-P7011>Openshell başlat menüsü uygulamasını yükle>
-P7012>Copilot otomatik yükleme işlemini devre dışı bırak>
-P7013>Nihai performans ekle ve aktifleştir>
-P7014>İşlemci çekirdek uyku modunu kapat>
-P7015>Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat>
+P7_1_>Görev çubuğu - başlat menüsünü sola hizala [Win11]>
+P7_2_>Masaüstü simgelerini aktifleştir [Ağ hariç]>
+P7_3_>Modern beyaz fare simgesini yükle>
+P7_4_>Modern siyah fare simgesini yükle>
+P7_5_>Windows koyu mod aktifleştir>
+P7_6_>Defender devre dışı bırak>
+P7_7_>Edge tarayıcısını kaldır>
+P7_8_>EdgeWebView2 kaldır>
+P7_9_>Görev çubuğu arama özelliğini devre dışı bırak>
+P7_10_>Başlat menüsü devre dışı bırak>
+P7_11_>Openshell başlat menüsü uygulamasını yükle>
+P7_12_>Copilot otomatik yükleme işlemini devre dışı bırak>
+P7_13_>Nihai performans ekle ve aktifleştir>
+P7_14_>İşlemci çekirdek uyku modunu kapat>
+P7_15_>Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>
