@@ -4,14 +4,25 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.3.5 ► 12.05.2024 - Playbook</B></summary>
+<details><B><summary> Versiyon 4.3.6 ► 19.05.2024</B></summary>
+
+    ▼ Genel değişiklikler;
+        • Belirli komutların konumları değiştirildi.
+        • 'Hizmet yönetimi' ► Hizmetlerin durumunu gösteren bölümdeki kodlar düzenlendi. Kapalı durum göstergeleri detaylandırıldı. 
+            • Yeni bir gösterge eklendi. Bilgi mesajları daha derli toplu hale getirildi.
+            • 'Kurumsal uygulama' bilgi mesajı eklendi. İngilizce dil dosyasındaki tanım ifadesi iyileştirildi.
+        • "Zaman ayarlı PC kapat" bölümündeki kodlar düzenlendi.
+    ▼ Playbook bölümündeki değişiklikler;
+        • "Taskbar_Setting_17_" ayarı başlat menüsü Microsoft hesap bildirimlerini kapatması için eklendi.
+
+</details><details><B><summary> Versiyon 4.3.5 ► 12.05.2024 - Playbook</B></summary>
 
     ▼ Genel değişiklikler;
         • "Sistem hakkında" RAM bilgilendirme bölümünde "MHZ" ifadesi "MT/s" olarak güncellendi. "MT/s" ifadesi daha doğru olduğu için üreticiler ve yeni sürüm Windows'larda kullanılmaya başlanacak.
         • Varsayılan uygulama ayarlama komutlarında simge atamasını atlaması için düzenleme yapıldı.
     ▼ Playbook bölümündeki değişiklikler;
         • Playbook ayar özelleştirme menüsünün kodları yeniden yazıldı. Olası özelleştirmeler için basitleştirildi.
-		• Kalıp içerisindeki eski sürümler için eklenmiş bilgi notları güncellendi.
+        • Kalıp içerisindeki eski sürümler için eklenmiş bilgi notları güncellendi.
 
 </details><details><B><summary> Versiyon 4.3.4 ►  01.05.2024 - Playbook</B></summary>
 

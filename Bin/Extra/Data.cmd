@@ -150,9 +150,7 @@ _0_40_>wercplsupport>Sorun Raporları Denetim Masası Desteği>3>Demand>
 _0_40_>WerSvc>Windows Hata Raporlama>3>Demand>
 _0_40_>PcaSvc>Program Uyumluluk Yardımcısı>3>Demand>
 _0_40_>TroubleshootingSvc>Önerilen Sorun Giderme Hizmeti>3>Demand>
-
 :: ██████████████████████████████████████████████████████████████████
-
 :: Fax
 COM_1_>Print.Fax.Scan>Capability>
 :: Wordpad

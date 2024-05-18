@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.5
+set Version=4.3.6
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -42,7 +42,18 @@ REM Renklendirm için gerekli
 FOR /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E#&for %%b in (1) do rem"') do (set R=%%b)
 
 REM -------------------------------------------------------------
-Call :Ogni_Label
+echo.&echo.&echo.&echo.&echo.
+echo                       %R%[33m████ ████ █   █ ███ █████ ████ ████ ███ █   █ █  █ ████%R%[0m
+echo                       %R%[33m█  █ █    ██  █  █    █   █  █ █  █ █   ██  █ █ █  █   %R%[0m
+echo                       %R%[33m█  █ █ ██ █ █ █  █    █   █  █ ████ ██  █ █ █ ██   ████%R%[0m
+echo                       %R%[33m█  █ █  █ █  ██  █    █   █  █ █ █  █   █  ██ █ █     █%R%[0m
+echo                       %R%[33m████ ████ █   █ ███   █   ████ █  █ ███ █   █ █  █ ████%R%[0m
+echo.
+echo                                %R%[37m█████ ████ ████ █   ███  ████ █   █%R%[0m
+echo                                %R%[37m  █   █  █ █  █ █   █  █ █  █  █ █ %R%[0m
+echo                                %R%[37m  █   █  █ █  █ █   ███  █  █   █  %R%[0m
+echo                                %R%[37m  █   █  █ █  █ █   █  █ █  █  █ █ %R%[0m
+echo                                %R%[37m  █   ████ ████ ███ ███  ████ █   █%R%[0m
 REM -------------------------------------------------------------
 REM Toolbox konumunu değişkene tanımlar
 cd /d "%~dp0"
@@ -155,6 +166,7 @@ title 🤖 OgnitorenKs Toolbox 🤖
     if "!Value_M!" EQU "10" (Call :Windows_Repair)
     if "!Value_M!" EQU "11" (goto Playbook_Manager)
     if "!Value_M!" EQU "Z" (goto Language_Select)
+    if "!Value_M!" EQU "DEV" (goto Developer)
     if "!Value_M!" EQU "X" (exit)
     if "!Error!" EQU "X" (goto Main_Menu)
 Call :ProcessCompleted
@@ -338,8 +350,8 @@ Call :Dil A 5 T0010
 Call :Dil A 6 T0010
 Call :Dil A 7 T0010
 Call :Dil A 8 T0010
-echo %R%[92m  ♦%R%[90m = !LA2! │ █ = !LA3! │%R%[91m █%R%[90m = !LA4! │%R%[96m ♦%R%[90m = !LA5! [!LA6!]%R%[0m 
-echo %R%[91m  ♦%R%[90m = !LA5! [!LA7!] │%R%[95m ♦%R%[90m = !LA5! [!LA8!]%R%[0m
+echo %R%[92m  ♦%R%[90m = !LA2! │ !LA5! [%R%[91m ♦%R%[90m = !LA7! │%R%[95m ♦%R%[90m = !LA8! │%R%[96m ♦%R%[90m = !LA6!]%R%[0m
+echo %R%[90m  █ = !LA3! │%R%[91m █%R%[90m = !LA4! │%R%[95m █%R%[90m = !LA3! [!LA7!]%R%[0m
 REM Dil değişkenleri çok olduğu için kullanım sonrası içlerini boşaltıyoruz.
 FOR %%a in (LA2 LA3 LA4 LA5 LA6 LA7 LA8 LB2 LB3 LC2) do (set %%a=)
 REM Dil dosyasından hizmet verilerini alarak kontrolleri sağlıyoruz.
@@ -427,21 +439,21 @@ goto Features_Menu
 REM -------------------------------------------------------------
 :Oto_Kapat
 shutdown -s -f -t 999999 > NUL 2>&1
-    if !errorlevel! EQU 1190 (
-        Call :Dil A 2 D0003
-        Call :Dil A 3 D0003
-        set /p Value_M=%R%[36m        !LA2! %R%[90m'%R%[33mD%R%[90m'%R%[36m !LA3! %R%[90m'%R%[33mX%R%[90m': %R%[0m
-        Call :Upper !Value_M! Value_M
-            if !Value_M! EQU X (set Error=X)
-            if !Value_M! EQU D (shutdown /a > NUL 2>&1)
-    ) else (
-        shutdown /a > NUL 2>&1
-        Call :Dil A 2 D0004&set /p Value_M=%R%[36m        !LA2!: %R%[0m
-        Call :Upper !Value_M! Value_M
-            if !Value_M! EQU X (goto Main_Menu)
-        set /a Value_N=!Value_M!*60
-        shutdown -s -f -t !Value_N!
-)
+    if !errorlevel! EQU 1190 (Call :Dil A 2 D0003
+                              Call :Dil A 3 D0003
+                              set /p Value_M=%R%[36m        !LA2! %R%[90m'%R%[33mD%R%[90m'%R%[36m !LA3! %R%[90m'%R%[33mX%R%[90m': %R%[0m
+                              Call :Upper !Value_M! Value_M
+                                  if !Value_M! EQU X (set Error=X)
+                                  if !Value_M! EQU D (shutdown /a > NUL 2>&1)
+                              goto Main_Menu
+                             )
+    if !errorlevel! NEQ 1190 (shutdown /a > NUL 2>&1
+                              Call :Dil A 2 D0004&set /p Value_M=%R%[36m        !LA2!: %R%[0m
+                              Call :Upper !Value_M! Value_M
+                                  if !Value_M! EQU X (goto Main_Menu)
+                              set /a Value_M=!Value_M! * 60
+                              shutdown -s -f -t !Value_M!
+                             )
 goto Main_Menu
 
 REM -------------------------------------------------------------
@@ -499,20 +511,20 @@ FOR /L %%a in (1,1,13) do (
 Call :Dil A 2 T0006&echo   %R%[32m  X %R%[90m-%R%[37m !LA2! %R%[0m
 Call :Dil A 2 D0001&echo.&set /p Value_M=%R%[92m► !LA2!= %R%[0m
 Call :Upper !Value_M! Value_M
-    if %Value_M% EQU 1 (net user administrator /active:yes)
-    if %Value_M% EQU 2 (net user Administrator /active:no)
-    if %Value_M% EQU 3 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net localgroup Administrators "!Value!" /add)
-    if %Value_M% EQU 4 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net user "!Value!" * /add)
-    if %Value_M% EQU 5 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net user "!Value!" /delete)
-    if %Value_M% EQU 6 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net user "!Value!" *)
-    if %Value_M% EQU 7 (start cmd /k Powershell -C "Get-LocalUser"&goto User_Licence_Manager)
-    if %Value_M% EQU 8 (Call :Dil A 2 D0006&set /p Value=%R%[36m► !LA2!= %R%[0m&slmgr /ipk "!Value!")
-    if %Value_M% EQU 9 (slmgr /dli)
-    if %Value_M% EQU 10 (slmgr /dlv)
-    if %Value_M% EQU 11 (slmgr /xpr)
-    if %Value_M% EQU 12 (slmgr /upk)
-    if %Value_M% EQU 13 (slmgr /rearm)
-    if %Value_M% EQU X (set Error=X&goto Main_Menu)
+    if !Value_M! EQU 1 (net user administrator /active:yes)
+    if !Value_M! EQU 2 (net user Administrator /active:no)
+    if !Value_M! EQU 3 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net localgroup Administrators "!Value!" /add)
+    if !Value_M! EQU 4 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net user "!Value!" * /add)
+    if !Value_M! EQU 5 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net user "!Value!" /delete)
+    if !Value_M! EQU 6 (Call :Dil A 2 D0005&set /p Value=%R%[36m► !LA2!= %R%[0m&net user "!Value!" *)
+    if !Value_M! EQU 7 (start cmd /k Powershell -C "Get-LocalUser"&goto User_Licence_Manager)
+    if !Value_M! EQU 8 (Call :Dil A 2 D0006&set /p Value=%R%[36m► !LA2!= %R%[0m&slmgr /ipk "!Value!")
+    if !Value_M! EQU 9 (slmgr /dli)
+    if !Value_M! EQU 10 (slmgr /dlv)
+    if !Value_M! EQU 11 (slmgr /xpr)
+    if !Value_M! EQU 12 (slmgr /upk)
+    if !Value_M! EQU 13 (slmgr /rearm)
+    if !Value_M! EQU X (set Error=X&goto Main_Menu)
 Call :ProcessCompleted
 goto User_Licence_Manager
 
@@ -720,7 +732,7 @@ goto :eof
 REM -------------------------------------------------------------
 :Time
 REM Saat bilgisi için
-FOR /F "tokens=1" %%g in ('echo %time%') do set Time=%%g
+FOR /F "tokens=1" %%g in ('echo %time%') do (set Time=%%g)
 goto :eof
 
 REM -------------------------------------------------------------
@@ -975,56 +987,73 @@ goto :eof
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Service_Check
 REM Hizmetleri kontrol eder
+REM Boş değişkenler mantıksal sorguda hataya neden olacağı için NT tanımlamasını yapıyorum.
 set X=NT
 set XT=NT
 set XS=NT
+REM Log dosyası oluşturuyorum. Düzenli görünmesi için bu çizgiyi ekliyorum. 
 echo -------------------------------------------- >> %Konum%\Log\Services.txt
+REM Windows bilgisine göre 'Data.cmd' dosyasından alacağım veri bilgisini 'Value_W' değişkenine tanımlıyorum.
 if %Win% EQU 11 (set Value_W=0 11)
 if %Win% EQU 10 (set Value_W=0 10)
+REM 'Value_W' değişkenine tanımladığım değerler ile FOR döngüsüyüle sırasıyla 'Data.cmd' dosyasından veriyi alıp kontrol ediyorum.
 FOR %%g in (!Value_W!) do (
     FOR /F "delims=> tokens=2" %%h in ('Findstr /i "_%%g_%~1_" %Konum%\Bin\Extra\Data.cmd') do (
         reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%h" /v "Start" > NUL 2>&1
             if !errorlevel! EQU 0 (FOR /F "skip=2 delims=x tokens=2" %%j in ('reg query "HKLM\System\CurrentControlSet\Services\%%h" /v "Start" 2^>NUL') do (
-                                                                              echo [%%h] ► [%%j] >> %Konum%\Log\Services.txt
-                                                                              if %%j EQU 4 (if !X! EQU ON (set XS=Off&set Check=%R%[96m♦%R%[0m)
-                                                                                            if !X! EQU NT (set XS=Off&set Check=%R%[90m█%R%[0m)
-                                                                                           )
-                                                                              if %%j EQU 3 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
-                                                                                                             )
-                                                                                            if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
-                                                                                                             )
-                                                                                           )
-                                                                              if %%j EQU 2 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
-                                                                                                             )
-                                                                                            if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
-                                                                                                             )
-                                                                                           )
-                                                                              if %%j EQU 1 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
-                                                                                                             )
-                                                                                            if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
-                                                                                                             )
-                                                                                           )
-                                                                              if %%j EQU 0 (if !XT! EQU Lost (if !XS! EQU Off (set Check=%R%[95m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set Check=%R%[91m♦%R%[0m)
-                                                                                                             )
-                                                                                            if !XT! NEQ Lost (if !XS! EQU Off (set X=ON&set Check=%R%[96m♦%R%[0m)
-                                                                                                              if !XS! EQU NT (set X=ON&set Check=%R%[92m♦%R%[0m)
-                                                                                                             )
-                                                                                           )
-                                                                            )
+                                       echo [%%h] ► [%%j] >> %Konum%\Log\Services.txt
+                                       if %%j EQU 4 (set XS=Off
+                                                     if "!X!" EQU "ON" (set Check=%R%[96m♦%R%[0m)
+                                                     if "!X!" EQU "NT" (if "!XT!" EQU "Lost" (set Check=%R%[95m█%R%[0m)
+                                                                        if "!XT!" EQU "NT" (set Check=%R%[90m█%R%[0m)
+                                                                       )
+                                                    )
+                                                    if %%j EQU 3 (set X=ON
+                                                                  if "!XT!" EQU "Lost" (if "!XS!" EQU "Off" (set Check=%R%[95m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[91m♦%R%[0m)
+                                                                                       )
+                                                                  if "!XT!" NEQ "Lost" (if "!XS!" EQU "Off" (set Check=%R%[96m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[92m♦%R%[0m)
+                                                                                       )
+                                                                 )
+                                                    if %%j EQU 2 (set X=ON
+                                                                  if "!XT!" EQU "Lost" (if "!XS!" EQU "Off" (set Check=%R%[95m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[91m♦%R%[0m)
+                                                                                       )
+                                                                  if "!XT!" NEQ "Lost" (if "!XS!" EQU "Off" (set Check=%R%[96m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[92m♦%R%[0m)
+                                                                                       )
+                                                                 )
+                                                    if %%j EQU 1 (set X=ON
+                                                                  if "!XT!" EQU "Lost" (if "!XS!" EQU "Off" (set Check=%R%[95m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[91m♦%R%[0m)
+                                                                                       )
+                                                                  if "!XT!" NEQ "Lost" (if "!XS!" EQU "Off" (set Check=%R%[96m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[92m♦%R%[0m)
+                                                                                       )
+                                                                 )
+                                                    if %%j EQU 0 (set X=ON
+                                                                  if "!XT!" EQU "Lost" (if "!XS!" EQU "Off" (set Check=%R%[95m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[91m♦%R%[0m)
+                                                                                       )
+                                                                  if "!XT!" NEQ "Lost" (if "!XS!" EQU "Off" (set Check=%R%[96m♦%R%[0m)
+                                                                                        if "!XS!" EQU "NT" (set Check=%R%[92m♦%R%[0m)
+                                                                                       )
+                                                                 )
+                                     )
                                  )
             if !errorlevel! NEQ 0 (echo [%%h] ► [Not Found] >> %Konum%\Log\Services.txt
-                                   if !X! EQU ON (set XT=Lost&set Check=%R%[91m♦%R%[0m)
-                                   if !X! EQU NT (set XT=Lost&set Check=%R%[91m█%R%[0m)
+                                   set XT=Lost
+                                   if "!X!" EQU "ON" (if "!XS!" EQU "Off" (set Check=%R%[95m♦%R%[0m)
+                                                      if "!XS!" EQU "NT" (set Check=%R%[91m♦%R%[0m)
+                                                     )
+                                   if "!X!" EQU "NT" (if "!XS!" EQU "Off" (set Check=%R%[91m♦%R%[0m)
+                                                      if "!XS!" EQU "NT" (set Check=%R%[91m█%R%[0m)
+                                                     )
                                   )
     )
 )
+REM echo !Check! X=!X! XS=!XS! XT=!XT!
 set X=
 set XT=
 set XS=
@@ -1334,25 +1363,6 @@ echo.
 Call :Bekle 2
 goto :eof
 
-REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-:Ogni_Label
-echo. 
-echo.
-echo.
-echo.
-echo.
-echo                       %R%[33m████ ████ █   █ ███ █████ ████ ████ ███ █   █ █  █ ████%R%[0m
-echo                       %R%[33m█  █ █    ██  █  █    █   █  █ █  █ █   ██  █ █ █  █   %R%[0m
-echo                       %R%[33m█  █ █ ██ █ █ █  █    █   █  █ ████ ██  █ █ █ ██   ████%R%[0m
-echo                       %R%[33m█  █ █  █ █  ██  █    █   █  █ █ █  █   █  ██ █ █     █%R%[0m
-echo                       %R%[33m████ ████ █   █ ███   █   ████ █  █ ███ █   █ █  █ ████%R%[0m
-echo.
-echo                                %R%[37m█████ ████ ████ █   ███  ████ █   █%R%[0m
-echo                                %R%[37m  █   █  █ █  █ █   █  █ █  █  █ █ %R%[0m
-echo                                %R%[37m  █   █  █ █  █ █   ███  █  █   █  %R%[0m
-echo                                %R%[37m  █   █  █ █  █ █   █  █ █  █  █ █ %R%[0m
-echo                                %R%[37m  █   ████ ████ ███ ███  ████ █   █%R%[0m
-goto :eof
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Language_Select
 cls
@@ -1730,12 +1740,9 @@ FOR /F "delims=> tokens=2" %%a in ('Findstr /i "PB_T2_" %Konum%\Bin\Extra\Playbo
     if !Count! LSS 10 (echo %R%[32m   !Count!%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m)
     if !Count! GEQ 10 (echo %R%[32m  !Count!%R%[90m-%R%[0m !Check!%R%[33m !LA2! %R%[0m)
 )
-Call :Dil A 2 P5005
-echo %R%[32m   Q%R%[90m-%R%[96m   !LA2! %R%[0m
-Call :Dil A 2 P5004
-echo %R%[32m   Y%R%[90m-%R%[96m   !LA2! %R%[0m
-echo.
-Call :Dil A 2 D0002&set /p Value_NN=►%R%[92m !LA2! %R%[90m[E,1,2,3,D,6,7,8] : %R%[0m
+Call :Dil A 2 P5005&echo %R%[32m   Q%R%[90m-%R%[96m   !LA2! %R%[0m
+Call :Dil A 2 P5004&echo %R%[32m   Y%R%[90m-%R%[96m   !LA2! %R%[0m
+Call :Dil A 2 D0002&echo.&set /p Value_NN=►%R%[92m !LA2! %R%[90m[E,1,2,3,D,6,7,8] : %R%[0m
 Call :Upper "!Value_NN!" "Value_NN"
     if "!Value_NN!" EQU "X" (set Error=X&goto Main_Menu)
     if "!Value_NN!" EQU "Q" (Call :Powershell "Start-Process '%PB%'")
@@ -2150,6 +2157,10 @@ Call :Playbook_Reader Taskbar_Setting_16_
                              Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Edge" "HubsSidebarEnabled" REG_DWORD 0
                              Call :RegAdd "HKCU\Software\Policies\Microsoft\Windows\Explorer" "DisableSearchBoxSuggestions" REG_DWORD 1
                              Call :RegAdd "HKLM\Software\Policies\Microsoft\Windows\Explorer" "DisableSearchBoxSuggestions" REG_DWORD 1
+)
+REM Başlat Menüsü - Microsoft hesabıyla ilgili bildirimleri gösterme
+Call :Playbook_Reader Taskbar_Setting_17_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_AccountNotifications" REG_DWORD 0
 )
 REM ContentDeliveryManager - Ayarlar uygulamasında önerilen içeriği kapat
 Call :Playbook_Reader Privacy_Setting_1_
@@ -3395,8 +3406,6 @@ Call :DEL_Direct "%Konum%\Log\Capabilities"
 Call :DEL_Direct "%Konum%\Log\Features"
 REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1005&title OgnitorenKs Playbook │ 6/6 │ !LA2!
-REM Sistem geri yükleme kayıtlarını temizler
-REM "%SystemDrive%\System Volume Information"
 (
 echo ie4uinit.exe -show
 echo ie4uinit.exe -ClearIconCache

@@ -136,3 +136,8 @@ The Toolbox language is automatically selected on the first launch of the applic
 ![ToolZ](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/EN-SS/Z.png)
 
 </details>
+
+- ▼ Other programs and themes in the Toolbox;
+- • [NSudo](https://github.com/M2TeamArchived/NSudo)
+- • [DevManView](https://www.nirsoft.net/utils/device_manager_view.html)
+- • [Windows 11 Cursors Concept v2](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)

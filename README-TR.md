@@ -136,3 +136,8 @@ Toolbox dili uygulamanın ilk açılışında sistem varsayılan diline göre ot
 ![ToolZ](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/TR-SS/Z.png)
 
 </details>
+
+- ▼ Toolbox içerisinde yer alan diğer program ve temalar;
+* • [NSudo](https://github.com/M2TeamArchived/NSudo)
+* • [DevManView](https://www.nirsoft.net/utils/device_manager_view.html)
+* • [Windows 11 Cursors Concept v2](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)

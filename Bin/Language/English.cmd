@@ -217,7 +217,7 @@ SL_21_>Biometric>Need: Fingerprint │ HelloFace>
 SL_22_>Disk Defragmentation>Need: SSD│HDD, Trim>
 SL_23_>Router>Near devices [Smart home devices]>
 SL_24_>Smart Card>Need: Chip card reader [Not SD card]>
-SL_25_>Enterprise application> >
+SL_25_>Enterprise App Management>Enterprise package management for Microsoft Store>
 SL_26_>Now Playing Session Manager>Need: Notification area media player>
 SL_27_>Graphics performance monitoring>Need: Game mode>
 SL_28_>Game DVR and Broadcast User>Need: Xbox screen recording>
