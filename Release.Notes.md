@@ -4,7 +4,17 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.3.6 ► 19.05.2024</B></summary>
+<details><B><summary> Versiyon 4.3.7 ► 27.05.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • "Ping Ölçer" bölümündeki 'Ping_M1' ve 'Ping_M2' başlıkları birleştirilip 'Ping' başlığı haline getirildi. Bağlı kodlar yeni başlığa göre düzenlendi.
+		• Yorum satırları arttırıldı.
+		• "Powershell_Playbook" başlığı kaldırıldı. Tek bir bölümde kullandığı için ilgili bölüme alındı.
+		• "Playboook_Reader_2" ve "Playbook_Reader_Special" başlığı kaldırıldı. "Playbook_Reader" başlığıyla birleştirildi. Bağlı kodlar düzenlendi.
+		• "CurrentUserName" ve "Default_System_Language" kodları çalışmanın başına alındı. İlk açılışta değişkene tanımlanacak şekilde düzenlendiler.
+		• Playbook kalıbına hizmet düzenlemesini tek bir ayar ile atlaması için "Skip_Service_" ayarı eklendi.
+
+</details><details><B><summary> Versiyon 4.3.6 ► 19.05.2024</B></summary>
 
     ▼ Genel değişiklikler;
         • Belirli komutların konumları değiştirildi.

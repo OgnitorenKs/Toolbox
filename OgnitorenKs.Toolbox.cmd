@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.6
+set Version=4.3.7
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -64,8 +64,6 @@ REM Log klasörünü oluşturur
 MD "%Konum%\Log" > NUL 2>&1
 REM Hata mesajlarında olası kapanmaları önler
 set Error=NT
-REM Kullanıcı sid bilgisini alır
-Call :CurrentUserName
 
 REM -------------------------------------------------------------
 REM Yönetici yetkisi
@@ -74,10 +72,19 @@ reg query "HKU\S-1-5-19" > NUL 2>&1
 )
 
 REM -------------------------------------------------------------
+REM Kullanıcı sid bilgisini alır
+Call :Powershell "Get-CimInstance -ClassName Win32_UserAccount | Select-Object -Property Name,SID" > %Konum%\Log\cusername
+FOR /F "tokens=2" %%a in ('Find "%username%" %Konum%\Log\cusername 2^>^NUL') do (set CUS=%%a)
+Call :DEL_Direct "%Konum%\Log\cusername"
+
+REM -------------------------------------------------------------
+REM Sistem varsayılan dil bilgisini öğrenir
+FOR /F "tokens=6" %%a in ('Dism /online /Get-intl ^| Find /I "Default system UI language"') do (set DefaultLang=%%a)
+
+REM -------------------------------------------------------------
 REM Settings.ini dosyası içine dil bilgisi kayıtlı ise onu alır. Yok ise sistem varsayılan diline göre atama yapar.
 Findstr /i "Language_Pack" %Konum%\Settings.ini > NUL 2>&1
-    if !errorlevel! NEQ 0 (Call :Default_System_Language
-                           if "!DefaultLang!" EQU "tr-TR" (echo. >> %Konum%\Settings.ini
+    if !errorlevel! NEQ 0 (if "!DefaultLang!" EQU "tr-TR" (echo. >> %Konum%\Settings.ini
                                                            echo ► Language_Pack^= Turkish >> %Konum%\Settings.ini
                                                            set Dil=%Konum%\Bin\Language\Turkish.cmd
                                                           )
@@ -199,7 +206,7 @@ echo %Value_M% | Findstr /i "X" > NUL 2>&1
 Call :Dil A 2 T0003
 FOR %%a in (%Value_M%) do (
     cls&echo.&echo  ►%R%[92m !LA2!:%R%[0m %Value_M%
-    if %%a EQU 1 (Call :AIO.Runtimes)
+    if %%a EQU 1 (Call :AIO_Runtimes)
     if %%a EQU 2 (Call :Winget Discord.Discord)
     if %%a EQU 3 (Call :Winget WhatsApp.WhatsApp)
     if %%a EQU 4 (Call :Winget OpenWhisperSystems.Signal)
@@ -271,7 +278,7 @@ FOR %%a in (%Value_M%) do (
 )
 goto Jump_1
 REM -------------------------------------------------------------
-:AIO.Runtimes
+:AIO_Runtimes
 cls&Call :Dil B 2 T0018&echo %R%[32m !LB2! %R%[0m
 REM Dism üzerinden sistem componentleri hakkında bilgi alıyorum.
 Dism /Online /Get-Capabilities /format:table > %Konum%\Log\Capabilities
@@ -438,6 +445,7 @@ goto Features_Menu
 
 REM -------------------------------------------------------------
 :Oto_Kapat
+REM Bilgisyarı ayarlardığınız sürede kapatmanızı sağlayan bölüm. Alttaki kodlarda öncelikle gerekli kontrolleri yapıp aktif bir kapatma işlemi olup olmadığını kontrol eder
 shutdown -s -f -t 999999 > NUL 2>&1
     if !errorlevel! EQU 1190 (Call :Dil A 2 D0003
                               Call :Dil A 3 D0003
@@ -458,48 +466,50 @@ goto Main_Menu
 
 REM -------------------------------------------------------------
 :Ping_Metre
+REM Aşağıdaki DNS ve Web adreslerine ping atarak tepki süresini ölçer. 
 mode con cols=100 lines=30
 Call :Dil A 2 B0003&echo.&echo %R%[91m ► !LA2! %R%[0m
 echo.
-Call :Ping_M1 www.youtube.com&echo  %R%[90m•%R%[33m    Youtube %R%[90m=%R%[37m !Value_M1! %R%[90mMS%R%[0m
-Call :Ping_M1 www.facebook.com&echo  %R%[90m•%R%[33m   Facebook %R%[90m=%R%[37m !Value_M1! %R%[90mMS%R%[0m
-Call :Ping_M1 www.twitter.com&echo  %R%[90m•%R%[33m    Twitter %R%[90m=%R%[37m !Value_M1! %R%[90mMS%R%[0m
-Call :Ping_M1 www.instagram.com&echo  %R%[90m•%R%[33m  Instagram %R%[90m=%R%[37m !Value_M1! %R%[90mMS%R%[0m
-Call :Ping_M1 www.reddit.com&echo  %R%[90m•%R%[33m     Reddit %R%[90m=%R%[37m !Value_M1! %R%[90mMS%R%[0m
-Call :Ping_M1 www.twitch.tv&echo  %R%[90m•%R%[33m     Twitch %R%[90m=%R%[37m !Value_M1! %R%[90mMS%R%[0m
+Call :Ping A www.youtube.com&echo  %R%[90m•%R%[33m    Youtube %R%[90m=%R%[37m !Value_A! %R%[90mMS%R%[0m
+Call :Ping A www.facebook.com&echo  %R%[90m•%R%[33m   Facebook %R%[90m=%R%[37m !Value_A! %R%[90mMS%R%[0m
+Call :Ping A www.twitter.com&echo  %R%[90m•%R%[33m    Twitter %R%[90m=%R%[37m !Value_A! %R%[90mMS%R%[0m
+Call :Ping A www.instagram.com&echo  %R%[90m•%R%[33m  Instagram %R%[90m=%R%[37m !Value_A! %R%[90mMS%R%[0m
+Call :Ping A www.reddit.com&echo  %R%[90m•%R%[33m     Reddit %R%[90m=%R%[37m !Value_A! %R%[90mMS%R%[0m
+Call :Ping A www.twitch.tv&echo  %R%[90m•%R%[33m     Twitch %R%[90m=%R%[37m !Value_A! %R%[90mMS%R%[0m
 echo %R%[36m ► DNS%R%[0m 
-Call :Ping_M1 1.1.1.1
-Call :Ping_M2 1.0.0.1
-echo  %R%[90m•%R%[33m     Claudflare %R%[90m=%R%[37m !Value_M1! %R%[90m│%R%[37m !Value_M2! %R%[90mMS ► [%R%[33m1.1.1.1 %R%[90m│%R%[33m 1.0.0.1%R%[90m]%R%[0m
-Call :Ping_M1 8.8.8.8
-Call :Ping_M2 8.8.4.4
-echo  %R%[90m•%R%[33m         Google %R%[90m=%R%[37m !Value_M1! %R%[90m│%R%[37m !Value_M2! %R%[90mMS ► [%R%[33m8.8.8.8 %R%[90m│%R%[33m 8.8.4.4%R%[90m]%R%[0m
-Call :Ping_M1 9.9.9.9
-Call :Ping_M2 149.112.112.112
-echo  %R%[90m•%R%[33m          Quad9 %R%[90m=%R%[37m !Value_M1! %R%[90m│%R%[37m !Value_M2! %R%[90mMS ► [%R%[33m9.9.9.9 %R%[90m│%R%[33m 149.112.112.112%R%[90m]%R%[0m
-Call :Ping_M1 208.67.222.222
-Call :Ping_M2 208.67.220.220
-echo  %R%[90m•%R%[33m        OpenDNS %R%[90m=%R%[37m !Value_M1! %R%[90m│%R%[37m !Value_M2! %R%[90mMS ► [%R%[33m208.67.222.222 %R%[90m│%R%[33m 208.67.220.220%R%[90m]%R%[0m
-Call :Ping_M1 156.154.70.2
-Call :Ping_M2 156.154.71.2
-echo  %R%[90m•%R%[33m UltraRecursive %R%[90m=%R%[37m !Value_M1! %R%[90m│%R%[37m !Value_M2! %R%[90mMS ► [%R%[33m156.154.70.2 %R%[90m│%R%[33m 156.154.71.2%R%[90m]%R%[0m
-Call :Ping_M1 94.140.14.14
-Call :Ping_M2 94.140.15.15
-echo  %R%[90m•%R%[33m        Adguard %R%[90m=%R%[37m !Value_M1! %R%[90m│%R%[37m !Value_M2! %R%[90mMS ► [%R%[33m94.140.14.14 %R%[90m│%R%[33m 94.140.15.15%R%[90m]%R%[0m
+Call :Ping A 1.1.1.1
+Call :Ping B 1.0.0.1
+echo  %R%[90m•%R%[33m     Claudflare %R%[90m=%R%[37m !Value_A! %R%[90m│%R%[37m !Value_B! %R%[90mMS ► [%R%[33m1.1.1.1 %R%[90m│%R%[33m 1.0.0.1%R%[90m]%R%[0m
+Call :Ping A 8.8.8.8
+Call :Ping B 8.8.4.4
+echo  %R%[90m•%R%[33m         Google %R%[90m=%R%[37m !Value_A! %R%[90m│%R%[37m !Value_B! %R%[90mMS ► [%R%[33m8.8.8.8 %R%[90m│%R%[33m 8.8.4.4%R%[90m]%R%[0m
+Call :Ping A 9.9.9.9
+Call :Ping B 149.112.112.112
+echo  %R%[90m•%R%[33m          Quad9 %R%[90m=%R%[37m !Value_A! %R%[90m│%R%[37m !Value_B! %R%[90mMS ► [%R%[33m9.9.9.9 %R%[90m│%R%[33m 149.112.112.112%R%[90m]%R%[0m
+Call :Ping A 208.67.222.222
+Call :Ping B 208.67.220.220
+echo  %R%[90m•%R%[33m        OpenDNS %R%[90m=%R%[37m !Value_A! %R%[90m│%R%[37m !Value_B! %R%[90mMS ► [%R%[33m208.67.222.222 %R%[90m│%R%[33m 208.67.220.220%R%[90m]%R%[0m
+Call :Ping A 156.154.70.2
+Call :Ping B 156.154.71.2
+echo  %R%[90m•%R%[33m UltraRecursive %R%[90m=%R%[37m !Value_A! %R%[90m│%R%[37m !Value_B! %R%[90mMS ► [%R%[33m156.154.70.2 %R%[90m│%R%[33m 156.154.71.2%R%[90m]%R%[0m
+Call :Ping A 94.140.14.14
+Call :Ping B 94.140.15.15
+echo  %R%[90m•%R%[33m        Adguard %R%[90m=%R%[37m !Value_A! %R%[90m│%R%[37m !Value_B! %R%[90mMS ► [%R%[33m94.140.14.14 %R%[90m│%R%[33m 94.140.15.15%R%[90m]%R%[0m
 Call :Dil A 2 T0006&echo.&echo  %R%[32m X%R%[90m-%R%[37m !LA2! %R%[0m
 Call :Dil A 2 T0009&echo  %R%[90m !LA2! %R%[0m
 Call :Dil A 2 D0001&echo.&set /p Value_M=%R%[92m ► !LA2!= %R%[0m
 FOR %%a in (x X) do (
-    if %Value_M% EQU %%a (set Error=X&goto Main_Menu)
+    if !Value_M! EQU %%a (set Error=X&goto Main_Menu)
 )
-Call :Ping_M1 %Value_M%&echo.&echo  %R%[90m•%R%[33m %Value_M% %R%[90m=%R%[37m !Value_M1! %R%[90mMS%R%[0m
+Call :Ping A !Value_M!&echo.&echo  %R%[90m•%R%[33m !Value_M! %R%[90m=%R%[37m !Value_A! %R%[90mMS%R%[0m
 Call :Dil A 2 T0028&echo.&echo  %R%[32m !LA2! %R%[0m
-FOR /L %%a in (1,1,2) do (set Value_M%%a=)
+FOR %%a in (A B) do (set Value_%%a=)
 pause > NUL
 goto Main_Menu
 
 REM -------------------------------------------------------------
 :User_Licence_Manager
+REM Kullanıcı hesap yönetimi ve lisans işlemlerinin takip edildiği ekran.
 mode con cols=100 lines=27
 FOR /L %%a in (1,1,13) do (
     if %%a EQU 1 (Call :Dil A 2 SBB_1_&echo.&echo  %R%[96m► !LA2! %R%[0m)
@@ -530,6 +540,7 @@ goto User_Licence_Manager
 
 REM -------------------------------------------------------------
 :Wifi_Info
+REM Sistemde kayıtlı WiFi bilgilerini verir.
 mode con cols=65 lines=45
 Call :Dil A 2 B0005&echo.&echo %R%[91m !LA2! %R%[90m│ Archley %R%[0m
 netsh wlan show profil ^| find "All" > NUL 2>&1
@@ -549,10 +560,10 @@ goto Main_Menu
 
 REM -------------------------------------------------------------
 :Cleaner
+REM Sistem temizliği yapar
 cls
 Call :Dil A 2 B0006&title !LA2!
 set Show=1
-REM Çöp dosyaları temizleme komutları
 ie4uinit.exe -show
 ie4uinit.exe -ClearIconCache
 Call :ExplorerResetAsk
@@ -642,7 +653,7 @@ Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\IE"
 Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Low"
 Call :RD_Direct "%LocalAppData%\Microsoft\Windows\Temporary Internet Files\Virtualized"
 Call :RD_Direct "%Windir%\System32\config\systemprofile\AppData\Local\Microsoft\Windows\INetCache\IE"
-REM
+REM Güncelleme artıklarını siler
 Call :NET stop wuauserv
 Call :RD_Direct "%windir%\SoftwareDistribution"
 Call :NET start wuauserv
@@ -667,6 +678,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :Windows_Repair
+REM Microsoft tarafından önerilen ve tarafımca tespit edilen hata çözümlerini toplu şekilde uygular. Çözüm olmazsa sistem bütünlüğü bozulmuştur. Marketi yeniden yükletip denemek gerekiyor. Yoksa temiz kurulum gerekiyor.
 cls&Call :Cleaner&cls
 Call :Dil A 2 B0007&echo.&echo %R%[93m !LA2! %R%[0m
 title !LA2!
@@ -748,6 +760,15 @@ Call :Powershell "& { iwr !Link! -OutFile %~1 }"
 goto :eof
 
 REM -------------------------------------------------------------
+:Link
+set Link=
+FOR /F "delims=> tokens=2" %%z in ('Findstr /i "Link_%~1_" %Konum%\Bin\Extra\Link.txt 2^>NUL') do (
+    set Link=%%z
+    set Setup=%%~nxz
+)
+goto :eof
+
+REM -------------------------------------------------------------
 :Winget
 winget list "%~1" --accept-source-agreements > NUL 2>&1
     if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1
@@ -772,15 +793,6 @@ FOR /F "tokens=3" %%g in ('Find "Installer Url" %Konum%\Log\Winget_Link.txt') do
 goto :eof
 
 REM -------------------------------------------------------------
-:Link
-set Link=
-FOR /F "delims=> tokens=2" %%z in ('Findstr /i "Link_%~1_" %Konum%\Bin\Extra\Link.txt 2^>NUL') do (
-    set Link=%%z
-    set Setup=%%~nxz
-)
-goto :eof
-
-REM -------------------------------------------------------------
 :Powershell
 REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
 chcp 437 > NUL 2>&1
@@ -790,7 +802,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :Upper
-REM Bu bölüme yönlendirdiğim kelimeleri büyük harf yaptırıyorum.
+REM Gönderilen kelime, cümle veya herhangi bir tanımın içerisindeki tüm harfler büyük olarak değiştirilir.
 chcp 437 > NUL 2>&1
 FOR /F %%g in ('Powershell -command "'%~1'.ToUpper()"') do (set %~2=%%g)
 chcp 65001 > NUL 2>&1
@@ -813,15 +825,11 @@ chcp 65001 > NUL
 goto :eof
 
 REM -------------------------------------------------------------
-:Ping_M1
-FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M1=%%b)
-set Value_M1=!Value_M1:~0,-2!
-goto :eof
-
-REM -------------------------------------------------------------
-:Ping_M2
-FOR /F "tokens=9" %%b in ('ping -n 1 %~1') do (set Value_M2=%%b)
-set Value_M2=!Value_M2:~0,-2!
+:Ping
+REM %~1= Değişkeni farklılaştırmak için harf veya rakam tanımlayabilirsiniz.
+REM %~2= IP adresi veya link gönderilir.
+FOR /F "tokens=9" %%b in ('ping -n 1 %~2') do (set Value_%~1=%%b)
+set Value_%~1=!Value_%~1:~0,-2!
 goto :eof
 
 REM -------------------------------------------------------------
@@ -895,19 +903,8 @@ FOR /F "tokens=*" %%v in ('Dir /A-D /B /S "%~1" 2^>NUL') do (
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-:CurrentUserName
-Call :Powershell "Get-CimInstance -ClassName Win32_UserAccount | Select-Object -Property Name,SID" > %Konum%\Log\cusername
-FOR /F "tokens=2" %%a in ('Find "%username%" %Konum%\Log\cusername') do set CUS=%%a
-Call :DEL_Direct "%Konum%\Log\cusername"
-goto :eof
-
-REM -------------------------------------------------------------
-:Default_System_Language
-FOR /F "tokens=6" %%a in ('Dism /online /Get-intl ^| Find /I "Default system UI language"') do (set DefaultLang=%%a)
-goto :eof
-
-REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Default_App
+REM Uygulamaları varsayılan olarak ayarlamanızı sağlar
 REM !Default!= Uzantıları içeren değişken
 REM !AppKey!= Program adı
 REM !AppIcon!= Uygulama simgesi
@@ -956,6 +953,8 @@ REM reg add "HKLM\SOFTWARE\Classes\SystemFileAssociations\!AppKey!.%%g\shell\ope
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Service_Admin
+REM Hizmetlerin çalışma durumunu değiştirir
+REM %~1= Hizmet adı │ %~2= Kapatma kodu
 reg query "HKLM\SYSTEM\CurrentControlSet\Services\%~1" /v "Start" > NUL 2>&1
     if !errorlevel! EQU 0 (if %~2 EQU 0 (Call :RegAdd "HKLM\SYSTEM\CurrentControlSet\Services\%~1" "Start" REG_DWORD 0
                                          Call :SC_Config %~1 Boot
@@ -1053,7 +1052,6 @@ FOR %%g in (!Value_W!) do (
                                   )
     )
 )
-REM echo !Check! X=!X! XS=!XS! XT=!XT!
 set X=
 set XT=
 set XS=
@@ -1061,10 +1059,17 @@ goto :eof
 
 REM -------------------------------------------------------------
 :Service_Management
+REM Hizmet yönetimi bölümünde hizmetlerin açılıp/kapatılmasını sağlayan bölüm
 if %Win% EQU 11 (set Value_W=0 11)
 if %Win% EQU 10 (set Value_W=0 10)
-if %~1 EQU E (set Value=E&Call :Dil B 2 T0001&goto :eof)
-if %~1 EQU D (set Value=D&Call :Dil B 2 T0002&goto :eof)
+if %~1 EQU E (set Value=E
+              Call :Dil B 2 T0001
+			  goto :eof
+)
+if %~1 EQU D (set Value=D
+              Call :Dil B 2 T0002
+			  goto :eof
+)
 Call :Dil A 2 SL_%~1_
 echo %R%[96m "!LA2!" %R%[37m !LB2! %R%[0m
 FOR %%j in (!Value_W!) do (
@@ -1139,7 +1144,10 @@ REM -------------------------------------------------------------
 :Remove_Capability
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
     Findstr /i "%%g" %Konum%\Log\C_Capabilities > NUL 2>&1
-        if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1))
+        if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (
+		                           Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1
+		)
+	)
 )
 goto :eof
 
@@ -1147,18 +1155,24 @@ REM -------------------------------------------------------------
 :Remove_Package
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
     Findstr /i "%%g" %Konum%\Log\C_Packages > NUL 2>&1
-        if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Packages') do (Dism /Online /Remove-Package /PackageName:%%k /NoRestart > NUL 2>&1))
+        if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Packages') do (
+	                               Dism /Online /Remove-Package /PackageName:%%k /NoRestart > NUL 2>&1
+		)
+	)
 )
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Appx_Info
+REM Yüklü uygulamalar hakkında bildi alır
 Call :Powershell "Get-AppxPackage -AllUsers | Select PackageFullName" > %Konum%\Log\Appx_Info1
 Call :Powershell "Get-AppxPackage -AllUsers | Select PackageFamilyName" > %Konum%\Log\Appx_Info2
 Call :Powershell "Get-AppxPackage -AllUsers | Select Name,PackageFamilyName" > %Konum%\Log\Appx_Info3
 goto :eof
 
 :NonRemoved
+REM Market uygulamalarını siler.
+REM Kaldırılamaz olarak işaretlense bile silme işlemini başarılı bir şekilde yapar.
 FOR /F "tokens=*" %%j in ('Findstr /i "%~1" %Konum%\Log\Appx_Info1') do (
     FOR /F "tokens=*" %%k in ('Findstr /i "%~1" %Konum%\Log\Appx_Info2') do (
         set NonRemove1=%%j
@@ -1220,6 +1234,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :RegAdd_CCS
+REM Aynı reg kaydının ControlSet yoluna eklenmesi gerektiği durumlarda kullanılır.
 if !Show! EQU 1 (echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\CurrentControlSet\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
                  echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet001\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
                  echo %R%[90mReg add%R%[33m "HKLM\SYSTEM\ControlSet002\%~1"%R%[90m /f /v%R%[33m "%~2"%R%[90m /t%R%[33m %~3%R%[90m /d%R%[33m "%~4" %R%[0m
@@ -1234,6 +1249,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :Reg_Hide
+REM Ayarlar bölümünde gizlemek istediğiniz bölümleri regedit içerisine ekler.
 FOR /F "skip=2 tokens=3" %%x in ('Reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" 2^>NUL') do (set X_Value=%%x)
 echo !X_Value! | Find "%~1" > NUL 2>&1
     if !errorlevel! EQU 0 (set X_Value=&goto :eof)
@@ -1245,6 +1261,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :SC_Config
+REM Hizmetin çalışma durumunu ayarlar
 REM %~1: Hizmet %~2: Hizmet çalışma değeri
 sc config %~1 start= %~2 > NUL 2>&1
     if !errorlevel! NEQ 0 (%NSudo% sc config %~1 start= %~2)
@@ -1252,6 +1269,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :SC_Remove
+REM Hizmet siler
 REM %~1: Hizmet %~2: Hizmet çalışma değeri
 sc delete %~1 > NUL 2>&1
     if !errorlevel! NEQ 0 (%NSudo% sc delete %~1)
@@ -1259,6 +1277,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :NET
+REM Hizmeti aktfileştirip/durdurmayı sağlar.
 REM %~1: start │ stop  %~2: Hizmet
 net %~1 %~2 /y > NUL 2>&1
     if !errorlevel! NEQ 0 (%NSudo% net %~1 %~2 /y)
@@ -1266,18 +1285,21 @@ goto :eof
 
 REM -------------------------------------------------------------
 :Schtasks
+REM Görev zamanlayacısında açma/kapatma ayarını uygular
 schtasks /change /TN "%~2" /%~1 > NUL 2>&1
     if !errorlevel! NEQ 0 (%NSudo% schtasks /change /TN "%~2" /%~1)
 goto :eof
 
 REM -------------------------------------------------------------
 :Schtasks-Remove
+REM Görev zamanlayacısında silme işlemi yapar.
 schtasks /Delete /TN "%~1" /F > NUL 2>&1
     if !errorlevel! NEQ 0 (%NSudo% schtasks /Delete /TN "%~1" /F)
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Playbook_Check
+REM Playbook ayar yönetimi menüsünde ayarların durumunu gösterir.
 Find "%~1" !PB! > NUL 2>&1
     if "!errorlevel!" NEQ "0" (set Check=%R%[91m█%R%[0m&goto :eof)
     if "!errorlevel!" EQU "0" (set Check=%R%[92m♦%R%[0m)
@@ -1287,31 +1309,16 @@ FOR /F "skip=2 tokens=2" %%p in ('Find "%~1" !PB! 2^>NUL') do (
 goto :eof
 REM -------------------------------------------------------------
 :Playbook_Reader
+REM İlgili ayarın kalıpta olup olmadığını kontrol eder
 Find "%~1" !PB! > NUL 2>&1
     if !errorlevel! NEQ 0 (set Playbook=0&goto :eof)
+    if !errorlevel! EQU 0 (set Playbook=1)
 FOR /F "skip=2 tokens=2" %%p in ('Find "%~1" !PB! 2^>NUL') do (set Playbook=%%p)
+REM Özel ayarlar için kalıpta ayarlanan değeri alır
+set PB_Value=
+FOR /F "skip=2 tokens=4" %%p in ('Find "%~1" !PB! 2^>NUL') do (set PB_Value=%%p)
+REM Uygulanan ayarların log kaydını tutar.
 echo [!Playbook!]-"%~1" >> %Konum%\Log\Playbook_Log.txt
-goto :eof
-
-REM -------------------------------------------------------------
-:Playbook_Reader_2
-Findstr /i "%~1" %PB% > NUL 2>&1
-    if "!errorlevel!" EQU "0" (set Playbook=1)
-    if "!errorlevel!" NEQ "0" (set Playbook=0)
-goto :eof
-
-REM -------------------------------------------------------------
-:Playbook_Reader_Special
-set PBSpecial=
-FOR /F "skip=2 tokens=4" %%p in ('Find "%~1" !PB! 2^>NUL') do (set PBSpecial=%%p)
-goto :eof
-
-REM -------------------------------------------------------------
-:Powershell_Playbook
-REM chcp 65001 kullanıldığında Powershell komutları ekranı kompakt görünüme sokuyor. Bunu önlemek için bu bölümde uygun geçişi sağlıyorum.
-chcp 437 > NUL 2>&1
-Powershell %* > NUL 2>&1
-chcp 65001 > NUL 2>&1
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -2060,6 +2067,10 @@ FOR /F "delims=► tokens=2" %%a in ('Findstr /i "RemoveApp" %PB% 2^>NUL') do (
 )
 REM -------------------------------------------------------------
 REM Hizmet Yönetimi
+REM Hizmet düzenlemesini hızlıca atlamak için bu bölüm eklendi
+Call :Playbook_Reader Skip_Service_
+	if "!Playbook!" EQU "1" (goto Pass_3
+)
 cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/6 │ !LA2!
 Call :Dil A 2 T0012
 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Service_Manager" %PB%') do (
@@ -2071,6 +2082,7 @@ FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Service_Manager" %PB%') do (
     )
 )
 REM -------------------------------------------------------------
+:Pass_3
 REM Uygulanan regedit ayarlarını gösterir
 set Show=1
 cls&Call :Dil A 2 P1004&title OgnitorenKs Playbook │ 4/6 │ !LA2!
@@ -3233,81 +3245,47 @@ Call :Playbook_Reader Update_Setting_22_
 )
 REM DevHomeUpdate devre dışı bırak [Microsoft proje yönetim uygulamasının otomatik kurulmasını engeller]
 Call :Playbook_Reader Taskschd_Update_Setting_1_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\DevHomeUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\DevHomeUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\DevHomeUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "DevHomeUpdate"
 )
 REM IA devre dışı bırak [Microsoft güncelleştirme kanalı üzerinden Market için kritik güncelleştirmeleri yapar]
 Call :Playbook_Reader Taskschd_Update_Setting_2_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\IA"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\IA"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\IA"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "IA"
 )
 REM LXP devre dışı bırak [Yerel deneyim paketleri - Dil paket güncelleştirmelerini market güncelleştirme kanalından sunar]
 Call :Playbook_Reader Taskschd_Update_Setting_3_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\LXP"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\LXP"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\LXP"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "LXP"
 )
 REM MACUpdate devre dışı bırak [Bu konuda bilgi bulamadım ancak tahminimce Windows yüklü MAC cihazlar için bir özellik güncelleştirmesi içeriyor]
 Call :Playbook_Reader Taskschd_Update_Setting_4_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\MACUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\MACUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "MACUpdate"
 )
 REM OutlookUpdate devre dışı bırak [Yeni Outlook uygulamasının otomatik kurulmasını engeller]
 Call :Playbook_Reader Taskschd_Update_Setting_5_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\OutlookUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\OutlookUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "OutlookUpdate"
 )
 REM TFLUpdate devre dışı bırak [Londra şehrinin ulaşım hizmetleri hakkında bilgi veren Market tabanlı uygulamanın yüklenmesini sağlar. Bölgelese çalışdığını düşünüyorum ancak siz kapatmayı ihmal etmeyin. Microsoft bildiğimiz gibi :D]
 Call :Playbook_Reader Taskschd_Update_Setting_6_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\TFLUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\TFLUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\TFLUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "TFLUpdate"
 )
 REM Edge otomatik yüklemeyi devre dışı bırakır.
 Call :Playbook_Reader Taskschd_Update_Setting_7_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\EdgeUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\EdgeUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\EdgeUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "EdgeUpdate"
 )
 REM CrossDeviceUpdate devre dışı bırakır. Cihazlar arası deneyim güncellemesini devre dışı bırakır
 Call :Playbook_Reader Taskschd_Update_Setting_8_
-    if "!Playbook!" EQU "1" (Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\CrossDeviceUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\CrossDeviceUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\CrossDeviceUpdate"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
-                             Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+    if "!Playbook!" EQU "1" (Call :Taskschd_Update "CrossDeviceUpdate"
 )
 REM Masaüstü duvar kağıdı görüntü kalitesini değiştir
 Call :Playbook_Reader Special_Setting_1_
-    if "!Playbook!" EQU "1" (Call :Playbook_Reader_Special Special_Setting_1_
-                             Call :RegAdd "HKCU\Control Panel\Desktop" "JPEGImportQuality" REG_DWORD !PBSpecial!
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Desktop" "JPEGImportQuality" REG_DWORD !PB_Value!
 )
 REM Menü gösterim gecikme süresini düşür [Varsayılan değer= 400]
 Call :Playbook_Reader Special_Setting_2_
-    if "!Playbook!" EQU "1" (Call :Playbook_Reader_Special Special_Setting_2_
-                             Call :RegAdd "HKCU\Control Panel\Desktop" "MenuShowDelay" REG_SZ !PBSpecial!
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Desktop" "MenuShowDelay" REG_SZ !PB_Value!
 )
 REM Fare ile bir öğenin üzerine gelindiğinde bilgi penceresi gösterim süresi [Varsayılan değer= 400]
 Call :Playbook_Reader Special_Setting_3_
-    if "!Playbook!" EQU "1" (Call :Playbook_Reader_Special Special_Setting_3_
-                             Call :RegAdd "HKCU\Control Panel\Mouse" "MouseHoverTime" REG_SZ !PBSpecial!
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Mouse" "MouseHoverTime" REG_SZ !PB_Value!
 )
 REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 5/6 │ !LA2!
@@ -3315,7 +3293,7 @@ REM Regedit kayıtlarının çıktılarını gizlemek için
 set Show=0
 REM Playbook.ini CMD komutları uygulama bölümü
 Call :Dil B 2 P6001
-Call :Playbook_Reader_2 "CMD_Command"
+Call :Playbook_Reader "CMD_Command"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=► tokens=2" %%a in ('Findstr /i "CMD_Command" %PB% 2^>NUL') do (
                                 %%a > NUL 2>&1
@@ -3325,25 +3303,27 @@ Call :Playbook_Reader_2 "CMD_Command"
 REM -------------------------------------------------------------
 REM Playbook.ini Powershell komutları uygulama bölümü
 Call :Dil B 2 P6001
-Call :Playbook_Reader_2 "Powershell_Command"
+Call :Playbook_Reader "Powershell_Command"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Powershell_Command" %PB% 2^>NUL') do (
-                                Call :Powershell_Playbook %%a > NUL 2>&1
-                                if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
+							    chcp 437 > NUL 2>&1
+							    Powershell %%a > NUL 2>&1
+									if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
+							    chcp 65001 > NUL 2>&1
                             )
 )
 REM -------------------------------------------------------------
 REM Ayarlardan gizlenecek bölümler yapılandırılıyor
 REM İlgili ayar playbook bölümünde yer almıyorsa işlemi gerçekleştirmez
 Call :Dil B 2 P6002
-Call :Playbook_Reader_2 "Settings_Hide"
+Call :Playbook_Reader "Settings_Hide"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=> tokens=2" %%a in ('Findstr /i "Settings_Hide" %PB%') do (Call :Reg_Hide "%%a")
 )
 REM -------------------------------------------------------------
 REM Görev zamanlayıcısı ayarları yapılandırılıyor
 Call :Dil B 2 P6003
-Call :Playbook_Reader_2 "Task_Scheduler_Setting"
+Call :Playbook_Reader "Task_Scheduler_Setting"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Task_Scheduler_Setting" %PB%') do (
                                  FOR /F "tokens=2" %%b in ('Findstr /i "%%a" %PB%') do (
@@ -3355,7 +3335,7 @@ Call :Playbook_Reader_2 "Task_Scheduler_Setting"
 REM -------------------------------------------------------------
 REM Aygıt yöneticisi - Devmainview
 Call :Dil B 2 P6004
-Call :Playbook_Reader_2 "Devmainview_Setting"
+Call :Playbook_Reader "Devmainview_Setting"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Devmainview_Setting" %PB% 2^>NUL') do (
                                 FOR /F "skip=2 tokens=2" %%b in ('Find "%%a" %PB%') do (
@@ -3366,7 +3346,7 @@ Call :Playbook_Reader_2 "Devmainview_Setting"
 REM -------------------------------------------------------------
 REM Sistem açılış ismi değiştir
 Call :Dil B 2 P6005
-Call :Playbook_Reader_2 "System_New_Name"
+Call :Playbook_Reader "System_New_Name"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims='=' tokens=2" %%a in ('Findstr /i "System_New_Name" %PB%') do (bcdedit /set {current} description "%%a" > NUL 2>&1)
 )
@@ -3374,7 +3354,7 @@ Call :Playbook_Reader_2 "System_New_Name"
 REM -------------------------------------------------------------
 REM Özel güç ayarı ekleme bölümü
 Call :Dil B 2 P6006
-Call :Playbook_Reader_2 "Power_Link_"
+Call :Playbook_Reader "Power_Link_"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Power_Link_" %PB%') do (
                                 FOR /F "delims=► tokens=3" %%b in ('Findstr /i "Power_Link_" %PB%') do (
@@ -3387,7 +3367,7 @@ Call :Playbook_Reader_2 "Power_Link_"
 )
 REM Özel masaüstü resmi entegre etme
 Call :Dil B 2 P6007
-Call :Playbook_Reader_2 "Wallpaper_Link_"
+Call :Playbook_Reader "Wallpaper_Link_"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Wallpaper_Link_" %PB%') do (
                                 FOR /F "delims=► tokens=3" %%b in ('Findstr /i "Wallpaper_Link_" %PB%') do (
@@ -3518,7 +3498,7 @@ FOR /F "tokens=2" %%a in ('Findstr /i "Process_Clear_" %PB% 2^>NUL') do (
 REM -------------------------------------------------------------
 REM Uygulama yükleyici
 Call :Dil B 2 T0011
-Call :Playbook_Reader_2 "Install_Application"
+Call :Playbook_Reader "Install_Application"
     if "!Playbook!" EQU "1" (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
                                 FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a" %PB%') do (
                                     if "%%b" EQU "1" (echo %%a | Findstr /i "sylikc.JPEGView" > NUL 2>&1
@@ -3538,6 +3518,7 @@ goto Main_Menu
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :7Zip_Default
+REM 7-Zip programını varsayılan olarak ayarlayan komutlar
 MD "%ProgramFiles%\7-Zip" > NUL 2>&1
 Copy /y "%Konum%\Bin\Icon\7-zipp.ico" "%programfiles%\7-Zip" > NUL 2>&1
 set AppRoad=%programfiles%\7-Zip\7zFM.exe
@@ -3550,6 +3531,7 @@ Call :RegAdd "HKCU\Software\7-Zip\Options" "MenuIcons" REG_DWORD 1
 goto :eof
 
 :Jpegview_Default
+REM Jpegview programını varsayılan olarak ayarlayan komutlar
 set AppRoad=%programfiles%\JPEGView\JPEGView.exe
 set AppKey=JPEGView
 set Default=bmp jpg jpeg png gif tiff webp tga jxl heif heic avif wdp hdp jxr dng crw cr2 nef nrw arw sr2 orf rw2 raf x3f pef mrw kdc dcr wic
@@ -3559,6 +3541,7 @@ Copy /y "%Konum%\Bin\Icon\JPEGView.ini" "%AppData%\JPEGView" > NUL 2>&1
 goto :eof
 
 :Openshell_Setting
+REM Openshell başlat menüsünü gereksiz butonlar kaldırılmış şekilde düzenler.
 Call :RegAdd "HKLM\SOFTWARE\OpenShell\StartMenu" "MenuStyle_Default" REG_SZ "Win7"
 Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "GlassOverride" REG_DWORD 1
 Call :RegAdd "HKU\!CUS!\SOFTWARE\OpenShell\StartMenu\Settings" "GlassColor" REG_DWORD 0
@@ -3578,6 +3561,7 @@ goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Defender_Regedit
+REM Defender kapat/sil komutları
 Call :Service_Admin SecurityHealthService %~1
 Call :Service_Admin Sense %~1
 Call :Service_Admin SgrmBroker %~1
@@ -3677,9 +3661,18 @@ Call :Schtasks "Disable" "\Microsoft\Windows\Windows Defender\Windows Defender S
 Call :Schtasks "Disable" "\Microsoft\Windows\Windows Defender\Windows Defender Verification"
 goto :eof
 
-REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+:Taskschd_Update
+REM Taskschd_Update ayarlarında bu kayıtlar aynı olduğu için tek bir başlık altında toplandı
+Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\%~1"
+Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\%~1"
+Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\%~1"
+Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\Settings" /v "OOBEEXPEDITEALLOWEDUPDATERS"
+Call :RegDel "HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\USOShared\ScheduleTimeDump"
+goto :eof
 
+REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :SS_13
+REM Konum hizmetini açıp kapatmaya yarayan ek regedit komutları
 if !Value! EQU E (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableSensors" REG_DWORD 0
                   Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocation" REG_DWORD 0
                   Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" "DisableLocationScripting" REG_DWORD 0
@@ -3701,6 +3694,7 @@ if !Value! EQU D (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\Locatio
 goto :eof
 
 :SS_16
+REM Hızlı getir-başlat özelliğini aç/kapa yapmaya yarayan ek regedit komutları
 if !Value! EQU E (set VR=1)
 if !Value! EQU D (set VR=0)
 Call :RegAdd_CCS "Control\Power" "HibernateEnabled" REG_DWORD !VR!
@@ -3708,6 +3702,7 @@ Call :RegAdd_CCS "Control\Session Manager\Power" "HiberbootEnabled" REG_DWORD !V
 goto :eof
 
 :SS_29
+REM Sistem geri yükleme ve bağlı hizmetleri açıp/kapatmaya yarayan ek regedit komutları
 if !Value! EQU D (Call :RegDel "HKCR\AllFilesystemObjects\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
                   Call :RegDel "HKCR\AllFilesystemObjects\shellex\PropertySheetHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
                   Call :RegDel "HKCR\CLSID\{450D8FBA-AD25-11D0-98A8-0800361B1103}\shellex\ContextMenuHandlers\{596AB062-B4D2-4215-9F74-E9109B0A8153}"
@@ -3743,7 +3738,4 @@ if !Value! EQU E (Call :RegKey "HKCR\AllFilesystemObjects\shellex\ContextMenuHan
                   Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableConfig" REG_DWORD "0"
                   Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" "DisableSR" REG_DWORD "0"
 )
-goto :eof
-
-:Developer
 goto :eof
