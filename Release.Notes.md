@@ -4,7 +4,17 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.3.7 ► 27.05.2024 </B></summary>
+
+<details><B><summary> Versiyon 4.3.8 ► 29.05.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • Playbook bölümünden "Pass_3" başlığı kaldırıldı.
+		► "Sistem hakkında" bölümünde;
+		    • DDR5 verisi güncellendi.
+		    • Hatalı Windows bilgi sorunu giderildi.
+		• "Uygulama yükleyici" bölümünde hash doğrulama hatasını atlaması için yeni eklemeler yapıldı.
+
+</details><details><B><summary> Versiyon 4.3.7 ► 27.05.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Ping Ölçer" bölümündeki 'Ping_M1' ve 'Ping_M2' başlıkları birleştirilip 'Ping' başlığı haline getirildi. Bağlı kodlar yeni başlığa göre düzenlendi.

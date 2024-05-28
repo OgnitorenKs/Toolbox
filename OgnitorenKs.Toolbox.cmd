@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.7
+set Version=4.3.8
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -136,12 +136,12 @@ REM Regedit bölümünde yapılan işlemlerin gösterilip gösterilmeyeceğini b
 REM Playbook bölümünde ayarları göstermek için bu değişkeni 0 olarak ayarlıyorum. Burada daha düzgün bir arayüz için regedit kayıtlarını uygularken göstermiyorum.
 set Show=0
 REM Sistem hakkında bilgi alınır. Ana menüde gösterilir.
-FOR /F "tokens=2 delims=':'" %%a in ('FIND "Caption" %Konum%\Log\OS') do set Value1=%%a
+FOR /F "tokens=2 delims=':'" %%a in ('Find "Caption" %Konum%\Log\OS') do (set Value1=%%a)
 set Value1=%Value1:~11%
-FOR /F "tokens=2 delims=':'" %%b in ('FIND "RegisteredUser" %Konum%\Log\OS') do set Value2=%%b
-FOR /F "tokens=3 delims= " %%f in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do set Value3=%%f
+FOR /F "tokens=2 delims=':'" %%a in ('Find "RegisteredUser" %Konum%\Log\OS') do (set Value2=%%a)
+FOR /F "tokens=3 delims= " %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do (set Value3=%%a)
 set Value3=%Value3:~5%
-FOR /F "skip=1 tokens=3" %%b in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "DisplayVersion" 2^>NUL') do (set Value4=%%b)
+FOR /F "skip=1 tokens=3" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "DisplayVersion" 2^>NUL') do (set Value4=%%a)
 Call :Date
 set DateYear=
 set Value_M=NT
@@ -772,7 +772,13 @@ REM -------------------------------------------------------------
 :Winget
 winget list "%~1" --accept-source-agreements > NUL 2>&1
     if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1
-                                    if "!errorlevel!" NEQ "0" (cls&"%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1)
+                                    if "!errorlevel!" NEQ "0" (cls
+									                           winget settings --enable InstallerHashOverride > NUL 2>&1
+															   "%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash
+															   winget list "%~1" --accept-source-agreements > NUL 2>&1
+															       if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash)
+															   winget settings --disable InstallerHashOverride > NUL 2>&1
+															  )
     )
 )
 goto :eof
@@ -1077,13 +1083,14 @@ FOR %%j in (!Value_W!) do (
         reg query "HKLM\SYSTEM\CurrentControlSet\Services\%%g" /v "Start" > NUL 2>&1
             if !errorlevel! EQU 0 (if !Value! EQU E (FOR /F "delims=> tokens=4" %%h in ('Findstr /i "%%g" %Konum%\Bin\Extra\Data.cmd') do (Call :Service_Admin "%%g" "%%h"))
                                    if !Value! EQU D (Call :Service_Admin "%%g" "4")
-        )
+                                  )
     )
 )
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 :Read_Features
+REM 'Data.cmd' dosyasından %~1 ile gönderilen değerleri alır. İlgili başlığı 'Value_C' değişkenine tanımlar.
 FOR /F "delims=> tokens=3" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (set Value_C=%%g)
 goto :eof
 
@@ -1292,7 +1299,7 @@ goto :eof
 
 REM -------------------------------------------------------------
 :Schtasks-Remove
-REM Görev zamanlayacısında silme işlemi yapar.
+REM Görev zamanlayacısında silme işlemi yapar
 schtasks /Delete /TN "%~1" /F > NUL 2>&1
     if !errorlevel! NEQ 0 (%NSudo% schtasks /Delete /TN "%~1" /F)
 goto :eof
@@ -1351,6 +1358,7 @@ if %~1 EQU 24 (set Value_R=DDR3)
 if %~1 EQU 25 (set Value_R=FBD2)
 if %~1 EQU 26 (set Value_R=DDR4)
 if %~1 EQU 27 (set Value_R=DDR5)
+if %~1 EQU 34 (set Value_R=DDR5)
 goto :eof
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -1414,18 +1422,21 @@ echo  %R%[90m├─────────────────────�
 Call :Powershell "Get-CimInstance -ClassName Win32_TimeZone | Select-Object -Property Caption | format-list" > %Konum%\Log\utc.txt
 Call :Dil A 2 EE_6_
 FOR /F "tokens=5" %%a in ('Findstr /i "Caption" %Konum%\Log\OS.txt 2^>NUL') do (
-    FOR /F "delims=:1 tokens=3" %%b in ('Findstr /i "Caption" %Konum%\Log\OS.txt 2^>NUL') do (
+    FOR /F "delims=':' tokens=2" %%b in ('Findstr /i "Caption" %Konum%\Log\OS.txt 2^>NUL') do (
         FOR /F "tokens=3" %%c in ('Findstr /i "OSArchitecture" %Konum%\Log\OS.txt 2^>NUL') do (
             FOR /F "skip=2 delims=. tokens=3" %%d in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do (
                 FOR /F "skip=2 delims=. tokens=4" %%e in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do (
                     FOR /F "skip=2 tokens=3" %%f in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "DisplayVersion" 2^>NUL') do (
-                        echo   ►%R%[36m !LA2!:%R%[33m Windows %%a%%b %R%[90m│%R%[33m x%%c %R%[90m│%R%[33m %%f %R%[90m│%R%[33m %%d.%%e %R%[0m
+						set Value_Win=%%b
+						set Value_Win=!Value_Win:~11!
+                        echo   ►%R%[36m !LA2!:%R%[33m !Value_Win! %R%[90m│%R%[33m x%%c %R%[90m│%R%[33m %%f %R%[90m│%R%[33m %%d.%%e %R%[0m
                     )
                 )
             )
         )
     )
 )
+set Value_Win=
 REM ──────────────────────────────────────
 bcdedit > %Konum%\Log\Bcdedit.txt
 Findstr /i "winload.efi" %Konum%\Log\Bcdedit.txt > NUL 2>&1
@@ -2069,20 +2080,18 @@ REM -------------------------------------------------------------
 REM Hizmet Yönetimi
 REM Hizmet düzenlemesini hızlıca atlamak için bu bölüm eklendi
 Call :Playbook_Reader Skip_Service_
-	if "!Playbook!" EQU "1" (goto Pass_3
-)
-cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/6 │ !LA2!
-Call :Dil A 2 T0012
-FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Service_Manager" %PB%') do (
-    FOR /F "skip=2 tokens=2" %%b in ('Find "►%%a►" %PB%') do (
-        if "%%b" NEQ "5" (echo ► %R%[92m "%%a"%R%[37m !LA2! %R%[0m
-                          echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
-                          Call :Service_Admin "%%a" "%%b"
-                         )
-    )
+	if "!Playbook!" EQU "0" (cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/6 │ !LA2!
+	                         Call :Dil A 2 T0012
+							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Service_Manager" %PB%') do (
+							     FOR /F "skip=2 tokens=2" %%b in ('Find "►%%a►" %PB%') do (
+								     if "%%b" NEQ "5" (echo ► %R%[92m "%%a"%R%[37m !LA2! %R%[0m
+									                   echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
+													   Call :Service_Admin "%%a" "%%b"
+													  )
+								)
+							 )
 )
 REM -------------------------------------------------------------
-:Pass_3
 REM Uygulanan regedit ayarlarını gösterir
 set Show=1
 cls&Call :Dil A 2 P1004&title OgnitorenKs Playbook │ 4/6 │ !LA2!
