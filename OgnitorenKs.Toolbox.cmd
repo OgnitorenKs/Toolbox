@@ -162,13 +162,13 @@ Call :Dil A 2 D0001&set /p Value_M=%R%[32m        !LA2!: %R%[0m
 Call :Upper !Value_M! Value_M
 title 🤖 OgnitorenKs Toolbox 🤖
     if "!Value_M!" EQU "1" (Call :Dil A 2 T0013&echo %R%[36m        !LA2!... %R%[0m
-							Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
-							    if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_&Call :Dil B 2 Error_5_
-														   echo.&echo %R%[31m !LA2! %R%[0m
-														   echo.&echo %R%[31m !LB2! %R%[0m
-														   Call :Bekle 10&goto Main_Menu)
-								if "!errorlevel!" EQU "0" (goto Software_Installer)
-						   )
+                            Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
+                                if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_&Call :Dil B 2 Error_5_
+                                                           echo.&echo %R%[31m !LA2! %R%[0m
+                                                           echo.&echo %R%[31m !LB2! %R%[0m
+                                                           Call :Bekle 10&goto Main_Menu)
+                                if "!errorlevel!" EQU "0" (goto Software_Installer)
+                           )
     if "!Value_M!" EQU "2" (goto Service_Menu)
     if "!Value_M!" EQU "3" (goto Features_Warning)
     if "!Value_M!" EQU "4" (goto Oto_Kapat)
@@ -207,22 +207,22 @@ Call :DEL_Direct "%Konum%\Log\Winget_Log.txt"
 set Error=NT
 FOR %%a in (!Value_M!) do (
     cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
-	if %%a EQU 1 (Call :AIO_Runtimes)
-	if %%a EQU 31 (Call :Jpegview_Default)
-	if %%a EQU 59 (Call :7Zip_Default)
-	if %%a NEQ 1 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
-				      FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
-					      echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
-						  Call :Winget %%b
-						  winget list "%%b" --accept-source-agreements > NUL 2>&1
-						      if "!errorlevel!" EQU "0" (echo Winget_%%a_^>1^>%%c^> >> %Konum%\Log\Winget_Log.txt)
-						      if "!errorlevel!" NEQ "0" (echo Winget_%%a_^>0^>%%c^> >> %Konum%\Log\Winget_Log.txt)
-				 )))
+    if %%a EQU 1 (Call :AIO_Runtimes)
+    if %%a EQU 31 (Call :Jpegview_Default)
+    if %%a EQU 59 (Call :7Zip_Default)
+    if %%a NEQ 1 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+                      FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+                          echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
+                          Call :Winget %%b
+                          winget list "%%b" --accept-source-agreements > NUL 2>&1
+                              if "!errorlevel!" EQU "0" (echo Winget_%%a_^>1^>%%c^> >> %Konum%\Log\Winget_Log.txt)
+                              if "!errorlevel!" NEQ "0" (echo Winget_%%a_^>0^>%%c^> >> %Konum%\Log\Winget_Log.txt)
+                 )))
 )
 REM 1 numaralı işlem tek seçilmişse bilgi ekranını atlar.
 set Count=0
 FOR %%a in (!Value_M!) do (
-	set /a Count+=1
+    set /a Count+=1
 )
 if !Count! EQU 1 (if !Value_M! EQU 1 (goto Software_Installer))
 set Count=
@@ -233,14 +233,14 @@ Call :Dil B 2 T0016
 Call :Dil C 2 T0037
 echo  ►%R%[36m !LC2! %R%[0m&echo.
 FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Log.txt') do (
-	FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
-		FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
-			if %%a GTR 9 (set Numb=%%a)
-			if %%a LSS 9 (set Numb= %%a)
-			if %%b EQU 1 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m)
-			if %%b EQU 0 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m)
-		)
-	)
+    FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
+        FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
+            if %%a GTR 9 (set Numb=%%a)
+            if %%a LSS 9 (set Numb= %%a)
+            if %%b EQU 1 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m)
+            if %%b EQU 0 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m)
+        )
+    )
 )
 Call :Dil A 2 T0028
 echo.&echo %R%[36m !LA2! %R%[0m
@@ -746,12 +746,12 @@ REM -------------------------------------------------------------
 winget list "%~1" --accept-source-agreements > NUL 2>&1
     if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1
                                     if "!errorlevel!" NEQ "0" (cls
-									                           winget settings --enable InstallerHashOverride > NUL 2>&1
-															   "%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash
-															   winget list "%~1" --accept-source-agreements > NUL 2>&1
-															       if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash)
-															   winget settings --disable InstallerHashOverride > NUL 2>&1
-															  )
+                                                               winget settings --enable InstallerHashOverride > NUL 2>&1
+                                                               "%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash
+                                                               winget list "%~1" --accept-source-agreements > NUL 2>&1
+                                                                   if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash)
+                                                               winget settings --disable InstallerHashOverride > NUL 2>&1
+                                                              )
     )
 )
 goto :eof
@@ -1043,11 +1043,11 @@ if %Win% EQU 11 (set Value_W=0 11)
 if %Win% EQU 10 (set Value_W=0 10)
 if %~1 EQU E (set Value=E
               Call :Dil B 2 T0001
-			  goto :eof
+              goto :eof
 )
 if %~1 EQU D (set Value=D
               Call :Dil B 2 T0002
-			  goto :eof
+              goto :eof
 )
 Call :Dil A 2 SL_%~1_
 echo %R%[96m "!LA2!" %R%[37m !LB2! %R%[0m
@@ -1125,9 +1125,9 @@ REM -------------------------------------------------------------
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
     Findstr /i "%%g" %Konum%\Log\C_Capabilities > NUL 2>&1
         if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Capabilities') do (
-		                           Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1
-		)
-	)
+                                   Dism /Online /Remove-Capability /CapabilityName:%%k /NoRestart > NUL 2>&1
+        )
+    )
 )
 goto :eof
 
@@ -1136,9 +1136,9 @@ REM -------------------------------------------------------------
 FOR /F "delims=> tokens=2" %%g in ('Findstr /i "%~1" %Konum%\Bin\Extra\Data.cmd 2^>NUL') do (
     Findstr /i "%%g" %Konum%\Log\C_Packages > NUL 2>&1
         if !errorlevel! EQU 0 (FOR /F "tokens=1" %%k in ('Findstr /i "%%g" %Konum%\Log\C_Packages') do (
-	                               Dism /Online /Remove-Package /PackageName:%%k /NoRestart > NUL 2>&1
-		)
-	)
+                                   Dism /Online /Remove-Package /PackageName:%%k /NoRestart > NUL 2>&1
+        )
+    )
 )
 goto :eof
 
@@ -1400,8 +1400,8 @@ FOR /F "tokens=5" %%a in ('Findstr /i "Caption" %Konum%\Log\OS.txt 2^>NUL') do (
             FOR /F "skip=2 delims=. tokens=3" %%d in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do (
                 FOR /F "skip=2 delims=. tokens=4" %%e in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo\Installed\Client.OS.rs2.amd64" /v "Version" 2^>NUL') do (
                     FOR /F "skip=2 tokens=3" %%f in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "DisplayVersion" 2^>NUL') do (
-						set Value_Win=%%b
-						set Value_Win=!Value_Win:~11!
+                        set Value_Win=%%b
+                        set Value_Win=!Value_Win:~11!
                         echo   ►%R%[36m !LA2!:%R%[33m !Value_Win! %R%[90m│%R%[33m x%%c %R%[90m│%R%[33m %%f %R%[90m│%R%[33m %%d.%%e %R%[0m
                     )
                 )
@@ -1555,7 +1555,7 @@ FOR /L %%a in (1,1,!Count!) do (
                         if !Uzunluk1! EQU 10 (set Value=!Value:~0,1!)
                         if !Uzunluk1! EQU 11 (set Value=!Value:~0,2!)
                         if !Uzunluk1! EQU 12 (set Value=!Value:~0,3!)
-						set /a RAM_Check+=!Value!
+                        set /a RAM_Check+=!Value!
                         echo   ►%R%[36m !LA2!:%R%[33m %%b %R%[90m│%R%[36m !LB2!:%R%[33m %%c %R%[90m│%R%[36m !LC2!:%R%[33m !Value!%R%[37m GB %R%[90m│%R%[36m !LD2!:%R%[33m %%e%R%[37m MT/s %R%[90m│%R%[36m !LE2!:%R%[33m !Value_R! %R%[0m
                     )
                 )
@@ -1569,8 +1569,8 @@ Call :Dil A 2 EE_19_
 Call :Dil B 2 EE_18_
 FOR /F "tokens=4" %%a in ('systeminfo ^| Find "Total Physical Memory"') do (
     FOR /F "delims=. tokens=1" %%b in ('echo %%a') do (
-		set Ram_Info=%%b
-		if "!RAM_Check!" GTR "!Ram_Info!" (set RAM_Info=!RAM_Check!)
+        set Ram_Info=%%b
+        if "!RAM_Check!" GTR "!Ram_Info!" (set RAM_Info=!RAM_Check!)
         echo   ►%R%[36m !LA2! !LB2!:%R%[33m !RAM_Info!%R%[37m GB %R%[0m
     )
 )
@@ -2059,16 +2059,16 @@ REM -------------------------------------------------------------
 REM Hizmet Yönetimi
 REM Hizmet düzenlemesini hızlıca atlamak için bu bölüm eklendi
 Call :Playbook_Reader Skip_Service_
-	if "!Playbook!" EQU "0" (cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/6 │ !LA2!
-	                         Call :Dil A 2 T0012
-							 FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Service_Manager" %PB%') do (
-							     FOR /F "skip=2 tokens=2" %%b in ('Find "►%%a►" %PB%') do (
-								     if "%%b" NEQ "5" (echo ► %R%[92m "%%a"%R%[37m !LA2! %R%[0m
-									                   echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
-													   Call :Service_Admin "%%a" "%%b"
-													  )
-								)
-							 )
+    if "!Playbook!" EQU "0" (cls&Call :Dil A 2 P1003&title OgnitorenKs Playbook │ 3/6 │ !LA2!
+                             Call :Dil A 2 T0012
+                             FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Service_Manager" %PB%') do (
+                                 FOR /F "skip=2 tokens=2" %%b in ('Find "►%%a►" %PB%') do (
+                                     if "%%b" NEQ "5" (echo ► %R%[92m "%%a"%R%[37m !LA2! %R%[0m
+                                                       echo [%%b]-"%%a" >> %Konum%\Log\Playbook_Log.txt
+                                                       Call :Service_Admin "%%a" "%%b"
+                                                      )
+                                )
+                             )
 )
 REM -------------------------------------------------------------
 REM Uygulanan regedit ayarlarını gösterir
@@ -3294,10 +3294,10 @@ Call :Dil B 2 P6001
 Call :Playbook_Reader "Powershell_Command"
     if "!Playbook!" EQU "1" (echo ►%R%[33m !LB2! %R%[0m
                              FOR /F "delims=► tokens=2" %%a in ('Findstr /i "Powershell_Command" %PB% 2^>NUL') do (
-							    chcp 437 > NUL 2>&1
-							    Powershell %%a > NUL 2>&1
-									if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
-							    chcp 65001 > NUL 2>&1
+                                chcp 437 > NUL 2>&1
+                                Powershell %%a > NUL 2>&1
+                                    if "!errorlevel!" NEQ "0" (%NSudo% Powershell %%a)
+                                chcp 65001 > NUL 2>&1
                             )
 )
 REM -------------------------------------------------------------
