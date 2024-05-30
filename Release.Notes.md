@@ -5,6 +5,20 @@
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
 
+<details><B><summary> Versiyon 4.3.9 ► 30.05.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • "Sistem hakkında" bölümünde Ram miktarını gösteren bölümde toplam RAM boyutu az göstermesine neden olan veri hatasını gidermek için kontrol komutları eklendi.
+		• Kullanılmayan bazı değişkenler işlem sonunda içi boşaltılacak şekilde düzenlendi.
+	▼ Uygulama Yükleyicisi
+		• "Gimp" programının yükleme hatası giderildi.
+		• "Vivaldi" yükleme hatası giderildi.
+		• "Whatsapp" yükleme hatası giderildi.
+		• Yükleme işlemlerinde başarılı ve başarısız işlemleri göstermesi için bilgi ekranı eklendi.
+		• Mantıksal sorgular yeniden yazıldı.
+		• "Jump_1" başlığı kaldırıldı. Öncesinde yer alan Winget kontrol komutları ana menüde if sorgusuna alındı.
+		• "Adobe Reader" "Acrobat Reader" olarak adlandırıldı.
+		
 <details><B><summary> Versiyon 4.3.8 ► 29.05.2024 </B></summary>
 
     ▼ Genel değişiklikler;

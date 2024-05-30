@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.8
+set Version=4.3.9
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -161,7 +161,14 @@ Call %Dil% :Menu_1_%Win%
 Call :Dil A 2 D0001&set /p Value_M=%R%[32m        !LA2!: %R%[0m
 Call :Upper !Value_M! Value_M
 title 🤖 OgnitorenKs Toolbox 🤖
-    if "!Value_M!" EQU "1" (goto Software_Installer)
+    if "!Value_M!" EQU "1" (Call :Dil A 2 T0013&echo %R%[36m        !LA2!... %R%[0m
+							Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
+							    if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_&Call :Dil B 2 Error_5_
+														   echo.&echo %R%[31m !LA2! %R%[0m
+														   echo.&echo %R%[31m !LB2! %R%[0m
+														   Call :Bekle 10&goto Main_Menu)
+								if "!errorlevel!" EQU "0" (goto Software_Installer)
+						   )
     if "!Value_M!" EQU "2" (goto Service_Menu)
     if "!Value_M!" EQU "3" (goto Features_Warning)
     if "!Value_M!" EQU "4" (goto Oto_Kapat)
@@ -182,101 +189,64 @@ goto Main_Menu
 REM -------------------------------------------------------------
 :Software_Installer
 mode con cols=98 lines=38
-REM Winget sistemini kontrol eder
-Call :Dil A 2 T0013&echo.&echo %R%[92m !LA2! %R%[0m
-Winget show "Google.Chrome" --accept-source-agreements > NUL 2>&1
-    if "!errorlevel!" NEQ "0" (Call :Dil A 2 Error_4_
-                               Call :Dil B 2 Error_5_
-                               echo.&echo %R%[31m !LA2! %R%[0m
-                               echo.&echo %R%[31m !LB2! %R%[0m
-                               Call :Bekle 10&goto Main_Menu
-)
-:Jump_1
-cls
 REM Dil dosyasından ilgili bölüm çağırılır
 Call %Dil% :Menu_2
 REM Boş değişken kullanımında toolbox kapanacağı için değişkeni geçersiz bir değer ile dolduruyoruz.
 set Value_M=NT
 Call :Dil A 2 D0002&set /p Value_M=%R%[32m  !LA2! %R%[90mx,y: %R%[0m
 REM Kullanıcının girdiği veriyi büyük harfe dönüştürüyorum.
-Call :Upper %Value_M% Value_M
+Call :Upper !Value_M! Value_M
 REM Alt bölümde yönlendirmeleri yapıyorum.
-echo %Value_M% | Findstr /i "X" > NUL 2>&1
+echo !Value_M! | Findstr /i "X" > NUL 2>&1
     if !errorlevel! EQU 0 (goto Main_Menu)
+REM Seçilen programları yüklemek için 'Winget.txt' içerisinden veriyi çeker ve yükletir.
 Call :Dil A 2 T0003
-FOR %%a in (%Value_M%) do (
-    cls&echo.&echo  ►%R%[92m !LA2!:%R%[0m %Value_M%
-    if %%a EQU 1 (Call :AIO_Runtimes)
-    if %%a EQU 2 (Call :Winget Discord.Discord)
-    if %%a EQU 3 (Call :Winget WhatsApp.WhatsApp)
-    if %%a EQU 4 (Call :Winget OpenWhisperSystems.Signal)
-    if %%a EQU 5 (Call :Winget Telegram.TelegramDesktop)
-    if %%a EQU 6 (Call :Winget Zoom.Zoom)
-    if %%a EQU 7 (Call :Winget EpicGames.EpicGamesLauncher)
-    if %%a EQU 8 (Call :Winget Valve.Steam)
-    if %%a EQU 9 (Call :Winget GOG.Galaxy)
-    if %%a EQU 10 (Call :Winget Ubisoft.Connect)
-    if %%a EQU 11 (Call :Winget ElectronicArts.EADesktop)
-    if %%a EQU 12 (Call :Winget Playnite.Playnite)
-    if %%a EQU 13 (Call :Winget Hibbiki.Chromium)
-    if %%a EQU 14 (Call :Winget eloston.ungoogled-chromium)
-    if %%a EQU 15 (Call :Winget Google.Chrome)
-    if %%a EQU 16 (Call :Winget Microsoft.Edge)
-    if %%a EQU 17 (Call :Winget Brave.Brave)
-    if %%a EQU 18 (Call :Winget CentStudio.CentBrowser)
-    if %%a EQU 19 (Call :Winget VivaldiTechnologies.Vivaldi)
-    if %%a EQU 20 (Call :Winget Maxthon.Maxthon)
-    if %%a EQU 21 (Call :Winget Opera.Opera)
-    if %%a EQU 22 (Call :Winget Opera.OperaGX)
-    if %%a EQU 23 (Call :Winget Mozilla.Firefox)
-    if %%a EQU 24 (Call :Winget LibreWolf.LibreWolf)
-    if %%a EQU 25 (Call :Winget TorProject.TorBrowser)
-    if %%a EQU 26 (Call :Winget KDE.Kdenlive)
-    if %%a EQU 27 (Call :Winget OpenShot.OpenShot)
-    if %%a EQU 28 (Call :Winget Meltytech.Shotcut)
-    if %%a EQU 29 (Call :Winget KDE.Krita)
-    if %%a EQU 30 (Call :Winget GIMP.GIM)
-    if %%a EQU 31 (Call :Jpegview_Default&Call :Winget sylikc.JPEGView)
-    if %%a EQU 32 (Call :Winget OBSProject.OBSStudio)
-    if %%a EQU 33 (Call :Winget ShareX.ShareX)
-    if %%a EQU 34 (Call :Winget Skillbrains.Lightshot)
-    if %%a EQU 35 (Call :Winget Audacity.Audacity)
-    if %%a EQU 36 (Call :Winget HandBrake.HandBrake)
-    if %%a EQU 37 (Call :Winget AdrienAllard.FileConverter)
-    if %%a EQU 38 (Call :Winget CodecGuide.K-LiteCodecPack.Mega)
-    if %%a EQU 39 (Call :Winget VideoLAN.VLC)
-    if %%a EQU 40 (Call :Winget Daum.PotPlayer)
-    if %%a EQU 41 (Call :Winget Spotify.Spotify)
-    if %%a EQU 42 (Call :Winget SoftDeluxe.FreeDownloadManager)
-    if %%a EQU 43 (Call :Winget subhra74.XtremeDownloadManager)
-    if %%a EQU 44 (Call :Winget qBittorrent.qBittorrent)
-    if %%a EQU 45 (Call :Winget TheDocumentFoundation.LibreOffice)
-    if %%a EQU 46 (Call :Winget ONLYOFFICE.DesktopEditors)
-    if %%a EQU 47 (Call :Winget Adobe.Acrobat.Reader.64-bit)
-    if %%a EQU 48 (Call :Winget TrackerSoftware.PDF-XChangeEditor)
-    if %%a EQU 49 (Call :Winget calibre.calibre)
-    if %%a EQU 50 (Call :Winget Notepad++.Notepad++)
-    if %%a EQU 51 (Call :Winget Microsoft.VisualStudioCode)
-    if %%a EQU 52 (Call :Winget GitHub.GitHubDesktop)
-    if %%a EQU 53 (Call :Winget Git.Git)
-    if %%a EQU 54 (Call :Winget OpenJS.NodeJS)
-    if %%a EQU 55 (Call :Winget Unity.UnityHub)
-    if %%a EQU 56 (Call :Winget BlenderFoundation.Blender)
-    if %%a EQU 57 (Call :Winget IObit.IObitUnlocker)
-    if %%a EQU 58 (Call :Winget RevoUninstaller.RevoUninstaller)
-    if %%a EQU 59 (Call :7Zip_Default&Call :Winget 7zip.7zip)
-    if %%a EQU 60 (Call :Winget Open-Shell.Open-Shell-Menu)
-    if %%a EQU 61 (Call :Winget AnyDeskSoftwareGmbH.AnyDesk)
-    if %%a EQU 62 (Call :Winget Henry++.MemReduct)
-    if %%a EQU 63 (Call :Winget Guru3D.Afterburner)
-    if %%a EQU 64 (Call :Winget LogMeIn.Hamachi)
-    if %%a EQU 65 (Call :Winget GlassWire.GlassWire)
-    if %%a EQU 66 (Call :Winget Safing.Portmaster)
-    if %%a EQU 67 (Call :Winget voidtools.Everything)
-    if %%a EQU 68 (Call :Winget Flow-Launcher.Flow-Launcher)
-    if %%a EQU 69 (Call :Winget Stremio.Stremio)
+Call :Dil B 2 T0011
+MD %Konum%\Log
+Call :DEL_Direct "%Konum%\Log\Winget_Log.txt"
+set Error=NT
+FOR %%a in (!Value_M!) do (
+    cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
+	if %%a EQU 1 (Call :AIO_Runtimes)
+	if %%a EQU 31 (Call :Jpegview_Default)
+	if %%a EQU 59 (Call :7Zip_Default)
+	if %%a NEQ 1 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+				      FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+					      echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
+						  Call :Winget %%b
+						  winget list "%%b" --accept-source-agreements > NUL 2>&1
+						      if "!errorlevel!" EQU "0" (echo Winget_%%a_^>1^>%%c^> >> %Konum%\Log\Winget_Log.txt)
+						      if "!errorlevel!" NEQ "0" (echo Winget_%%a_^>0^>%%c^> >> %Konum%\Log\Winget_Log.txt)
+				 )))
 )
-goto Jump_1
+REM 1 numaralı işlem tek seçilmişse bilgi ekranını atlar.
+set Count=0
+FOR %%a in (!Value_M!) do (
+	set /a Count+=1
+)
+if !Count! EQU 1 (if !Value_M! EQU 1 (goto Software_Installer))
+set Count=
+REM Yüklemelerle ilgili bilgi ekranı
+cls&echo.
+Call :Dil A 2 T0015
+Call :Dil B 2 T0016
+Call :Dil C 2 T0037
+echo  ►%R%[36m !LC2! %R%[0m&echo.
+FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Log.txt') do (
+	FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
+		FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
+			if %%a GTR 9 (set Numb=%%a)
+			if %%a LSS 9 (set Numb= %%a)
+			if %%b EQU 1 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m)
+			if %%b EQU 0 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m)
+		)
+	)
+)
+Call :Dil A 2 T0028
+echo.&echo %R%[36m !LA2! %R%[0m
+pause > NUL
+goto Software_Installer
+
 REM -------------------------------------------------------------
 :AIO_Runtimes
 cls&Call :Dil B 2 T0018&echo %R%[32m !LB2! %R%[0m
@@ -563,6 +533,7 @@ REM -------------------------------------------------------------
 REM Sistem temizliği yapar
 cls
 Call :Dil A 2 B0006&title !LA2!
+REM 'Show' değişkeni 1 olarak ayarlayıp yapılan işlemlerin detayını kullanıcılara gösteriyorum.
 set Show=1
 ie4uinit.exe -show
 ie4uinit.exe -ClearIconCache
@@ -579,6 +550,7 @@ Call :DEL_Search "%LocalAppData%\Packages\Microsoft.Windows.Search_cw5n1h2txyewy
 Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v "IconStreams"
 Call :RegDel "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify" /v "PastIconsStream"
     if "!Explorer_Reset!" EQU "0" (Call :Powershell "Start-Process '%Windir%\explorer.exe'")
+set Explorer_Reset=
 REM Temp klasörlerini temizler
 Call :DEL_Search "%Temp%\*"
 Call :RD_Search "%Temp%\*"
@@ -673,6 +645,7 @@ Call :Dil A 2 T0032&echo.&echo %R%[32m !LA2! %R%[0m
 Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
 Call :RD_Direct "%Windir%\WinSxS\Temp"
 Call :RD_Direct "%Windir%\WinSxS\Backup"
+REM Kullanıcıya tüm detaylar gösterilden sonra Toolbox'ın genel görünümü için 'Show' değişkeni 0 olarak ayarlanır.
 set Show=0
 goto :eof
 
@@ -1569,6 +1542,7 @@ Call :Dil B 2 EE_9_
 Call :Dil C 2 EE_17_
 Call :Dil D 2 EE_15_
 Call :Dil E 2 EE_10_
+set RAM_Check=0
 FOR /L %%a in (1,1,!Count!) do (
     FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Brand_%%a_" %Konum%\Log\RamDetail 2^>NUL') do (
         FOR /F "delims=> tokens=2" %%c in ('Findstr /i "Model_%%a_" %Konum%\Log\RamDetail 2^>NUL') do (
@@ -1581,6 +1555,7 @@ FOR /L %%a in (1,1,!Count!) do (
                         if !Uzunluk1! EQU 10 (set Value=!Value:~0,1!)
                         if !Uzunluk1! EQU 11 (set Value=!Value:~0,2!)
                         if !Uzunluk1! EQU 12 (set Value=!Value:~0,3!)
+						set /a RAM_Check+=!Value!
                         echo   ►%R%[36m !LA2!:%R%[33m %%b %R%[90m│%R%[36m !LB2!:%R%[33m %%c %R%[90m│%R%[36m !LC2!:%R%[33m !Value!%R%[37m GB %R%[90m│%R%[36m !LD2!:%R%[33m %%e%R%[37m MT/s %R%[90m│%R%[36m !LE2!:%R%[33m !Value_R! %R%[0m
                     )
                 )
@@ -1588,11 +1563,15 @@ FOR /L %%a in (1,1,!Count!) do (
         )
     )
 )
+set Value=
+set Uzunluk=1
 Call :Dil A 2 EE_19_
 Call :Dil B 2 EE_18_
 FOR /F "tokens=4" %%a in ('systeminfo ^| Find "Total Physical Memory"') do (
     FOR /F "delims=. tokens=1" %%b in ('echo %%a') do (
-        echo   ►%R%[36m !LA2! !LB2!:%R%[33m %%b%R%[37m GB %R%[0m
+		set Ram_Info=%%b
+		if "!RAM_Check!" GTR "!Ram_Info!" (set RAM_Info=!RAM_Check!)
+        echo   ►%R%[36m !LA2! !LB2!:%R%[33m !RAM_Info!%R%[37m GB %R%[0m
     )
 )
 echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m

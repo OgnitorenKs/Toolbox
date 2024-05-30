@@ -1,0 +1,69 @@
+Winget_1_>AIO_Runtimes>
+Winget_2_>Discord.Discord>Discord>
+Winget_3_>9nksqgp7f2nh>WhatsApp>
+Winget_4_>OpenWhisperSystems.Signal>Signal>
+Winget_5_>Telegram.TelegramDesktop>Telegram>
+Winget_6_>Zoom.Zoom>Zoom>
+Winget_7_>EpicGames.EpicGamesLauncher>EpicGames>
+Winget_8_>Valve.Steam>Steam>
+Winget_9_>GOG.Galaxy>GOG Galaxy>
+Winget_10_>Ubisoft.Connect>Ubisoft Connect>
+Winget_11_>ElectronicArts.EADesktop>EA Games/Origin>
+Winget_12_>Playnite.Playnite>Playnite>
+Winget_13_>Hibbiki.Chromium>Chromium [Sync]>
+Winget_14_>eloston.ungoogled-chromium>Chromium [UnSync]>
+Winget_15_>Google.Chrome>Google Chrome>
+Winget_16_>Microsoft.Edge>Microsoft Edge>
+Winget_17_>Brave.Brave>Brave>
+Winget_18_>CentStudio.CentBrowser>Cent>
+Winget_19_>Vivaldi.Vivaldi>Vivaldi>
+Winget_20_>Maxthon.Maxthon>Maxthon>
+Winget_21_>Opera.Opera>Opera>
+Winget_22_>Opera.OperaGX>Opera-GX>
+Winget_23_>Mozilla.Firefox>Mozilla Firefox>
+Winget_24_>LibreWolf.LibreWolf>LibreWolf>
+Winget_25_>TorProject.TorBrowser>Tor>
+Winget_26_>KDE.Kdenlive>Kdenlive>
+Winget_27_>OpenShot.OpenShot>Openshot>
+Winget_28_>Meltytech.Shotcut>Shoutcut>
+Winget_29_>KDE.Krita>Krita>
+Winget_30_>GIMP.GIMP>Gimp>
+Winget_31_>sylikc.JPEGView>Jpegview>
+Winget_32_>OBSProject.OBSStudio>OBS Studio>
+Winget_33_>ShareX.ShareX>ShareX>
+Winget_34_>Skillbrains.Lightshot>LightShot>
+Winget_35_>Audacity.Audacity>Audacity>
+Winget_36_>HandBrake.HandBrake>HandBrake>
+Winget_37_>AdrienAllard.FileConverter>FileConverter>
+Winget_38_>CodecGuide.K-LiteCodecPack.Mega>K-Lite Codec>
+Winget_39_>VideoLAN.VLC>VLC Media Player>
+Winget_40_>Daum.PotPlayer>PotPlayer>
+Winget_41_>Spotify.Spotify>Spotify>
+Winget_42_>SoftDeluxe.FreeDownloadManager>Free Download Manager>
+Winget_43_>subhra74.XtremeDownloadManager>Xtreme Download Manager>
+Winget_44_>qBittorrent.qBittorrent>Qbittorrent>
+Winget_45_>TheDocumentFoundation.LibreOffice>Libre Office>
+Winget_46_>ONLYOFFICE.DesktopEditors>Only Office>
+Winget_47_>Adobe.Acrobat.Reader.64-bit>Adobe Acrobat Reader>
+Winget_48_>TrackerSoftware.PDF-XChangeEditor>PDF X-Change Editor>
+Winget_49_>calibre.calibre>Calibre>
+Winget_50_>Notepad++.Notepad++>Notepad++>
+Winget_51_>Microsoft.VisualStudioCode>Visual Studio Code>
+Winget_52_>GitHub.GitHubDesktop>Github>
+Winget_53_>Git.Git>Git>
+Winget_54_>OpenJS.NodeJS>Node.JS>
+Winget_55_>Unity.UnityHub>Unity Hub>
+Winget_56_>BlenderFoundation.Blender>Blender>
+Winget_57_>IObit.IObitUnlocker>Unlocker>
+Winget_58_>RevoUninstaller.RevoUninstaller>Revo Uninstaller>
+Winget_59_>7zip.7zip>7-Zip>
+Winget_60_>Open-Shell.Open-Shell-Menu>OpenShell>
+Winget_61_>AnyDeskSoftwareGmbH.AnyDesk>AnyDesk>
+Winget_62_>Henry++.MemReduct>Mem Reduct>
+Winget_63_>Guru3D.Afterburner>MSI Afterburner>
+Winget_64_>LogMeIn.Hamachi>Hamachi>
+Winget_65_>GlassWire.GlassWire>Glasswire>
+Winget_66_>Safing.Portmaster>PortMaster>
+Winget_67_>voidtools.Everything>Everything>
+Winget_68_>Flow-Launcher.Flow-Launcher>Flow Launcher>
+Winget_69_>Stremio.Stremio>Stremio>

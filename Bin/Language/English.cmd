@@ -56,7 +56,7 @@ echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R
 echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%ogniogniogniogniognio% Documents                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%R%[32m 45%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%R%[32m 46%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m Maxthon                  %R%[90m│%R%[32m 47%R%[90m-%R%[36m Adobe Reader             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m Maxthon                  %R%[90m│%R%[32m 47%R%[90m-%R%[36m Acrobat Reader           %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 21%R%[90m-%R%[36m Opera                    %R%[90m│%R%[32m 48%R%[90m-%R%[36m PDF X-Change Editor      %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 22%R%[90m-%R%[36m Opera-GX                 %R%[90m│%R%[32m 49%R%[90m-%R%[36m Calibre                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 23%R%[90m-%R%[36m Mozilla Firefox          %R%[90m│%ogniogniogniogniognio% Developer                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
@@ -115,8 +115,8 @@ T0011>installing>
 T0012>is being organized>
 T0013>Checking the Winget system>
 T0014>Selected pattern>
-T0015>>
-T0016>>
+T0015>installation successful>
+T0016>installation failed>
 T0017>Clearing the event log>
 T0018>All in One Runtimes installing>
 T0019>Net Framework 3.5 loading>
@@ -137,6 +137,7 @@ T0033>'DISM /Online /Cleanup-Image /RestoreHealth' command running>
 T0034>General settings and repairing DLL files>
 T0035>Hardware data received via WMI may have a margin of error>
 T0036>Playbook Update>
+T0037>Application Installer information screen>
 ::██████████████████████████████████████████████████████████████████
 P1001>Removing components>
 P1002>Uninstalling apps>
