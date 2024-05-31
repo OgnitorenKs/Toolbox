@@ -4,43 +4,44 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.0 ► GELİŞTİRİLİYOR... </B></summary>
+<details><B><summary> Versiyon 4.4.0 ► 31.05.2024 </B></summary>
 
     ▼ Genel değişiklikler;
-        • 
+        • Kullanılmayan değişkenleri sıfırlaması için yeni eklemeler yapıldı.
+        • "Uygulama yükleyici" bölümünde Edge tarayıcısının yüklenmesini bloklayan regedit ve güvenlik duvarı engelleri kaldırılacak şekilde ekleme yapıldı. Yükleme sonrası çalışmasını tetiklemek için komut eklendi.
 
 </details><details><B><summary> Versiyon 4.3.9 ► 30.05.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Sistem hakkında" bölümünde Ram miktarını gösteren bölümde toplam RAM boyutu az göstermesine neden olan veri hatasını gidermek için kontrol komutları eklendi.
-		• Kullanılmayan bazı değişkenler işlem sonunda içi boşaltılacak şekilde düzenlendi.
-	▼ Uygulama Yükleyicisi
-		• "Gimp" programının yükleme hatası giderildi.
-		• "Vivaldi" yükleme hatası giderildi.
-		• "Whatsapp" yükleme hatası giderildi.
-		• Yükleme işlemlerinde başarılı ve başarısız işlemleri göstermesi için bilgi ekranı eklendi.
-		• Mantıksal sorgular yeniden yazıldı.
-		• "Jump_1" başlığı kaldırıldı. Öncesinde yer alan Winget kontrol komutları ana menüde if sorgusuna alındı.
-		• "Adobe Reader" "Acrobat Reader" olarak adlandırıldı.
-		
+        • Kullanılmayan bazı değişkenler işlem sonunda içi boşaltılacak şekilde düzenlendi.
+    ▼ Uygulama Yükleyicisi
+        • "Gimp" programının yükleme hatası giderildi.
+        • "Vivaldi" yükleme hatası giderildi.
+        • "Whatsapp" yükleme hatası giderildi.
+        • Yükleme işlemlerinde başarılı ve başarısız işlemleri göstermesi için bilgi ekranı eklendi.
+        • Mantıksal sorgular yeniden yazıldı.
+        • "Jump_1" başlığı kaldırıldı. Öncesinde yer alan Winget kontrol komutları ana menüde if sorgusuna alındı.
+        • "Adobe Reader" "Acrobat Reader" olarak adlandırıldı.
+        
 </details><details><B><summary> Versiyon 4.3.8 ► 29.05.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • Playbook bölümünden "Pass_3" başlığı kaldırıldı.
-		► "Sistem hakkında" bölümünde;
-		    • DDR5 verisi güncellendi.
-		    • Hatalı Windows bilgi sorunu giderildi.
-		• "Uygulama yükleyici" bölümünde hash doğrulama hatasını atlaması için yeni eklemeler yapıldı.
+        ► "Sistem hakkında" bölümünde;
+            • DDR5 verisi güncellendi.
+            • Hatalı Windows bilgi sorunu giderildi.
+        • "Uygulama yükleyici" bölümünde hash doğrulama hatasını atlaması için yeni eklemeler yapıldı.
 
 </details><details><B><summary> Versiyon 4.3.7 ► 27.05.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Ping Ölçer" bölümündeki 'Ping_M1' ve 'Ping_M2' başlıkları birleştirilip 'Ping' başlığı haline getirildi. Bağlı kodlar yeni başlığa göre düzenlendi.
-		• Yorum satırları arttırıldı.
-		• "Powershell_Playbook" başlığı kaldırıldı. Tek bir bölümde kullandığı için ilgili bölüme alındı.
-		• "Playboook_Reader_2" ve "Playbook_Reader_Special" başlığı kaldırıldı. "Playbook_Reader" başlığıyla birleştirildi. Bağlı kodlar düzenlendi.
-		• "CurrentUserName" ve "Default_System_Language" kodları çalışmanın başına alındı. İlk açılışta değişkene tanımlanacak şekilde düzenlendiler.
-		• Playbook kalıbına hizmet düzenlemesini tek bir ayar ile atlaması için "Skip_Service_" ayarı eklendi.
+        • Yorum satırları arttırıldı.
+        • "Powershell_Playbook" başlığı kaldırıldı. Tek bir bölümde kullandığı için ilgili bölüme alındı.
+        • "Playboook_Reader_2" ve "Playbook_Reader_Special" başlığı kaldırıldı. "Playbook_Reader" başlığıyla birleştirildi. Bağlı kodlar düzenlendi.
+        • "CurrentUserName" ve "Default_System_Language" kodları çalışmanın başına alındı. İlk açılışta değişkene tanımlanacak şekilde düzenlendiler.
+        • Playbook kalıbına hizmet düzenlemesini tek bir ayar ile atlaması için "Skip_Service_" ayarı eklendi.
 
 </details><details><B><summary> Versiyon 4.3.6 ► 19.05.2024</B></summary>
 

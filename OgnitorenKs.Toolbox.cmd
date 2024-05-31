@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.3.9
+set Version=4.4.0
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -208,12 +208,16 @@ set Error=NT
 FOR %%a in (!Value_M!) do (
     cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
     if %%a EQU 1 (Call :AIO_Runtimes)
+    if %%a EQU 16 (netsh advfirewall firewall delete rule name="Disable Edge Updates" > NUL 2>&1
+                   Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe"
+				  )
     if %%a EQU 31 (Call :Jpegview_Default)
     if %%a EQU 59 (Call :7Zip_Default)
     if %%a NEQ 1 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                       FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                           echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
                           Call :Winget %%b
+						  if %%a EQU 16 (Call :Powershell "Start-Process '%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe'")
                           winget list "%%b" --accept-source-agreements > NUL 2>&1
                               if "!errorlevel!" EQU "0" (echo Winget_%%a_^>1^>%%c^> >> %Konum%\Log\Winget_Log.txt)
                               if "!errorlevel!" NEQ "0" (echo Winget_%%a_^>0^>%%c^> >> %Konum%\Log\Winget_Log.txt)
@@ -244,6 +248,7 @@ FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Lo
 )
 Call :Dil A 2 T0028
 echo.&echo %R%[36m !LA2! %R%[0m
+FOR %%a in (LA2 LB2 LC2 Numb) do (set %%a=)
 pause > NUL
 goto Software_Installer
 
@@ -1957,6 +1962,8 @@ Call :Playbook_Reader Component_Setting_3_
                                 Call :RD_Direct "%ProgramFiles(x86)%\Microsoft\%%b"
                                 echo Call :RD_Direct "%%ProgramFiles(x86)%%\Microsoft\%%b" >> C:\Playbook.Reset.After.cmd
                              )
+							 netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
+                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
                              Call :RD_Search "%Windir%\WinSxS\*-edge-webview_*"
                              Call :RD_Direct "%Windir%\System32\Microsoft-Edge-WebView"
                              echo Call :RD_Search "%%Windir%%\WinSxS\*microsoft-edge-webview*" >> C:\Playbook.Reset.After.cmd
