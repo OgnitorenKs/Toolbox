@@ -4,7 +4,16 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.0 ► 31.05.2024 </B></summary>
+<details><B><summary> Versiyon 4.4.1 ► 06.06.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • Playbook bölümünde "Explorer_Setting_19_" ayarındaki gereksiz Call komutu kaldırıldı.
+		• "Sistem hakkında", işlemci bölümünde L2 ve L3 önbellek verilerini KB dışında MB olarakta göstermesi için yeni mantıksal sorgular eklendi.
+		• "Uygulama Yükleyici" bölümünde Winget komutları sadeleşleştirildi. Edge yükleme hatasını önlemesi için ek önemler alındı.
+		• "Winget_Link" başlığındaki mantıksal sorgudaki konum hatası giderildi.
+		• "Jpegview.ini" dosyasında panel görünteleme ayarı değiştirildi.
+
+</details><details><B><summary> Versiyon 4.4.0 ► 31.05.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • Kullanılmayan değişkenleri sıfırlaması için yeni eklemeler yapıldı.

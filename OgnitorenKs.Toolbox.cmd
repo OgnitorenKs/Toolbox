@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.0
+set Version=4.4.1
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -210,14 +210,23 @@ FOR %%a in (!Value_M!) do (
     if %%a EQU 1 (Call :AIO_Runtimes)
     if %%a EQU 16 (netsh advfirewall firewall delete rule name="Disable Edge Updates" > NUL 2>&1
                    Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe"
-				  )
+                   (
+                   echo Windows Registry Editor Version 5.00
+                   echo.
+                   echo [-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe]
+                   ) > %Konum%\EdgeRemove.reg
+                   regedit /s "%Konum%\EdgeRemove.reg" > NUL 2>&1
+                   Call :DEL_Direct "%Konum%\EdgeRemove.reg"
+                  )
     if %%a EQU 31 (Call :Jpegview_Default)
     if %%a EQU 59 (Call :7Zip_Default)
     if %%a NEQ 1 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                       FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                           echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
                           Call :Winget %%b
-						  if %%a EQU 16 (Call :Powershell "Start-Process '%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe'")
+                          if %%a EQU 16 (dir /b "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" > NUL 2>&1
+                                             if !errorlevel! EQU 0 (Call :Powershell "Start-Process '%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe'")
+                                        )
                           winget list "%%b" --accept-source-agreements > NUL 2>&1
                               if "!errorlevel!" EQU "0" (echo Winget_%%a_^>1^>%%c^> >> %Konum%\Log\Winget_Log.txt)
                               if "!errorlevel!" NEQ "0" (echo Winget_%%a_^>0^>%%c^> >> %Konum%\Log\Winget_Log.txt)
@@ -748,17 +757,14 @@ goto :eof
 
 REM -------------------------------------------------------------
 :Winget
+winget settings --enable InstallerHashOverride > NUL 2>&1
 winget list "%~1" --accept-source-agreements > NUL 2>&1
-    if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1
+    if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash
                                     if "!errorlevel!" NEQ "0" (cls
-                                                               winget settings --enable InstallerHashOverride > NUL 2>&1
                                                                "%Konum%\Bin\NSudo.exe" -U:C -Wait cmd /c winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash
-                                                               winget list "%~1" --accept-source-agreements > NUL 2>&1
-                                                                   if "!errorlevel!" NEQ "0" (winget install -e --silent --force --accept-source-agreements --accept-package-agreements --id %~1 --ignore-security-hash)
-                                                               winget settings --disable InstallerHashOverride > NUL 2>&1
                                                               )
-    )
 )
+winget settings --disable InstallerHashOverride > NUL 2>&1
 goto :eof
 
 REM -------------------------------------------------------------
@@ -771,7 +777,7 @@ FOR /F "tokens=3" %%g in ('Find "Installer Url" %Konum%\Log\Winget_Link.txt') do
     FOR /F "tokens=3" %%k in ('Find "Installer Type" %Konum%\Log\Winget_Link.txt') do (
         set Link=%%g
         set Setup=%Konum%\Log\%~1.%~2
-        if "%%k" NEQ "%~2" (set Setup=%~1.%%k&set Silent=/Passive)
+        if "%%k" NEQ "%~2" (set Setup=%Konum%\Log\%~1.%%k&set Silent=/Passive)
     )    
 )
 goto :eof
@@ -1458,18 +1464,35 @@ Call :Dil F 2 EE_15_
 FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Name" %Konum%\Log\CPU.txt 2^>NUL') do (
     FOR /F "delims=: tokens=2" %%b in ('Findstr /i "NumberOfCores" %Konum%\Log\CPU.txt 2^>NUL') do (
         FOR /F "delims=: tokens=2" %%c in ('Findstr /i "NumberOfLogicalProcessors" %Konum%\Log\CPU.txt 2^>NUL') do (
-            FOR /F "delims=: tokens=2" %%d in ('Findstr /i "L2CacheSize" %Konum%\Log\CPU.txt 2^>NUL') do (
-                FOR /F "delims=: tokens=2" %%e in ('Findstr /i "L3CacheSize" %Konum%\Log\CPU.txt 2^>NUL') do (
+            FOR /F "tokens=3" %%d in ('Findstr /i "L2CacheSize" %Konum%\Log\CPU.txt 2^>NUL') do (
+                FOR /F "tokens=3" %%e in ('Findstr /i "L3CacheSize" %Konum%\Log\CPU.txt 2^>NUL') do (
                     FOR /F "delims=: tokens=2" %%f in ('Findstr /i "CurrentClockSpeed" %Konum%\Log\CPU.txt 2^>NUL') do (
+                        set VL2=%%d
+                        set VL3=%%e
+                        Call :Uzunluk 1 !VL2!
+                        Call :Uzunluk 2 !VL3!
+                        if !Uzunluk1! EQU 2 (set VL2=%R%[33m!VL2! %R%[37mKB)
+                        if !Uzunluk1! EQU 3 (set VL2=%R%[33m!VL2! %R%[37mKB)
+                        if !Uzunluk1! EQU 4 (set VL2=%R%[33m!VL2:~0,1! %R%[37mMB)
+                        if !Uzunluk1! EQU 5 (set VL2=%R%[33m!VL2:~0,2! %R%[37mMB)
+                        if !Uzunluk1! EQU 6 (set VL2=%R%[33m!VL2:~0,3! %R%[37mMB)
+                        if !Uzunluk1! EQU 7 (set VL2=%R%[33m!VL2:~0,1! %R%[37mGB)
+                        if !Uzunluk2! EQU 2 (set VL3=%R%[33m!VL3! %R%[37mKB)
+                        if !Uzunluk2! EQU 3 (set VL3=%R%[33m!VL3! %R%[37mKB)
+                        if !Uzunluk2! EQU 4 (set VL3=%R%[33m!VL3:~0,1! %R%[37mMB)
+                        if !Uzunluk2! EQU 5 (set VL3=%R%[33m!VL3:~0,2! %R%[37mMB)
+                        if !Uzunluk2! EQU 6 (set VL3=%R%[33m!VL3:~0,3! %R%[37mMB)
+                        if !Uzunluk2! EQU 7 (set VL3=%R%[33m!VL3:~0,1! %R%[37mGB)
                         echo   %R%[35m▼ !LA2! %R%[0m
                         echo   ►%R%[36m !LB2!-!LC2!:%R%[33m%%a %R%[0m
-                        echo   ►%R%[36m !LD2!:%R%[33m%%b %R%[90m│%R%[36m !LE2!:%R%[33m%%c %R%[90m│%R%[36m L2:%R%[33m%%d%R%[37m KB %R%[90m│%R%[36m L3:%R%[33m%%e%R%[37m KB %R%[90m│%R%[36m !LF2!:%R%[33m%%f%R%[37m MHZ %R%[0m
+                        echo   ►%R%[36m !LD2!:%R%[33m%%b %R%[90m│%R%[36m !LE2!:%R%[33m%%c %R%[90m│%R%[36m L2: !VL2! %R%[90m│%R%[36m L3: !VL3! %R%[90m│%R%[36m !LF2!:%R%[33m%%f%R%[37m MHZ %R%[0m
                     )
                 )
             )
         )
     )
 )
+FOR %%g in (VL2 VL3 Uzunluk1 Uzunluk2) do (set %%g=)
 echo  %R%[90m├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤%R%[0m
 DEL /F /Q /A "%Konum%\Log\DiskDetail" > NUL 2>&1
 Call :Powershell "Get-PhysicalDisk | Select-Object -Property MediaType,FriendlyName,Size | Format-List" > %Konum%\Log\DiskDetailAll
@@ -1962,7 +1985,7 @@ Call :Playbook_Reader Component_Setting_3_
                                 Call :RD_Direct "%ProgramFiles(x86)%\Microsoft\%%b"
                                 echo Call :RD_Direct "%%ProgramFiles(x86)%%\Microsoft\%%b" >> C:\Playbook.Reset.After.cmd
                              )
-							 netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
+                             netsh advfirewall firewall add rule name="Disable Edge Updates" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" > NUL 2>&1
                              Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
                              Call :RD_Search "%Windir%\WinSxS\*-edge-webview_*"
                              Call :RD_Direct "%Windir%\System32\Microsoft-Edge-WebView"
@@ -2636,9 +2659,8 @@ Call :Playbook_Reader Explorer_Setting_18_
 )
 REM Sağ-Tık 'Sahiplik Al' ekle
 Call :Playbook_Reader Explorer_Setting_19_
-    if "!Playbook!" EQU "1" (Call :Default_System_Language
-                                if "!DefaultLang!" EQU "tr-TR" (set Value19=Sahipliği Al)
-                                if "!DefaultLang!" NEQ "tr-TR" (set Value19=Take Ownership)
+    if "!Playbook!" EQU "1" (if "!DefaultLang!" EQU "tr-TR" (set Value19=Sahipliği Al)
+                             if "!DefaultLang!" NEQ "tr-TR" (set Value19=Take Ownership)
                              Call :RegVeAdd "HKCR\*\shell\runas" REG_SZ "!Value19!"
                              Call :RegAdd "HKCR\*\shell\runas" "Icon" REG_SZ "imageres.dll,73"
                              Call :RegAdd "HKCR\*\shell\runas" "NoWorkingDirectory" REG_SZ ""
@@ -3497,9 +3519,9 @@ Call :Playbook_Reader "Install_Application"
     if "!Playbook!" EQU "1" (FOR /F "tokens=4" %%a in ('Findstr /i "Install_Application" %PB%') do (
                                 FOR /F "skip=2 tokens=2" %%b in ('Find "► %%a" %PB%') do (
                                     if "%%b" EQU "1" (echo %%a | Findstr /i "sylikc.JPEGView" > NUL 2>&1
-                                                        if "!errorlevel!" EQU "0" (Call :Jpegview_Default)
+                                                          if "!errorlevel!" EQU "0" (Call :Jpegview_Default)
                                                       echo %%a | Findstr /i "7zip.7zip" > NUL 2>&1
-                                                        if "!errorlevel!" EQU "0" (Call :7Zip_Default)
+                                                          if "!errorlevel!" EQU "0" (Call :7Zip_Default)
                                                       echo ► %R%[92m "%%a" %R%[37m !LB2! %R%[0m  
                                                       Call :Winget "%%a
                                                      )
