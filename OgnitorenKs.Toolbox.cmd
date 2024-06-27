@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.1
+set Version=4.4.2
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -199,15 +199,26 @@ Call :Upper !Value_M! Value_M
 REM Alt bölümde yönlendirmeleri yapıyorum.
 echo !Value_M! | Findstr /i "X" > NUL 2>&1
     if !errorlevel! EQU 0 (goto Main_Menu)
-REM Seçilen programları yüklemek için 'Winget.txt' içerisinden veriyi çeker ve yükletir.
 Call :Dil A 2 T0003
 Call :Dil B 2 T0011
 MD %Konum%\Log
 Call :DEL_Direct "%Konum%\Log\Winget_Log.txt"
 set Error=NT
+REM OgnitorenKs Programlarının yüklenmesini sağlayan bölüm 
+cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
+FOR %%a in (!Value_M!) do (
+    if %%a EQU 70 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/EasyDism/main/.github/EasyDism.zip)
+	if %%a EQU 71 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/SSD_Optimizer/main/.github/SSD_Optimizer.zip)
+	if %%a EQU 72 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Multiboot_Manager/main/.github/Multiboot_Manager.zip)
+	if %%a EQU 73 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Component_Manager/main/.github/Component_Manager.zip)
+)
+REM Seçilen programları yüklemek için 'Winget.txt' içerisinden veriyi çeker ve yükletir.
+cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
+FOR %%a in (!Value_M!) do (
+    if %%a EQU 1 (Call :AIO_Runtimes)
+)
 FOR %%a in (!Value_M!) do (
     cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
-    if %%a EQU 1 (Call :AIO_Runtimes)
     if %%a EQU 16 (netsh advfirewall firewall delete rule name="Disable Edge Updates" > NUL 2>&1
                    Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe"
                    (
@@ -220,7 +231,7 @@ FOR %%a in (!Value_M!) do (
                   )
     if %%a EQU 31 (Call :Jpegview_Default)
     if %%a EQU 59 (Call :7Zip_Default)
-    if %%a NEQ 1 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+    if %%a LEQ 69 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                       FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                           echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
                           Call :Winget %%b
@@ -245,15 +256,21 @@ Call :Dil A 2 T0015
 Call :Dil B 2 T0016
 Call :Dil C 2 T0037
 echo  ►%R%[36m !LC2! %R%[0m&echo.
-FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Log.txt') do (
-    FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
-        FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt') do (
+FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Log.txt 2^>NUL') do (
+    FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt 2^>NUL') do (
+        FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt 2^>NUL') do (
             if %%a GTR 9 (set Numb=%%a)
             if %%a LSS 9 (set Numb= %%a)
-            if %%b EQU 1 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m)
-            if %%b EQU 0 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m)
+            if %%b EQU 1 (if %%a LEQ 69 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m))
+            if %%b EQU 0 (if %%a LEQ 69 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m))
         )
     )
+)
+FOR %%a in (!Value_M!) do (
+	if %%a EQU 70 (Call :OgniApp_Check %%a "EasyDism")
+	if %%a EQU 71 (Call :OgniApp_Check %%a "SSD_Optimizer")
+	if %%a EQU 72 (Call :OgniApp_Check %%a "Multiboot_Manager")
+	if %%a EQU 73 (Call :OgniApp_Check %%a "Component_Manager")
 )
 Call :Dil A 2 T0028
 echo.&echo %R%[36m !LA2! %R%[0m
@@ -741,6 +758,39 @@ timeout /t %~1 /nobreak > NUL
 goto :eof
 
 REM -------------------------------------------------------------
+:OgniApp_Check
+REM Uygulama yükleyici bölümünde kurulum sonrası programların yüklenip yüklenmediğini gösterir.
+dir /b "C:\%~2" > NUL 2>&1
+	if !errorlevel! EQU 0 (echo %R%[32m  %~1%R%[90m-%R%[33m %~2 %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m)
+	if !errorlevel! NEQ 0 (echo %R%[32m  %~1%R%[90m-%R%[33m %~2 %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m)
+goto :eof
+
+REM -------------------------------------------------------------
+:OgniApp_Installer
+echo  ►%R%[32m %~1%R%[90m-%R%[33m %~n2%R%[32m !LB2! %R%[0m
+Call :RD_Direct "C:\%~n2"
+REM İndirme işlemi
+Call :Powershell "& { iwr %~2 -OutFile %AppData%\%~n2.zip }"
+REM Zip dosyasından çıkarır
+Call :Powershell "Expand-Archive -Force '%AppData%\%~n2.zip' 'C:\%~n2'"
+REM Kurulum dosyasını siler
+Call :DEL_Direct "%AppData%\%~n2.zip" > NUL 2>&1
+REM Simgeli kısayol oluşturur
+(
+echo Set oWS = WScript.CreateObject^("WScript.Shell"^)
+echo sLinkFile = "C:\Users\%username%\Desktop\%~n2.lnk"
+echo Set oLink = oWS.CreateShortcut^(sLinkFile^)
+echo oLink.TargetPath = "C:\%~n2\%~n2.cmd"
+echo oLink.WorkingDirectory = "C:\%~n2"
+echo oLink.Description = "%~n2"
+echo oLink.IconLocation = "C:\%~n2\Bin\Icon\Ogni.ico"
+echo oLink.Save
+) > %AppData%\OgnitorenKs.Shortcut.vbs
+cscript "%AppData%\OgnitorenKs.Shortcut.vbs" > NUL 2>&1
+Call :DEL_Direct "%AppData%\OgnitorenKs.Shortcut.vbs"
+goto :eof
+
+REM -------------------------------------------------------------
 :PSDownload
 REM %~1= İndirme konumu
 Call :Powershell "& { iwr !Link! -OutFile %~1 }"
@@ -772,6 +822,8 @@ REM -------------------------------------------------------------
 REM "Programın winget ID'si" "Dosya uzantısı" "Sessiz kurulum parametresi"
 REM "Open-Shell.Open-Shell-Menu" "exe" "/passive ADDLOCAL=StartMenu"
 set Silent=%~3
+Winget show %~1 --accept-source-agreements > NUL 2>&1
+	if !errorlevel! NEQ 0 (set Error=X&goto :eof)
 Winget show %~1 --accept-source-agreements > %Konum%\Log\Winget_Link.txt
 FOR /F "tokens=3" %%g in ('Find "Installer Url" %Konum%\Log\Winget_Link.txt') do (
     FOR /F "tokens=3" %%k in ('Find "Installer Type" %Konum%\Log\Winget_Link.txt') do (
@@ -1485,7 +1537,7 @@ FOR /F "delims=: tokens=2" %%a in ('Findstr /i "Name" %Konum%\Log\CPU.txt 2^>NUL
                         if !Uzunluk2! EQU 7 (set VL3=%R%[33m!VL3:~0,1! %R%[37mGB)
                         echo   %R%[35m▼ !LA2! %R%[0m
                         echo   ►%R%[36m !LB2!-!LC2!:%R%[33m%%a %R%[0m
-                        echo   ►%R%[36m !LD2!:%R%[33m%%b %R%[90m│%R%[36m !LE2!:%R%[33m%%c %R%[90m│%R%[36m L2: !VL2! %R%[90m│%R%[36m L3: !VL3! %R%[90m│%R%[36m !LF2!:%R%[33m%%f%R%[37m MHZ %R%[0m
+                        echo   ►%R%[36m !LD2!:%R%[33m%%b %R%[90m│%R%[36m !LE2!:%R%[33m%%c %R%[90m│%R%[36m L2: !VL2! %R%[90m│%R%[36m L3: !VL3! %R%[90m│%R%[36m !LF2!:%R%[33m%%f%R%[37m GHZ %R%[0m
                     )
                 )
             )
@@ -2056,12 +2108,13 @@ Call :Playbook_Reader Change_App_3_
                                 if "!Playbook!" EQU "1" (winget list "Open-Shell.Open-Shell-Menu" --accept-source-agreements > NUL 2>&1
                                                             if "!errorlevel!" NEQ "0" (Call :Openshell_Setting
                                                                                        Call :Winget_Link "Open-Shell.Open-Shell-Menu" "exe" "/passive ADDLOCAL=StartMenu"
-                                                                                       Call :PSDownload "!Setup!"
-                                                                                       "!Setup!" !Silent!
-                                                                                       Call :DEL_Direct "!Setup!"
+                                                                                           if "!Error!" NEQ "X" (Call :PSDownload "!Setup!"
+                                                                                                                 "!Setup!" !Silent!
+                                                                                                                 Call :DEL_Direct "!Setup!"
+																											    )
                                                                                       )
                                                         )
-)                    
+)
 REM Bing uygulamalarının otomatik kurulmasını engelle
 Call :Playbook_Reader Change_App_4_
     if "!Playbook!" EQU "1" (taskkill /f /im "BingChatInstaller.EXE" > NUL 2>&1

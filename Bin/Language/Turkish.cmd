@@ -51,11 +51,11 @@ echo   %R%[90m│%R%[32m 12%R%[90m-%R%[33m Playnite                 %R%[90m│%R
 echo   %R%[90m│%ogniogniogniogniognio% Tarayıcı                   %R%[90m│%R%[32m 41%R%[90m-%R%[36m Spotify                  %R%[90m│%R%[32m 67%R%[90m-%R%[36m Everything               %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 13%R%[90m-%R%[36m Chromium [Sync]          %R%[90m│%ogniogniogniogniognio% İndirme Araçları           %R%[90m│%R%[32m 68%R%[90m-%R%[36m Flow Launcher            %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 14%R%[90m-%R%[36m Chromium [UnSync]        %R%[90m│%R%[32m 42%R%[90m-%R%[33m Free Download Manager    %R%[90m│%R%[32m 69%R%[90m-%R%[36m Stremio                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 15%R%[90m-%R%[36m Google Chrome            %R%[90m│%R%[32m 43%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%R%[32m 45%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%R%[32m 46%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 15%R%[90m-%R%[36m Google Chrome            %R%[90m│%R%[32m 43%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%ogniogniogniogniognio% OgnitorenKs Programları    %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m 70%R%[90m-%R%[36m EasyDism                 %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m 71%R%[90m-%R%[36m SSD Optimizer            %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%R%[32m 45%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m 72%R%[90m-%R%[36m Multiboot Manager        %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%R%[32m 46%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m 73%R%[90m-%R%[36m Component Manager        %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m Maxthon                  %R%[90m│%R%[32m 47%R%[90m-%R%[36m Acrobat Reader           %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 21%R%[90m-%R%[36m Opera                    %R%[90m│%R%[32m 48%R%[90m-%R%[36m PDF X-Change Editor      %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 22%R%[90m-%R%[36m Opera-GX                 %R%[90m│%R%[32m 49%R%[90m-%R%[36m Calibre                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m

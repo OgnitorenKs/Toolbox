@@ -4,7 +4,16 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.1 ► 06.06.2024 </B></summary>
+<details><B><summary> Versiyon 4.4.2 ► 28.06.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • "Sistem hakkında" bölümünde işlemci çalışma frekansı bilgisini MHZ olarak yanlış kullanmışım, GHZ olarak düzeltildi.
+		• "Uygulama yükleyici" bölümüne 'OgnitorenKs Programları' özel başlığı eklendi. EasyDism, SSD_Optimizer, Multiboot_Manager, Component_Manager programlarımı katılımsız kurabilmeniz için eklemesini yaptım.
+	▼ Playbook bölümünde yapılan değişiklikler;
+		• Settings.ini içerisinde yer alan Playbook Winget kontrol sistemini atlama bölümü anlaşılır hale getirildi ve tanımlama hatası giderildi.
+		• Winget komutlarını atlayıp Openshell kurulumunda hata alınmaması için yeni komutlar eklendi.
+		
+</details><details><B><summary> Versiyon 4.4.1 ► 06.06.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • Playbook bölümünde "Explorer_Setting_19_" ayarındaki gereksiz Call komutu kaldırıldı.
