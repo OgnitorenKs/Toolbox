@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.2
+set Version=4.4.3
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -208,9 +208,9 @@ REM OgnitorenKs Programlarının yüklenmesini sağlayan bölüm
 cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
 FOR %%a in (!Value_M!) do (
     if %%a EQU 70 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/EasyDism/main/.github/EasyDism.zip)
-	if %%a EQU 71 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/SSD_Optimizer/main/.github/SSD_Optimizer.zip)
-	if %%a EQU 72 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Multiboot_Manager/main/.github/Multiboot_Manager.zip)
-	if %%a EQU 73 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Component_Manager/main/.github/Component_Manager.zip)
+    if %%a EQU 71 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/SSD_Optimizer/main/.github/SSD_Optimizer.zip)
+    if %%a EQU 72 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Multiboot_Manager/main/.github/Multiboot_Manager.zip)
+    if %%a EQU 73 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Component_Manager/main/.github/Component_Manager.zip)
 )
 REM Seçilen programları yüklemek için 'Winget.txt' içerisinden veriyi çeker ve yükletir.
 cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
@@ -267,10 +267,10 @@ FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Lo
     )
 )
 FOR %%a in (!Value_M!) do (
-	if %%a EQU 70 (Call :OgniApp_Check %%a "EasyDism")
-	if %%a EQU 71 (Call :OgniApp_Check %%a "SSD_Optimizer")
-	if %%a EQU 72 (Call :OgniApp_Check %%a "Multiboot_Manager")
-	if %%a EQU 73 (Call :OgniApp_Check %%a "Component_Manager")
+    if %%a EQU 70 (Call :OgniApp_Check %%a "EasyDism")
+    if %%a EQU 71 (Call :OgniApp_Check %%a "SSD_Optimizer")
+    if %%a EQU 72 (Call :OgniApp_Check %%a "Multiboot_Manager")
+    if %%a EQU 73 (Call :OgniApp_Check %%a "Component_Manager")
 )
 Call :Dil A 2 T0028
 echo.&echo %R%[36m !LA2! %R%[0m
@@ -311,6 +311,9 @@ FOR /F "tokens=*" %%g in ('reg query HKLM\SOFTWARE\Classes\Installer\Products /s
 REM NET Desktop Runtime kurulum hatasını giderir
 FOR /F "tokens=*" %%g in ('reg query HKLM\SOFTWARE\Classes\Installer\Products /s /f "Microsoft .NET Host" ^| Findstr /i "Hkey"') do (Call :RegDel "%%g")
 Call :RD_Search "%ProgramData%\Package Cache\{*"
+REM EdgeWebView2 kurulum engellemesini kaldırır
+netsh advfirewall firewall delete rule name="Disable Edge Updates" > NUL 2>&1
+Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe"
 REM Uygulamaları yükler
 FOR %%g in (
 Microsoft.VCRedist.2005.x86
@@ -330,6 +333,7 @@ Microsoft.XNARedist
 OpenAL.OpenAL
 Microsoft.DotNet.DesktopRuntime.8
 Microsoft.DirectX
+Microsoft.EdgeWebView2Runtime
 ) do (
     cls
     Call :Echo_Print %R%[32m !LB2! %R%[0m
@@ -761,8 +765,8 @@ REM -------------------------------------------------------------
 :OgniApp_Check
 REM Uygulama yükleyici bölümünde kurulum sonrası programların yüklenip yüklenmediğini gösterir.
 dir /b "C:\%~2" > NUL 2>&1
-	if !errorlevel! EQU 0 (echo %R%[32m  %~1%R%[90m-%R%[33m %~2 %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m)
-	if !errorlevel! NEQ 0 (echo %R%[32m  %~1%R%[90m-%R%[33m %~2 %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m)
+    if !errorlevel! EQU 0 (echo %R%[32m  %~1%R%[90m-%R%[33m %~2 %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m)
+    if !errorlevel! NEQ 0 (echo %R%[32m  %~1%R%[90m-%R%[33m %~2 %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m)
 goto :eof
 
 REM -------------------------------------------------------------
@@ -823,7 +827,7 @@ REM "Programın winget ID'si" "Dosya uzantısı" "Sessiz kurulum parametresi"
 REM "Open-Shell.Open-Shell-Menu" "exe" "/passive ADDLOCAL=StartMenu"
 set Silent=%~3
 Winget show %~1 --accept-source-agreements > NUL 2>&1
-	if !errorlevel! NEQ 0 (set Error=X&goto :eof)
+    if !errorlevel! NEQ 0 (set Error=X&goto :eof)
 Winget show %~1 --accept-source-agreements > %Konum%\Log\Winget_Link.txt
 FOR /F "tokens=3" %%g in ('Find "Installer Url" %Konum%\Log\Winget_Link.txt') do (
     FOR /F "tokens=3" %%k in ('Find "Installer Type" %Konum%\Log\Winget_Link.txt') do (
@@ -2111,7 +2115,7 @@ Call :Playbook_Reader Change_App_3_
                                                                                            if "!Error!" NEQ "X" (Call :PSDownload "!Setup!"
                                                                                                                  "!Setup!" !Silent!
                                                                                                                  Call :DEL_Direct "!Setup!"
-																											    )
+                                                                                                                )
                                                                                       )
                                                         )
 )

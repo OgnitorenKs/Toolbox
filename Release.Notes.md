@@ -4,23 +4,29 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.4.3 ► 28.06.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • "Uygulama yükleyici" bölümünde "All in One Runtimes"a EdgeWebView2 yüklemesi için ekleme yapıldı.
+		• Playbook kalıbında Edge ve EdgeWebView2 silme ayarları pasif olarak düzenlendi.
+
 <details><B><summary> Versiyon 4.4.2 ► 28.06.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Sistem hakkında" bölümünde işlemci çalışma frekansı bilgisini MHZ olarak yanlış kullanmışım, GHZ olarak düzeltildi.
-		• "Uygulama yükleyici" bölümüne 'OgnitorenKs Programları' özel başlığı eklendi. EasyDism, SSD_Optimizer, Multiboot_Manager, Component_Manager programlarımı katılımsız kurabilmeniz için eklemesini yaptım.
-	▼ Playbook bölümünde yapılan değişiklikler;
-		• Settings.ini içerisinde yer alan Playbook Winget kontrol sistemini atlama bölümü anlaşılır hale getirildi ve tanımlama hatası giderildi.
-		• Winget komutlarını atlayıp Openshell kurulumunda hata alınmaması için yeni komutlar eklendi.
-		
+        • "Uygulama yükleyici" bölümüne 'OgnitorenKs Programları' özel başlığı eklendi. EasyDism, SSD_Optimizer, Multiboot_Manager, Component_Manager programlarımı katılımsız kurabilmeniz için eklemesini yaptım.
+    ▼ Playbook bölümünde yapılan değişiklikler;
+        • Settings.ini içerisinde yer alan Playbook Winget kontrol sistemini atlama bölümü anlaşılır hale getirildi ve tanımlama hatası giderildi.
+        • Winget komutlarını atlayıp Openshell kurulumunda hata alınmaması için yeni komutlar eklendi.
+        
 </details><details><B><summary> Versiyon 4.4.1 ► 06.06.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • Playbook bölümünde "Explorer_Setting_19_" ayarındaki gereksiz Call komutu kaldırıldı.
-		• "Sistem hakkında", işlemci bölümünde L2 ve L3 önbellek verilerini KB dışında MB olarakta göstermesi için yeni mantıksal sorgular eklendi.
-		• "Uygulama Yükleyici" bölümünde Winget komutları sadeleşleştirildi. Edge yükleme hatasını önlemesi için ek önemler alındı.
-		• "Winget_Link" başlığındaki mantıksal sorgudaki konum hatası giderildi.
-		• "Jpegview.ini" dosyasında panel görünteleme ayarı değiştirildi.
+        • "Sistem hakkında", işlemci bölümünde L2 ve L3 önbellek verilerini KB dışında MB olarakta göstermesi için yeni mantıksal sorgular eklendi.
+        • "Uygulama Yükleyici" bölümünde Winget komutları sadeleşleştirildi. Edge yükleme hatasını önlemesi için ek önemler alındı.
+        • "Winget_Link" başlığındaki mantıksal sorgudaki konum hatası giderildi.
+        • "Jpegview.ini" dosyasında panel görünteleme ayarı değiştirildi.
 
 </details><details><B><summary> Versiyon 4.4.0 ► 31.05.2024 </B></summary>
 
