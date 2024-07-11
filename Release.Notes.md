@@ -4,13 +4,21 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.3 ► 28.06.2024 </B></summary>
+<details><B><summary> Versiyon 4.4.4 ► GELİŞTİRİLİYOR </B></summary>
+
+    ▼ Genel değişiklikler;
+        • "Hizmet yönetimi" bölümünde "Miracast" için Win11 ses yönetiminin ihtiyacı olduğunu belirten not ekledim.
+        • "Hizmet yönetimi" bölümünde "Şimdi yürütülüyor oturum yöneticisi"nin FN tuşlarının ihtiyacı olduğunu belirten not ekledim. 
+		• Playbook kalıbından "NPSMSvc" hizmeti kaldırıldı. Uygulanınca "FN + F5/F6/F7/F8" tuş kombinlerinde soruna neden oluyordu.
+		• "Sistem optimizasyonu (Playbook)" bölümüne "Taskbar_Setting_18_" ayarı eklendi. Ayarın işlevi; Görev çubuğu - Sağ-tık görevi sonlandır seçeneğini aktifleştir [Windows11]
+		
+</details><details><B><summary> Versiyon 4.4.3 ► 28.06.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Uygulama yükleyici" bölümünde "All in One Runtimes"a EdgeWebView2 yüklemesi için ekleme yapıldı.
 		• Playbook kalıbında Edge ve EdgeWebView2 silme ayarları pasif olarak düzenlendi.
 
-<details><B><summary> Versiyon 4.4.2 ► 28.06.2024 </B></summary>
+</details><details><B><summary> Versiyon 4.4.2 ► 28.06.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Sistem hakkında" bölümünde işlemci çalışma frekansı bilgisini MHZ olarak yanlış kullanmışım, GHZ olarak düzeltildi.
