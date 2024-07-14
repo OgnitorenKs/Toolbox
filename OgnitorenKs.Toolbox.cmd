@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.3
+set Version=4.4.4
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -277,7 +277,7 @@ echo.&echo %R%[36m !LA2! %R%[0m
 FOR %%a in (LA2 LB2 LC2 Numb) do (set %%a=)
 pause > NUL
 goto Software_Installer
-
+    
 REM -------------------------------------------------------------
 :AIO_Runtimes
 cls&Call :Dil B 2 T0018&echo %R%[32m !LB2! %R%[0m
@@ -688,18 +688,23 @@ REM -------------------------------------------------------------
 :Windows_Repair
 REM Microsoft tarafından önerilen ve tarafımca tespit edilen hata çözümlerini toplu şekilde uygular. Çözüm olmazsa sistem bütünlüğü bozulmuştur. Marketi yeniden yükletip denemek gerekiyor. Yoksa temiz kurulum gerekiyor.
 cls&Call :Cleaner&cls
-Call :Dil A 2 B0007&echo.&echo %R%[93m !LA2! %R%[0m
+Call :Dil A 2 B0007&echo %R%[93m !LA2! %R%[0m
 title !LA2!
-Call :Dil A 2 T0031&echo.&echo %R%[32m !LA2! %R%[0m
-sfc /scannow
-Call :Dil A 2 T0033&echo.&echo %R%[32m !LA2! %R%[0m
-DISM /Online /Cleanup-Image /RestoreHealth
+echo.
+Call :Dil A 2 D0009&set /p Value=►%R%[32m !LA2! %R%[90m[%R%[96m Y%R%[90m │%R%[96m N%R%[90m ]: %R%[0m
+Call :Upper !Value! Value
+    if "!Value!" EQU "Y" (Call :Dil B 2 T0031&echo.&echo %R%[32m !LB2! %R%[0m
+                          sfc /scannow
+                          Call :Dil B 2 T0033&echo.&echo %R%[32m !LB2! %R%[0m
+                          DISM /Online /Cleanup-Image /RestoreHealth
+)
 cls
 Call :Dil A 2 B0007&echo.&echo %R%[93m !LA2! %R%[0m
 Call :Dil A 2 T0034&echo.&echo %R%[32m !LA2! %R%[0m
 Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" "RemoveWindowsStore" REG_DWORD "0"
 REM BITS hizmeti varsayılan hale getiriliyor.
 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" /v "DODownloadMode"
+REM Microsoft Store için hizmetleri düzenler
 FOR %%a in (AppXSvc camsvc wuauserv StorSvc LicenseManager trustedinstaller ClipSVC UserDataSvc UnistoreSvc InstallService PushToInstall TimeBrokerSvc TokenBroker) do (
     Call :Service_Admin "%%a" 3
 )
@@ -709,6 +714,11 @@ FOR %%a in (cryptsvc bits OneSyncSvc UsoSvc DoSvc) do (
 FOR %%a in (WFDSConMgrSvc DevicesFlowUserSvc DevicePickerUserSvc ConsentUxUserSvc) do (
     Call :Service_Admin "%%a" 3
 )
+REM Bazı önemli sistem ayarları için belirli hizmetleri aktifleştirir
+FOR %%a in (seclogon ConsentUxUserSvc DevicePickerUserSvc DevicesFlowUserSvc WFDSConMgrSvc NPSMSvc XboxGipSvc XboxNetApiSvc XblAuthManager xboxgip) do (
+    Call :Service_Admin "%%a" 3
+)
+REM Microsoft Store için regedit kayıtlarını kontrol eder.
 FOR %%a in (softpub.dll wintrust.dll initpki.dll dssenh.dll rsaenh.dll gpkcsp.dll sccbase.dll slbcsp.dll mssip32.dll cryptdlg.dll
             msxml3.dll comcat.dll Msxml.dll Msxml2.dll mshtml.dll shdocvw.dll browseui.dll msjava.dll shdoc401.dll cdm.dll gpkcsp.dll
             sccbase.dll asctrls.ocx wintrust.dll initpki.dll softpub.dll oleaut32.dll Shell32.dll browseui.dll msrating.dll mlang.dll
@@ -2248,6 +2258,10 @@ Call :Playbook_Reader Taskbar_Setting_16_
 REM Başlat Menüsü - Microsoft hesabıyla ilgili bildirimleri gösterme
 Call :Playbook_Reader Taskbar_Setting_17_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_AccountNotifications" REG_DWORD 0
+)
+REM Görev çubuğu - Sağ-tık görevi sonlandır seçeneğini aktifleştir
+Call :Playbook_Reader Taskbar_Setting_18_
+    if "!Playbook!" EQU "1" (if %Win% EQU 11 (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" "TaskbarEndTask" REG_DWORD 1)
 )
 REM ContentDeliveryManager - Ayarlar uygulamasında önerilen içeriği kapat
 Call :Playbook_Reader Privacy_Setting_1_

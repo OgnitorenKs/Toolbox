@@ -90,6 +90,7 @@ D0005>Kullanıcı Adı>
 D0006>Lisans>
 D0007>Kalıp dosyasını seçiniz>
 D0008>Dosya gezgininin yeniden başlatılması gerekiyor, onaylıyor musunuz?>
+D0009>Sfc /Scannow ve Dism onarım seçenekleri optimizasyonu ve tema ayarını bozabilir, uygulanmasını istiyor musunuz?>
 ::███████████████████████████████████████████████████████████████████
 B0001>Hizmet Yönetimi>
 B0002>Özellik Yönetimi>
@@ -207,7 +208,7 @@ SL_10_>Radyo ve Uçak Modu>Laptop hizmeti>
 SL_11_>Windows Şimdi Bağlan [WPS]>İhtiyaç: WiFi>
 SL_12_>Wifi> >
 SL_13_>Konum> >
-SL_14_>Miracast>Kablosuz ekran paylaşımı │ İhtiyaç: Ayarlar ► Cihazlar>
+SL_14_>Miracast>Kablosuz ekran paylaşımı │ İhtiyaç: Ayarlar ► Cihazlar, Win11 ses yönetimi>
 SL_15_>Akış>Ağ üzeri veri paylaşımı │ Ağınızı sürekli yoklar>
 SL_16_>Hızlı Getir-Başlat>İhtiyaç: HDD>
 SL_17_>Windows Search>İndeksleme hizmeti │ Akış hizmeti için gerekli olabilir>
@@ -219,7 +220,7 @@ SL_22_>Disk Birleştirme>İhtiyaç: SSD│HDD, Trim>
 SL_23_>Yönlendirici>Yakındaki cihazlar [Akıllı ev cihazları]>
 SL_24_>Akıllı Kart>İhtiyaç: Çipli kart okuyucu [SDkart değil]>
 SL_25_>Kurumsal uygulama>Microsoft Store için kurumsal paket yönetimi>
-SL_26_>Şimdi Yürütülüyor Oturum Yöneticisi>İhtiyaç: Bildirim alanı medya oynatıcı>
+SL_26_>Şimdi Yürütülüyor Oturum Yöneticisi>İhtiyaç: Bildirim alanı medya oynatıcı, FN medya tuşları>
 SL_27_>Grafik perfromansı izleme>İhtiyaç: Oyun modu>
 SL_28_>Oyun DVR ve Yayın Kullanıcı>İhtiyaç: Xbox ekran kayıt>
 SL_29_>Sistem Geri Yükleme>Bağlı: Dosya geçmişi>

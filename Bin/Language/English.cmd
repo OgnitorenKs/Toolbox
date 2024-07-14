@@ -1,7 +1,8 @@
+:: Translate: www.deepl.com
 ::
 :: ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ►
 :: #########################################################################################################
-:: Yönlendirme yapılır
+:: Routing is done
 Call %*
 goto :eof
 :: #########################################################################################################
@@ -90,6 +91,7 @@ D0005>User Name>
 D0006>License>
 D0007>Select the mold file>
 D0008>The file explorer needs to be restarted, do you confirm?>
+D0009>Sfc /Scannow and Dism repair options can break optimisation and theme setting, do you want it implemented?>
 ::███████████████████████████████████████████████████████████████████
 B0001>Service Management>
 B0002>Feature Management>
@@ -207,7 +209,7 @@ SL_10_>Radio and Airplane Mode> >
 SL_11_>Windows Connect Now [WPS]>Need: WiFi>
 SL_12_>Wifi> >
 SL_13_>Location> >
-SL_14_>Miracast>Wireless screen sharing │ Need: Settings ► Devices>
+SL_14_>Miracast>Wireless screen sharing │ Need: Settings ► Devices, Win11 audio management>
 SL_15_>Flow>Network data sharing>
 SL_16_>Fast Fetch-Start>Need: HDD>
 SL_17_>Windows Search>Indexing service │ May be required for flow service>
@@ -219,7 +221,7 @@ SL_22_>Disk Defragmentation>Need: SSD│HDD, Trim>
 SL_23_>Router>Near devices [Smart home devices]>
 SL_24_>Smart Card>Need: Chip card reader [Not SD card]>
 SL_25_>Enterprise App Management>Enterprise package management for Microsoft Store>
-SL_26_>Now Playing Session Manager>Need: Notification area media player>
+SL_26_>Now Playing Session Manager>Need: Notification area media player, FN media keys>
 SL_27_>Graphics performance monitoring>Need: Game mode>
 SL_28_>Game DVR and Broadcast User>Need: Xbox screen recording>
 SL_29_>System Restore>Connected: File History>
