@@ -12,7 +12,7 @@
         • "GpuEnergyDrv" ve "GraphicsPerfSvc" hizmetleri kalıpta varsayılan olarak ayarlandı.
 		• "Oyun modunu kapat" ayarı kalıpta varsayılan olarak ayarlandı.
 		
-<details><B><summary> Versiyon 4.4.4 ► 14.07.2024 </B></summary>
+</details><details><B><summary> Versiyon 4.4.4 ► 14.07.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Hizmet yönetimi" bölümünde "Miracast" için Win11 ses yönetiminin ihtiyacı olduğunu belirten not ekledim.
