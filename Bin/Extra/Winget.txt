@@ -24,46 +24,47 @@ Winget_23_>Mozilla.Firefox>Mozilla Firefox>
 Winget_24_>LibreWolf.LibreWolf>LibreWolf>
 Winget_25_>TorProject.TorBrowser>Tor>
 Winget_26_>KDE.Kdenlive>Kdenlive>
-Winget_27_>OpenShot.OpenShot>Openshot>
-Winget_28_>Meltytech.Shotcut>Shoutcut>
-Winget_29_>KDE.Krita>Krita>
-Winget_30_>GIMP.GIMP>Gimp>
-Winget_31_>sylikc.JPEGView>Jpegview>
-Winget_32_>OBSProject.OBSStudio>OBS Studio>
-Winget_33_>ShareX.ShareX>ShareX>
-Winget_34_>Skillbrains.Lightshot>LightShot>
-Winget_35_>Audacity.Audacity>Audacity>
-Winget_36_>HandBrake.HandBrake>HandBrake>
-Winget_37_>AdrienAllard.FileConverter>FileConverter>
-Winget_38_>CodecGuide.K-LiteCodecPack.Mega>K-Lite Codec>
-Winget_39_>VideoLAN.VLC>VLC Media Player>
-Winget_40_>Daum.PotPlayer>PotPlayer>
-Winget_41_>Spotify.Spotify>Spotify>
-Winget_42_>SoftDeluxe.FreeDownloadManager>Free Download Manager>
-Winget_43_>subhra74.XtremeDownloadManager>Xtreme Download Manager>
-Winget_44_>qBittorrent.qBittorrent>Qbittorrent>
-Winget_45_>TheDocumentFoundation.LibreOffice>Libre Office>
-Winget_46_>ONLYOFFICE.DesktopEditors>Only Office>
-Winget_47_>Adobe.Acrobat.Reader.64-bit>Adobe Acrobat Reader>
-Winget_48_>TrackerSoftware.PDF-XChangeEditor>PDF X-Change Editor>
-Winget_49_>calibre.calibre>Calibre>
-Winget_50_>Notepad++.Notepad++>Notepad++>
-Winget_51_>Microsoft.VisualStudioCode>Visual Studio Code>
-Winget_52_>GitHub.GitHubDesktop>Github>
-Winget_53_>Git.Git>Git>
-Winget_54_>OpenJS.NodeJS>Node.JS>
-Winget_55_>Unity.UnityHub>Unity Hub>
-Winget_56_>BlenderFoundation.Blender>Blender>
-Winget_57_>IObit.IObitUnlocker>Unlocker>
-Winget_58_>RevoUninstaller.RevoUninstaller>Revo Uninstaller>
-Winget_59_>7zip.7zip>7-Zip>
-Winget_60_>Open-Shell.Open-Shell-Menu>OpenShell>
-Winget_61_>AnyDeskSoftwareGmbH.AnyDesk>AnyDesk>
-Winget_62_>Henry++.MemReduct>Mem Reduct>
-Winget_63_>Guru3D.Afterburner>MSI Afterburner>
-Winget_64_>LogMeIn.Hamachi>Hamachi>
-Winget_65_>GlassWire.GlassWire>Glasswire>
-Winget_66_>Safing.Portmaster>PortMaster>
-Winget_67_>voidtools.Everything>Everything>
-Winget_68_>Flow-Launcher.Flow-Launcher>Flow Launcher>
-Winget_69_>Stremio.Stremio>Stremio>
+Winget_27_>ByteDance.CapCut>CapCut>
+Winget_28_>OpenShot.OpenShot>Openshot>
+Winget_29_>Meltytech.Shotcut>Shoutcut>
+Winget_30_>KDE.Krita>Krita>
+Winget_31_>GIMP.GIMP>Gimp>
+Winget_32_>sylikc.JPEGView>Jpegview>
+Winget_33_>OBSProject.OBSStudio>OBS Studio>
+Winget_34_>ShareX.ShareX>ShareX>
+Winget_35_>Skillbrains.Lightshot>LightShot>
+Winget_36_>Audacity.Audacity>Audacity>
+Winget_37_>HandBrake.HandBrake>HandBrake>
+Winget_38_>AdrienAllard.FileConverter>FileConverter>
+Winget_39_>CodecGuide.K-LiteCodecPack.Mega>K-Lite Codec>
+Winget_40_>VideoLAN.VLC>VLC Media Player>
+Winget_41_>Daum.PotPlayer>PotPlayer>
+Winget_42_>Spotify.Spotify>Spotify>
+Winget_43_>SoftDeluxe.FreeDownloadManager>Free Download Manager>
+Winget_44_>subhra74.XtremeDownloadManager>Xtreme Download Manager>
+Winget_45_>qBittorrent.qBittorrent>Qbittorrent>
+Winget_46_>TheDocumentFoundation.LibreOffice>Libre Office>
+Winget_47_>ONLYOFFICE.DesktopEditors>Only Office>
+Winget_48_>Adobe.Acrobat.Reader.64-bit>Adobe Acrobat Reader>
+Winget_49_>TrackerSoftware.PDF-XChangeEditor>PDF X-Change Editor>
+Winget_50_>calibre.calibre>Calibre>
+Winget_51_>Notepad++.Notepad++>Notepad++>
+Winget_52_>Microsoft.VisualStudioCode>Visual Studio Code>
+Winget_53_>GitHub.GitHubDesktop>Github>
+Winget_54_>Git.Git>Git>
+Winget_55_>OpenJS.NodeJS>Node.JS>
+Winget_56_>Unity.UnityHub>Unity Hub>
+Winget_57_>BlenderFoundation.Blender>Blender>
+Winget_58_>IObit.IObitUnlocker>Unlocker>
+Winget_59_>RevoUninstaller.RevoUninstaller>Revo Uninstaller>
+Winget_60_>7zip.7zip>7-Zip>
+Winget_61_>Open-Shell.Open-Shell-Menu>OpenShell>
+Winget_62_>AnyDeskSoftwareGmbH.AnyDesk>AnyDesk>
+Winget_63_>Henry++.MemReduct>Mem Reduct>
+Winget_64_>Guru3D.Afterburner>MSI Afterburner>
+Winget_65_>LogMeIn.Hamachi>Hamachi>
+Winget_66_>GlassWire.GlassWire>Glasswire>
+Winget_67_>Safing.Portmaster>PortMaster>
+Winget_68_>voidtools.Everything>Everything>
+Winget_69_>Flow-Launcher.Flow-Launcher>Flow Launcher>
+Winget_70_>Stremio.Stremio>Stremio>

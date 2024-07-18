@@ -4,22 +4,30 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
+<details><B><summary> Versiyon 4.4.5 ► 18.07.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+	    • "Uygulama yükleyici" bölümüne CapCut uygulaması 27 numaralı işlem olarak eklendi
+	▼ Playbook bölümünde yapılan değişiklikler;
+        • "GpuEnergyDrv" ve "GraphicsPerfSvc" hizmetleri kalıpta varsayılan olarak ayarlandı.
+		• "Oyun modunu kapat" ayarı kalıpta varsayılan olarak ayarlandı.
+		
 <details><B><summary> Versiyon 4.4.4 ► 14.07.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Hizmet yönetimi" bölümünde "Miracast" için Win11 ses yönetiminin ihtiyacı olduğunu belirten not ekledim.
         • "Hizmet yönetimi" bölümünde "Şimdi yürütülüyor oturum yöneticisi"nin FN tuşlarının ihtiyacı olduğunu belirten not ekledim. 
-		• Playbook kalıbından "NPSMSvc" hizmeti kaldırıldı. Uygulanınca "FN + F5/F6/F7/F8" tuş kombinlerinde soruna neden oluyordu.
-		• "Sistem optimizasyonu (Playbook)" bölümüne "Taskbar_Setting_18_" ayarı eklendi. Ayarın işlevi; Görev çubuğu - Sağ-tık görevi sonlandır seçeneğini aktifleştir [Windows11]
-		• "Sistem optimizasyonu (Playbook)" bölümünde "Optimization_Setting_15_" ayarı varsayılan olarak düzenlendi.
-		• "Windows-Market onar" bölümünde Sfc /scannow ve Dism onarma seçeneği sistem optimizasyonu ve tema ayarını bozmasıyla alakalı uyarı mesajı ve kullanıcı yönetimi için evet hayır seçeneği eklendi.
-			• Ayrıca hizmet grupları kapatılınca belirgin sorunlara neden olan bazı hizmet guruplarını varsayılan olarak ayarlaması için yeni komutlar eklendi. 
-			
+        • Playbook kalıbından "NPSMSvc" hizmeti kaldırıldı. Uygulanınca "FN + F5/F6/F7/F8" tuş kombinlerinde soruna neden oluyordu.
+        • "Sistem optimizasyonu (Playbook)" bölümüne "Taskbar_Setting_18_" ayarı eklendi. Ayarın işlevi; Görev çubuğu - Sağ-tık görevi sonlandır seçeneğini aktifleştir [Windows11]
+        • "Sistem optimizasyonu (Playbook)" bölümünde "Optimization_Setting_15_" ayarı varsayılan olarak düzenlendi.
+        • "Windows-Market onar" bölümünde Sfc /scannow ve Dism onarma seçeneği sistem optimizasyonu ve tema ayarını bozmasıyla alakalı uyarı mesajı ve kullanıcı yönetimi için evet hayır seçeneği eklendi.
+            • Ayrıca hizmet grupları kapatılınca belirgin sorunlara neden olan bazı hizmet guruplarını varsayılan olarak ayarlaması için yeni komutlar eklendi. 
+            
 </details><details><B><summary> Versiyon 4.4.3 ► 28.06.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • "Uygulama yükleyici" bölümünde "All in One Runtimes"a EdgeWebView2 yüklemesi için ekleme yapıldı.
-		• Playbook kalıbında Edge ve EdgeWebView2 silme ayarları pasif olarak düzenlendi.
+        • Playbook kalıbında Edge ve EdgeWebView2 silme ayarları pasif olarak düzenlendi.
 
 </details><details><B><summary> Versiyon 4.4.2 ► 28.06.2024 </B></summary>
 

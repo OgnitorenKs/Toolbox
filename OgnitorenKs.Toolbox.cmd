@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.4
+set Version=4.4.5
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -207,10 +207,10 @@ set Error=NT
 REM OgnitorenKs Programlarının yüklenmesini sağlayan bölüm 
 cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
 FOR %%a in (!Value_M!) do (
-    if %%a EQU 70 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/EasyDism/main/.github/EasyDism.zip)
-    if %%a EQU 71 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/SSD_Optimizer/main/.github/SSD_Optimizer.zip)
-    if %%a EQU 72 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Multiboot_Manager/main/.github/Multiboot_Manager.zip)
-    if %%a EQU 73 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Component_Manager/main/.github/Component_Manager.zip)
+    if %%a EQU 71 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/EasyDism/main/.github/EasyDism.zip)
+    if %%a EQU 72 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/SSD_Optimizer/main/.github/SSD_Optimizer.zip)
+    if %%a EQU 73 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Multiboot_Manager/main/.github/Multiboot_Manager.zip)
+    if %%a EQU 74 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Component_Manager/main/.github/Component_Manager.zip)
 )
 REM Seçilen programları yüklemek için 'Winget.txt' içerisinden veriyi çeker ve yükletir.
 cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
@@ -229,9 +229,9 @@ FOR %%a in (!Value_M!) do (
                    regedit /s "%Konum%\EdgeRemove.reg" > NUL 2>&1
                    Call :DEL_Direct "%Konum%\EdgeRemove.reg"
                   )
-    if %%a EQU 31 (Call :Jpegview_Default)
-    if %%a EQU 59 (Call :7Zip_Default)
-    if %%a LEQ 69 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+    if %%a EQU 32 (Call :Jpegview_Default)
+    if %%a EQU 60 (Call :7Zip_Default)
+    if %%a LEQ 70 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                       FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
                           echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
                           Call :Winget %%b
@@ -261,16 +261,16 @@ FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Lo
         FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt 2^>NUL') do (
             if %%a GTR 9 (set Numb=%%a)
             if %%a LSS 9 (set Numb= %%a)
-            if %%b EQU 1 (if %%a LEQ 69 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m))
-            if %%b EQU 0 (if %%a LEQ 69 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m))
+            if %%b EQU 1 (if %%a LEQ 70 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m))
+            if %%b EQU 0 (if %%a LEQ 70 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m))
         )
     )
 )
 FOR %%a in (!Value_M!) do (
-    if %%a EQU 70 (Call :OgniApp_Check %%a "EasyDism")
-    if %%a EQU 71 (Call :OgniApp_Check %%a "SSD_Optimizer")
-    if %%a EQU 72 (Call :OgniApp_Check %%a "Multiboot_Manager")
-    if %%a EQU 73 (Call :OgniApp_Check %%a "Component_Manager")
+    if %%a EQU 71 (Call :OgniApp_Check %%a "EasyDism")
+    if %%a EQU 72 (Call :OgniApp_Check %%a "SSD_Optimizer")
+    if %%a EQU 73 (Call :OgniApp_Check %%a "Multiboot_Manager")
+    if %%a EQU 74 (Call :OgniApp_Check %%a "Component_Manager")
 )
 Call :Dil A 2 T0028
 echo.&echo %R%[36m !LA2! %R%[0m
@@ -547,7 +547,7 @@ REM -------------------------------------------------------------
 :Wifi_Info
 REM Sistemde kayıtlı WiFi bilgilerini verir.
 mode con cols=65 lines=45
-Call :Dil A 2 B0005&echo.&echo %R%[91m !LA2! %R%[90m│ Archley %R%[0m
+Call :Dil A 2 B0005&echo.&echo %R%[91m !LA2! %R%[0m
 netsh wlan show profil ^| find "All" > NUL 2>&1
     if !errorlevel! NEQ 0 (Call :Dil A 2 T0029&echo.&echo %R%[92m !LA2! %R%[0m&set Error=X&Call :Bekle 5&goto Main_Menu)
 echo  %R%[90m┌─────────────────────────────────────────────────────────────┐%R%[0m
