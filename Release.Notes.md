@@ -4,14 +4,19 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.5 ► 18.07.2024 </B></summary>
+<details><B><summary> Versiyon 4.4.6 ► GELİŞTİRİLİYOR... </B></summary>
 
     ▼ Genel değişiklikler;
-	    • "Uygulama yükleyici" bölümüne CapCut uygulaması 27 numaralı işlem olarak eklendi
-	▼ Playbook bölümünde yapılan değişiklikler;
+        • 
+
+</details><details><B><summary> Versiyon 4.4.5 ► 18.07.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • "Uygulama yükleyici" bölümüne CapCut uygulaması 27 numaralı işlem olarak eklendi
+    ▼ Playbook bölümünde yapılan değişiklikler;
         • "GpuEnergyDrv" ve "GraphicsPerfSvc" hizmetleri kalıpta varsayılan olarak ayarlandı.
-		• "Oyun modunu kapat" ayarı kalıpta varsayılan olarak ayarlandı.
-		
+        • "Oyun modunu kapat" ayarı kalıpta varsayılan olarak ayarlandı.
+        
 </details><details><B><summary> Versiyon 4.4.4 ► 14.07.2024 </B></summary>
 
     ▼ Genel değişiklikler;
