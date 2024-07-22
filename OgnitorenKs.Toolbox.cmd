@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.5
+set Version=4.4.6
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -310,7 +310,7 @@ REM Visual C++ 2015-2022 kurulum hatasının giderir
 FOR /F "tokens=*" %%g in ('reg query HKLM\SOFTWARE\Classes\Installer\Products /s /f "Microsoft Visual C++" ^| Findstr /i "Hkey"') do (Call :RegDel "%%g")
 REM NET Desktop Runtime kurulum hatasını giderir
 FOR /F "tokens=*" %%g in ('reg query HKLM\SOFTWARE\Classes\Installer\Products /s /f "Microsoft .NET Host" ^| Findstr /i "Hkey"') do (Call :RegDel "%%g")
-Call :RD_Search "%ProgramData%\Package Cache\{*"
+REM Call :RD_Search "%ProgramData%\Package Cache\{*"
 REM EdgeWebView2 kurulum engellemesini kaldırır
 netsh advfirewall firewall delete rule name="Disable Edge Updates" > NUL 2>&1
 Call :RegDel "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe"
@@ -630,10 +630,13 @@ Call :DEL_Search "%Windir%\System32\LogFiles\Scm\*"
 REM Net makine kodu önbelleği
 Call :RD_Search "%Windir%\assembly\NativeImage*"
 REM Winget artıklarını siler
-Call :RD_Direct "%ProgramData%\Package Cache"
-FOR %%g in (msi msp) do (Call :DEL_Deep_Search "%Windir%\Installer\*.%%g")
-Call :DEL_Deep_Search "%Windir%\Installer\SourceHash*"
-Call :RD_Search "%Windir%\Installer\$PatchCache$\Managed\*"
+FOR /F "tokens=2" %%g in ('Findstr /i "Setting_4_" %Konum%\Settings.ini 2^>NUL') do (
+    if %%g EQU 0 (Call :RD_Direct "%ProgramData%\Package Cache"
+                  FOR %%k in (msi msp) do (Call :DEL_Deep_Search "%Windir%\Installer\*.%%k")
+                  Call :DEL_Deep_Search "%Windir%\Installer\SourceHash*"
+                  Call :RD_Search "%Windir%\Installer\$PatchCache$\Managed\*"
+                 )
+)
 REM Ekran kartı kurulum dosyaları
 REM AMD sürücü artıkları ve log temizleme kayıtları
 Call :RD_Direct "%systemdrive%\AMD"
@@ -2114,7 +2117,7 @@ Call :Playbook_Reader Change_App_2_
 REM Windows 11 başlat menüsünü devre dışı bırak
 Call :Playbook_Reader Change_App_3_
     if "!Playbook!" EQU "1" (Call :Dil A 2 P2008&echo ►%R%[32m !LA2! %R%[0m
-                             Call :Check_Rename "%Windir%\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\StartMenuExperienceHost.exe"
+                             Call :Check_Rename "%Windir%\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\StartMenuExperienceHost.exe"
                              %NSudo% taskkill /f /im "StartMenuExperienceHost.exe"
                              %NSudo% rename "C:\Windows\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\StartMenuExperienceHost.exe" "StartMenuExperienceHost_OLD.exe"
                              %NSudo% taskkill /f /im "StartMenuExperienceHost.exe"
@@ -3498,12 +3501,9 @@ echo Call :RD_Search "%%LocalAppData%%\Temp\*"
 echo Call :RD_Direct "%%windir%%\WinSxS\Temp"
 echo Call :RD_Direct "%%windir%%\WinSxS\Backup"
 echo Call :DEL_Search "%%Windir%%\System32\config\systemprofile\AppData\Local\*.tmp"
-echo Call :DEL_Deep_Search "%%systemdrive%%\*.log"
+echo Call :DEL_Deep_Search "%%SystemDrive%%\*.log"
 echo Call :DEL_Deep_Search "%%Windir%%\*etl"
 echo Call :DEL_Deep_Search "%%LocalAppData%%\*etl"
-echo FOR %%%%g in ^(msi msp^) do ^(Call :DEL_Deep_Search "%%Windir%%\Installer\*.%%%%g"^)
-echo Call :DEL_Deep_Search "%%Windir%%\Installer\SourceHash*"
-echo Call :RD_Search "%%Windir%%\Installer\$PatchCache$\Managed\*"
 echo Call :RD_Search "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 echo Call :DEL_Search "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
 echo Call :RD_Direct "%%Windir%%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"
@@ -3527,7 +3527,6 @@ echo Call :DEL_Direct "%%SystemRoot%%\System32\catroot2.chk"
 echo Call :DEL_Search "%%SystemRoot%%\Logs\SIH\*"
 echo Call :DEL_Search "%%SystemRoot%%\Traces\WindowsUpdate\*"
 echo Call :RD_Direct "%%SystemRoot%%\Logs\waasmedic"
-echo Call :RD_Direct "%%ProgramData%%\Package Cache"
 echo Call :RD_Direct "%%systemdrive%%\AMD"
 echo Call :RD_Direct "%%systemdrive%%\NVIDIA"
 echo Call :RD_Direct "%%systemdrive%%\INTEL"
@@ -3575,6 +3574,11 @@ echo goto :eof
 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "OgnitorenKs_Playbook" REG_SZ "C:\Playbook.Reset.After.cmd"
 REM Sistem geri yükleme bölümlerini temizler
 REM echo Call :RD_Direct "%%SystemDrive%%\System Volume Information"
+REM Installer klasörünün temizlenmesi .msi uzantılı programların kaldırılmasında ve yüklenmesinde soruna neden oluyor
+REM echo Call :RD_Direct "%%ProgramData%%\Package Cache"
+REM echo FOR %%%%g in ^(msi msp^) do ^(Call :DEL_Deep_Search "%%Windir%%\Installer\*.%%%%g"^)
+REM echo Call :DEL_Deep_Search "%%Windir%%\Installer\SourceHash*"
+REM echo Call :RD_Search "%%Windir%%\Installer\$PatchCache$\Managed\*"
 REM -------------------------------------------------------------
 REM Settings.ini dosyasından temizlik işleminin yapılıp yapılmayacağını kontrol eder
 set Value_T=NT

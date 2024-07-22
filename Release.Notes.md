@@ -4,10 +4,19 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.6 ► GELİŞTİRİLİYOR... </B></summary>
+<details><B><summary> Versiyon 4.4.6 ► 22.07.2024 </B></summary>
 
     ▼ Genel değişiklikler;
-        • 
+        • Sistem temizliği bölümünde "C:\Windows\Installer" "C:\Program Data\Package Cache" ve klasörünün temizleme komutları kaldırıldı. MSI uzantılı dosyaların kaldırılmasında soruna neden oluyordu.
+        • "Settings.ini" içerisinde "► 1 = Setting_4_ ► TR= Winget artıklarını temizle [Sistem temizleyici]" ayarı oluşturuldu. Bir üst maddedeki sorundan dolayı temizleme seçeneğini buradan açıp kapatabilirsiniz varsayılan olarak kapalıdır.
+    ▼ Playbook bölümündeki değişiklikler;
+        • Kalıpta "Privacy_Setting_28_= 0 ► Cihazlar arası deneyimi kapat" varsayılan olarak ayarlandı.
+        • Kalıpta "Privacy_Setting_50_= 0 ► Yeni uygulama yüklendi uyarısını kapat" varsayılan olarak ayarlandı.
+        • Kalıpta "Privacy_Setting_19_= 0 ► Web sitelerinin kullanıcı dil verisine erişimini engelle" varsayılan olarak ayarlandı.
+        • Kalıpta "Optimization_Setting_10_= 0 ► Nihai performans ekle ve aktifleştir" varsayılan olarak ayarlandı.
+        • Kalıpta "Optimization_Setting_11_= 0 ► İşlemci çekirdek uyku modunu kapat" varsayılan olarak ayarlandı.
+        • Kalıpta "Optimization_Setting_7_= 0 ► Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat" varsayılan olarak ayarlandı.
+        • "Change_App_3_" bölümündeki komut hatası giderildi.
 
 </details><details><B><summary> Versiyon 4.4.5 ► 18.07.2024 </B></summary>
 
