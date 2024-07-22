@@ -1,7 +1,7 @@
 ![Repo1](https://raw.githubusercontent.com/OgnitorenKs/Toolbox/main/.github/Repo-SS/Title.png)
 
 ### Hazırlayan: Hüseyin UZUNYAYLA / OgnitorenKs
-- ► Discord: https://discord.gg/jtvYJe4VAC
+- ► Discord: https://discord.gg/zwCDKnAKSw
 - ► Mail: ognitorenks@gmail.com
 - ► Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 - ► Desteklenen diller = Turkish │ English
