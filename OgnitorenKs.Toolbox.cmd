@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.6
+set Version=4.4.7
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -294,7 +294,7 @@ REM Netframework 4.5'in yüklü olup olmadığını kontrol eder. Yüklü değil
 FOR /F "tokens=3" %%g in ('findstr /C:"IIS-ASPNET45" %Konum%\Log\Features') do (
     echo %%g | Findstr /C:"Enabled" > NUL 2>&1
         if !errorlevel! NEQ 0 (Call :Dil B 2 T0020&echo %R%[92m !LB2! %R%[0m
-                               Dism /Online /Enable-Feature /FeatureName:IIS-ASPNET45 /All /NoRestart)
+                               Dism /Online /Enable-Feature /FeatureName:NetFx4Extended-ASPNET45 /All /NoRestart)
 )
 REM DirectPlay'in yüklü olup olmadığını kontrol eder. Yüklü değil ise yükler
 FOR /F "tokens=3" %%g in ('findstr /C:"DirectPlay" %Konum%\Log\Features') do (
@@ -3019,7 +3019,7 @@ REM NTFS sıkıştırmayı devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_18_
     if "!Playbook!" EQU "1" (fsutil behavior set disablecompression > NUL 2>&1
 )
-REM MSI mode
+REM Aygıtların işlemci ile performanslı iletişim modu [MSI mod │ GPU, Internet, USB │ UYARI:Bazı donanımlarda ekran git-gel yapabilir]
 Call :Playbook_Reader Optimization_Setting_19_
     if "!Playbook!" EQU "1" (Call :DEL_Direct "%Konum%\Log\MSIMODE.txt"
                              Call :Powershell "Get-CimInstance -ClassName Win32_USBController | Select-Object PNPDeviceID" >> %Konum%\Log\MSIMODE.txt
@@ -3206,6 +3206,8 @@ REM Sürücüleri otomatik güncellemeyi kapat
 Call :Playbook_Reader Update_Setting_3_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\DriverSearching" "SearchOrderConfig" REG_DWORD 0
                              Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" "ExcludeWUDriversInQualityUpdate" REG_DWORD 1
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" "ExcludeWUDrivers" REG_DWORD 1
+							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Device Metadata" "PreventDeviceMetadataFromNetwork" REG_DWORD 1
 )
 REM Konuşma modellerinin otomatik güncellemesini kapat
 Call :Playbook_Reader Update_Setting_4_

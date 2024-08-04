@@ -191,9 +191,12 @@ P7_9_>Görev çubuğu arama özelliğini devre dışı bırak>
 P7_10_>Başlat menüsü devre dışı bırak>
 P7_11_>Openshell başlat menüsü uygulamasını yükle>
 P7_12_>Copilot otomatik yükleme işlemini devre dışı bırak>
-P7_13_>Nihai performans ekle ve aktifleştir>
-P7_14_>İşlemci çekirdek uyku modunu kapat>
-P7_15_>Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat>
+P7_13_>MSI Mod - Aygıtların işlemci ile performanslı iletişim modu [UYARI:Bazı donanımlarda ekran git-gel yapabilir]>
+P7_14_>Eski ALT + TAB etkinleştir>
+P7_15_>Transparan özelliğini devre dışı bırak>
+P7_16_>Nihai performans ekle ve aktifleştir>
+P7_17_>İşlemci çekirdek uyku modunu kapat>
+P7_18_>Arkaplanda çalışan uygulamaların güç kullanımını azalt işlemini kapat>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Telefon>İhtiyaç: Bluetooth>

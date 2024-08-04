@@ -192,9 +192,12 @@ P7_9_>Disable taskbar search feature>
 P7_10_>Disable Start menu>
 P7_11_>Install Openshell start menu app>
 P7_12_>Disable Copilot autoload>
-P7_13_>Add and activate ultimate performance>
-P7_14_>Turn off processor core sleep mode>
-P7_15_>Turn off reduce power usage of apps running in the background>
+P7_13_>MSI Mod-Performance communication of devices with the processor [WARNING: On some hardware, the screen may go back and forth]>
+P7_14_>Activate the old ALT + TAB>
+P7_15_>Disable the Transparency feature>
+P7_16_>Add and activate ultimate performance>
+P7_17_>Turn off processor core sleep mode>
+P7_18_>Turn off reduce power usage of apps running in the background>
 ::██████████████████████████████████████████████████████████████████
 SL_1_>Bluetooth> >
 SL_2_>Phone>Need: Bluetooth>

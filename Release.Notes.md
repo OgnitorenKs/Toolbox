@@ -4,7 +4,17 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.6 ► 22.07.2024 </B></summary>
+<details><B><summary> Versiyon 4.4.7 ► 05.08.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • Playbook - "Update_Setting_3" ayarına ekleme yapıldı.
+        • Playbook - "Optimization_Setting_19_" ayarı kalıp yönetim ekranına eklendi.
+        • Playbook - "Explorer_Setting_16_" ayarı kalıp yönetim ekranına eklendi.
+        • Playbook - "Explorer_Setting_4_" ayarı kalıp yönetim ekranına eklendi.
+        • Playbook - Kalıpta bazı ayarlara yeni açıklamalar eklendi.
+		• Uygulama Yükleyici - All in One Runtimes bölümünde Net Framework 4.5 açılırken farklı özellikleri açması engellendi.
+
+</details><details><B><summary> Versiyon 4.4.6 ► 22.07.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • Sistem temizliği bölümünde "C:\Windows\Installer" "C:\Program Data\Package Cache" ve klasörünün temizleme komutları kaldırıldı. MSI uzantılı dosyaların kaldırılmasında soruna neden oluyordu.
