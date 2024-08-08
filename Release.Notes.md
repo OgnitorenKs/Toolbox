@@ -4,7 +4,12 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.7 ► 05.08.2024 </B></summary>
+<details><B><summary> Versiyon 4.4.8 ► 08.08.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • Playbook - Kalıp dizininde kalan 2.ini kalıp dosyası kaldırıldı.
+
+</details><details><B><summary> Versiyon 4.4.7 ► 05.08.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • Playbook - "Update_Setting_3" ayarına ekleme yapıldı.

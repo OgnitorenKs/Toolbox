@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.7
+set Version=4.4.8
 REM Pencere ayarı
 mode con cols=100 lines=23
 
