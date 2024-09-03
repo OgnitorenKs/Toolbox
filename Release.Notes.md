@@ -4,10 +4,38 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.8 ► 08.08.2024 </B></summary>
+<details><B><summary> Versiyon 4.4.9 ► 04.09.2024 - Playbook </B></summary>
 
     ▼ Genel değişiklikler;
-        • Playbook - Kalıp dizininde kalan 2.ini kalıp dosyası kaldırıldı.
+        • "Hizmetleri Yönet" bölümüde Wifi hizmetine Warp uygulaması için uyarı eklendi.
+    ▼ Playbook bölümündeki değişiklikler;
+        • "Security_Setting_9_" ► "Uzak bilgisayardan regedit kayıt değişikliğini devre dışı bırak" ayarı eklendi
+        • "Optimization_Setting_21_" ► "Çakışmaları önlemek için Windows gezginini bağımsız olarak ayarla" ayarı eklendi
+        • "Optimization_Setting_22_" ► "Dosya listesi yenileme politikasının optimizasyonu" ayarı eklendi
+        • "Optimization_Setting_23_" ► "Küçük resimlerin hızlı görüntülenmesini sağlamak için Aero snap'i hızlandırın." ayarı eklendi
+        • "Optimization_Setting_24_" ► "Simge önbelliğini arttır [Masaüstünü hızlandırır]" ayarı eklendi
+        • "Optimization_Setting_25_" ► "Ön plan programlarının hızını arttır" ayarı eklendi
+        • "Optimization_Setting_26_" ► "Görev çubuğu ön izleme penceresinin görüntülenme hızını arttır" ayarı eklendi
+        • "Special_Setting_4_" ► "İşlemci çalışma önceliğini değiştirir. [Bu ayarı sisteminizi sunucu olarak kullanıyorsanız uygulamayın]" ayarı eklendi
+        • "Security_Setting_3_" ayarına ekleme yapıldı.
+        • "Optimization_Setting_6_" ayarına ekleme yapıldı.
+        • "Privacy_Setting_58_" ayarına ekleme yapıldı.
+        • "Feature_Setting_5_" ayarı uygulanmasına rağmen işlevsiz kaldığı için kontrol amaçlı yeniden başlatma sonrası açılan temizlik dosyasına ayarın durumuna göre ekleme yapacak.
+        • Kalıpta "Optimization_Setting_1_" ayarı varsayılan hale getirildi.
+        • Microsoft Store uygulamalarını kaldırma komutlarında düzenleme yapıldı. Derin temizlik için yeni komutlar eklendi.
+        • Defender devre dışı bırakma komutlarında SmartScreen özelliği tam kapanmadığı için .exe dosyasını pasif hale getirmesi için "OLD" eklemesi yapıldı.
+        • Ayar düzenleme menüsünde yeni uyarılar eklendi.
+        • Kalıptan "Mail" uygulaması varsayılan kalacak şekilde düzenlendi.
+        • "Optimization_Setting_12_" ayarındaki bir regedit kaydındaki ifade eksikliği giderildi.
+    ▼ Uygulama Yükleyici bölümünde yapılan değişiklikler;
+        • All in One Runtimes bölümündeki dil veri hatası ve Net Framework 4.5 kontrol komutundaki veri hatası giderildi.
+        • MSI Afterburner yükleme sorunlarından dolayı listeden kaldırıldı.
+        • Seçili işlem komutlarında düzenlemeler yapıldı. Liste güncellemesi sonrası oluşan kodları düzenleme karmaşıklığı giderildi. [Bunu çalışma yapısını takip edenler için not düştüm]
+        
+</details><details><B><summary> Versiyon 4.4.8 ► 08.08.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • Playbook - Kalıp dizininde kalan "2.ini" kalıp dosyası kaldırıldı.
 
 </details><details><B><summary> Versiyon 4.4.7 ► 05.08.2024 </B></summary>
 
@@ -17,7 +45,7 @@
         • Playbook - "Explorer_Setting_16_" ayarı kalıp yönetim ekranına eklendi.
         • Playbook - "Explorer_Setting_4_" ayarı kalıp yönetim ekranına eklendi.
         • Playbook - Kalıpta bazı ayarlara yeni açıklamalar eklendi.
-		• Uygulama Yükleyici - All in One Runtimes bölümünde Net Framework 4.5 açılırken farklı özellikleri açması engellendi.
+        • Uygulama Yükleyici - All in One Runtimes bölümünde Net Framework 4.5 açılırken farklı özellikleri açması engellendi.
 
 </details><details><B><summary> Versiyon 4.4.6 ► 22.07.2024 </B></summary>
 

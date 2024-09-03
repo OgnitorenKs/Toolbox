@@ -45,18 +45,18 @@ echo   %R%[90m│%ogniogniogniogniognio% Oyun Kütüphane             %R%[90m│
 echo   %R%[90m│%R%[32m  7%R%[90m-%R%[33m Epic Games               %R%[90m│%R%[32m 36%R%[90m-%R%[33m Audacity                 %R%[90m│%R%[32m 61%R%[90m-%R%[36m OpenShell                %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m  8%R%[90m-%R%[33m Steam                    %R%[90m│%R%[32m 37%R%[90m-%R%[33m HandBrake                %R%[90m│%R%[32m 62%R%[90m-%R%[36m AnyDesk                  %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m  9%R%[90m-%R%[33m GOG Galaxy               %R%[90m│%R%[32m 38%R%[90m-%R%[33m FileConverter            %R%[90m│%R%[32m 63%R%[90m-%R%[36m Mem Reduct               %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 10%R%[90m-%R%[33m Ubisoft Connect          %R%[90m│%ogniogniogniogniognio% Video-Ses Oynatıcı         %R%[90m│%R%[32m 64%R%[90m-%R%[36m MSI Afterburner          %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 11%R%[90m-%R%[33m EA Games/Origin          %R%[90m│%R%[32m 39%R%[90m-%R%[36m K-Lite Codec             %R%[90m│%R%[32m 65%R%[90m-%R%[36m Hamachi                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 12%R%[90m-%R%[33m Playnite                 %R%[90m│%R%[32m 40%R%[90m-%R%[36m VLC Media Player         %R%[90m│%R%[32m 66%R%[90m-%R%[36m Glasswire                %R%[90m│%R%[0m
-echo   %R%[90m│%ogniogniogniogniognio% Tarayıcı                   %R%[90m│%R%[32m 41%R%[90m-%R%[36m PotPlayer                %R%[90m│%R%[32m 67%R%[90m-%R%[36m PortMaster               %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 13%R%[90m-%R%[36m Chromium [Sync]          %R%[90m│%R%[32m 42%R%[90m-%R%[36m Spotify                  %R%[90m│%R%[32m 68%R%[90m-%R%[36m Everything               %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 14%R%[90m-%R%[36m Chromium [UnSync]        %R%[90m│%ogniogniogniogniognio% İndirme Araçları           %R%[90m│%R%[32m 69%R%[90m-%R%[36m Flow Launcher            %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 15%R%[90m-%R%[36m Google Chrome            %R%[90m│%R%[32m 43%R%[90m-%R%[33m Free Download Manager    %R%[90m│%R%[32m 70%R%[90m-%R%[36m Stremio                  %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%ogniogniogniogniognio% OgnitorenKs Programları    %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%R%[32m 45%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m 71%R%[90m-%R%[36m EasyDism                 %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m 72%R%[90m-%R%[36m SSD Optimizer            %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%R%[32m 46%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m 73%R%[90m-%R%[36m Multiboot Manager        %R%[90m│%R%[0m
-echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m Maxthon                  %R%[90m│%R%[32m 47%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m 74%R%[90m-%R%[36m Component Manager        %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 10%R%[90m-%R%[33m Ubisoft Connect          %R%[90m│%ogniogniogniogniognio% Video-Ses Oynatıcı         %R%[90m│%R%[32m 64%R%[90m-%R%[36m Hamachi                  %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 11%R%[90m-%R%[33m EA Games/Origin          %R%[90m│%R%[32m 39%R%[90m-%R%[36m K-Lite Codec             %R%[90m│%R%[32m 65%R%[90m-%R%[36m Glasswire                %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 12%R%[90m-%R%[33m Playnite                 %R%[90m│%R%[32m 40%R%[90m-%R%[36m VLC Media Player         %R%[90m│%R%[32m 66%R%[90m-%R%[36m PortMaster               %R%[90m│%R%[0m
+echo   %R%[90m│%ogniogniogniogniognio% Tarayıcı                   %R%[90m│%R%[32m 41%R%[90m-%R%[36m PotPlayer                %R%[90m│%R%[32m 67%R%[90m-%R%[36m Everything               %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 13%R%[90m-%R%[36m Chromium [Sync]          %R%[90m│%R%[32m 42%R%[90m-%R%[36m Spotify                  %R%[90m│%R%[32m 68%R%[90m-%R%[36m Flow Launcher            %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 14%R%[90m-%R%[36m Chromium [UnSync]        %R%[90m│%ogniogniogniogniognio% İndirme Araçları           %R%[90m│%R%[32m 69%R%[90m-%R%[36m Stremio                  %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 15%R%[90m-%R%[36m Google Chrome            %R%[90m│%R%[32m 43%R%[90m-%R%[33m Free Download Manager    %R%[90m│%ogniogniogniogniognio% OgnitorenKs Programları    %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 16%R%[90m-%R%[36m Microsoft Edge           %R%[90m│%R%[32m 44%R%[90m-%R%[33m Xtreme Download Manager  %R%[90m│%R%[32m 70%R%[90m-%R%[36m EasyDism                 %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 17%R%[90m-%R%[36m Brave                    %R%[90m│%R%[32m 45%R%[90m-%R%[33m Qbittorrent              %R%[90m│%R%[32m 71%R%[90m-%R%[36m SSD Optimizer            %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 18%R%[90m-%R%[36m Cent                     %R%[90m│%ogniogniogniogniognio% Belgeler                   %R%[90m│%R%[32m 72%R%[90m-%R%[36m Multiboot Manager        %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 19%R%[90m-%R%[36m Vivaldi                  %R%[90m│%R%[32m 46%R%[90m-%R%[36m Libre Office             %R%[90m│%R%[32m 73%R%[90m-%R%[36m Component Manager        %R%[90m│%R%[0m
+echo   %R%[90m│%R%[32m 20%R%[90m-%R%[36m Maxthon                  %R%[90m│%R%[32m 47%R%[90m-%R%[36m Only Office              %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 21%R%[90m-%R%[36m Opera                    %R%[90m│%R%[32m 48%R%[90m-%R%[36m Acrobat Reader           %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 22%R%[90m-%R%[36m Opera-GX                 %R%[90m│%R%[32m 49%R%[90m-%R%[36m PDF X-Change Editor      %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
 echo   %R%[90m│%R%[32m 23%R%[90m-%R%[36m Mozilla Firefox          %R%[90m│%R%[32m 50%R%[90m-%R%[36m Calibre                  %R%[90m│%R%[32m%R%[32m%R%[37m                              %R%[90m│%R%[0m
@@ -189,7 +189,7 @@ P7_7_>Edge tarayıcısını kaldır>
 P7_8_>EdgeWebView2 kaldır>
 P7_9_>Görev çubuğu arama özelliğini devre dışı bırak>
 P7_10_>Başlat menüsü devre dışı bırak>
-P7_11_>Openshell başlat menüsü uygulamasını yükle>
+P7_11_>Openshell başlat menüsü uygulamasını yükle [Başlat menüsü ayarına bağlıdır]>
 P7_12_>Copilot otomatik yükleme işlemini devre dışı bırak>
 P7_13_>MSI Mod - Aygıtların işlemci ile performanslı iletişim modu [UYARI:Bazı donanımlarda ekran git-gel yapabilir]>
 P7_14_>Eski ALT + TAB etkinleştir>
@@ -209,7 +209,7 @@ SL_8_>IP Yardımcısı [IPV6]>ISS şirketiniz IPV6 altyapısı sunuyorsa hizmeti
 SL_9_>Mobil Etkin Nokta>İnternet paylaşımı │ İhtiyaç: Miracast>
 SL_10_>Radyo ve Uçak Modu>Laptop hizmeti>
 SL_11_>Windows Şimdi Bağlan [WPS]>İhtiyaç: WiFi>
-SL_12_>Wifi> >
+SL_12_>Wifi>İhtiyaç: Claudflare WARP>
 SL_13_>Konum> >
 SL_14_>Miracast>Kablosuz ekran paylaşımı │ İhtiyaç: Ayarlar ► Cihazlar, Win11 ses yönetimi>
 SL_15_>Akış>Ağ üzeri veri paylaşımı │ Ağınızı sürekli yoklar>

@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.8
+set Version=4.4.9
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -197,20 +197,26 @@ Call :Dil A 2 D0002&set /p Value_M=%R%[32m  !LA2! %R%[90mx,y: %R%[0m
 REM Kullanıcının girdiği veriyi büyük harfe dönüştürüyorum.
 Call :Upper !Value_M! Value_M
 REM Alt bölümde yönlendirmeleri yapıyorum.
-echo !Value_M! | Findstr /i "X" > NUL 2>&1
+echo !Value_M! | Findstr /i "x" > NUL 2>&1
     if !errorlevel! EQU 0 (goto Main_Menu)
 Call :Dil A 2 T0003
-Call :Dil B 2 T0011
+Call :Dil C 2 T0011
 MD %Konum%\Log
 Call :DEL_Direct "%Konum%\Log\Winget_Log.txt"
 set Error=NT
 REM OgnitorenKs Programlarının yüklenmesini sağlayan bölüm 
 cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
+REM İndirme listesinden bir değişiklik olursa bu değeri değişmen yeterli olacaktır. OgnitorenKs uygulamaların başlangıç numarasını yazman gerekiyor.
+set OgniApp=70
 FOR %%a in (!Value_M!) do (
-    if %%a EQU 71 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/EasyDism/main/.github/EasyDism.zip)
-    if %%a EQU 72 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/SSD_Optimizer/main/.github/SSD_Optimizer.zip)
-    if %%a EQU 73 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Multiboot_Manager/main/.github/Multiboot_Manager.zip)
-    if %%a EQU 74 (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Component_Manager/main/.github/Component_Manager.zip)
+    if %%a EQU !OgniApp! (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/EasyDism/main/.github/EasyDism.zip)
+    set /a OgniApp+=1
+    if %%a EQU !OgniApp! (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/SSD_Optimizer/main/.github/SSD_Optimizer.zip)
+    set /a OgniApp+=1
+    if %%a EQU !OgniApp! (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Multiboot_Manager/main/.github/Multiboot_Manager.zip)
+    set /a OgniApp+=1
+    if %%a EQU !OgniApp! (Call :OgniApp_Installer %%a https://raw.githubusercontent.com/OgnitorenKs/Component_Manager/main/.github/Component_Manager.zip)
+    set /a OgniApp-=3
 )
 REM Seçilen programları yüklemek için 'Winget.txt' içerisinden veriyi çeker ve yükletir.
 cls&echo.&echo  ►%R%[36m !LA2!:%R%[0m !Value_M!
@@ -231,17 +237,19 @@ FOR %%a in (!Value_M!) do (
                   )
     if %%a EQU 32 (Call :Jpegview_Default)
     if %%a EQU 60 (Call :7Zip_Default)
-    if %%a LEQ 70 (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
-                      FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
-                          echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LB2! %R%[0m
-                          Call :Winget %%b
-                          if %%a EQU 16 (dir /b "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" > NUL 2>&1
-                                             if !errorlevel! EQU 0 (Call :Powershell "Start-Process '%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe'")
-                                        )
-                          winget list "%%b" --accept-source-agreements > NUL 2>&1
-                              if "!errorlevel!" EQU "0" (echo Winget_%%a_^>1^>%%c^> >> %Konum%\Log\Winget_Log.txt)
-                              if "!errorlevel!" NEQ "0" (echo Winget_%%a_^>0^>%%c^> >> %Konum%\Log\Winget_Log.txt)
-                 )))
+    set /a OgniApp-=1
+    if %%a LEQ !OgniApp! (FOR /F "delims=> tokens=2" %%b in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+                              FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Bin\Extra\Winget.txt') do (
+                                  echo  ►%R%[32m %%a%R%[90m-%R%[33m %%c%R%[32m !LC2! %R%[0m
+                                  Call :Winget %%b
+                                  if %%a EQU 16 (dir /b "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" > NUL 2>&1
+                                                     if !errorlevel! EQU 0 (Call :Powershell "Start-Process '%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe'")
+                                                )
+                                  winget list "%%b" --accept-source-agreements > NUL 2>&1
+                                  if "!errorlevel!" EQU "0" (echo Winget_%%a_^>1^>%%c^> >> %Konum%\Log\Winget_Log.txt)
+                                  if "!errorlevel!" NEQ "0" (echo Winget_%%a_^>0^>%%c^> >> %Konum%\Log\Winget_Log.txt)
+                         )))
+    set /a OgniApp+=1
 )
 REM 1 numaralı işlem tek seçilmişse bilgi ekranını atlar.
 set Count=0
@@ -261,16 +269,20 @@ FOR /F "delims='_' tokens=2" %%a in ('Findstr /i "Winget_" %Konum%\Log\Winget_Lo
         FOR /F "delims=> tokens=3" %%c in ('Findstr /i "Winget_%%a_" %Konum%\Log\Winget_Log.txt 2^>NUL') do (
             if %%a GTR 9 (set Numb=%%a)
             if %%a LSS 9 (set Numb= %%a)
-            if %%b EQU 1 (if %%a LEQ 70 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m))
-            if %%b EQU 0 (if %%a LEQ 70 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m))
+            if %%b EQU 1 (if %%a LEQ 69 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[32m!LA2!%R%[90m]%R%[0m))
+            if %%b EQU 0 (if %%a LEQ 69 (echo %R%[32m  !Numb!%R%[90m-%R%[33m %%c %R%[90m[%R%[31m!LB2!%R%[90m]%R%[0m))
         )
     )
 )
 FOR %%a in (!Value_M!) do (
-    if %%a EQU 71 (Call :OgniApp_Check %%a "EasyDism")
-    if %%a EQU 72 (Call :OgniApp_Check %%a "SSD_Optimizer")
-    if %%a EQU 73 (Call :OgniApp_Check %%a "Multiboot_Manager")
-    if %%a EQU 74 (Call :OgniApp_Check %%a "Component_Manager")
+    if %%a EQU !OgniApp! (Call :OgniApp_Check %%a "EasyDism")
+    set /a OgniApp+=1
+    if %%a EQU !OgniApp! (Call :OgniApp_Check %%a "SSD_Optimizer")
+    set /a OgniApp+=1
+    if %%a EQU !OgniApp! (Call :OgniApp_Check %%a "Multiboot_Manager")
+    set /a OgniApp+=1
+    if %%a EQU !OgniApp! (Call :OgniApp_Check %%a "Component_Manager")
+    set /a OgniApp-=3
 )
 Call :Dil A 2 T0028
 echo.&echo %R%[36m !LA2! %R%[0m
@@ -285,21 +297,21 @@ REM Dism üzerinden sistem componentleri hakkında bilgi alıyorum.
 Dism /Online /Get-Capabilities /format:table > %Konum%\Log\Capabilities
 Dism /Online /Get-Features /format:table > %Konum%\Log\Features
 REM Netframework 3.5'in yüklü olup olmadığını kontrol eder. Yüklü değil ise yükler
-FOR /F "tokens=3" %%g in ('Findstr /C:"NetFX3~~~~" %Konum%\Log\Capabilities') do (
+FOR /F "tokens=3" %%g in ('Findstr /C:"NetFX3~~~~" %Konum%\Log\Capabilities 2^>NUL') do (
     echo %%g | Findstr /C:"Installed" > NUL 2>&1
-        if !errorlevel! NEQ 0 (Call :Dil B 2 T0019&echo %R%[92m !LB2! %R%[0m
+        if !errorlevel! NEQ 0 (Call :Dil B 2 T0019&echo %R%[32m !LB2! %R%[0m
                                Dism /Online /Enable-Feature /Featurename:NetFx3 /All /NoRestart)
 )
 REM Netframework 4.5'in yüklü olup olmadığını kontrol eder. Yüklü değil ise yükler
-FOR /F "tokens=3" %%g in ('findstr /C:"IIS-ASPNET45" %Konum%\Log\Features') do (
+FOR /F "tokens=3" %%g in ('Findstr /C:"NetFx4Extended-ASPNET45" %Konum%\Log\Features 2^>NUL') do (
     echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-        if !errorlevel! NEQ 0 (Call :Dil B 2 T0020&echo %R%[92m !LB2! %R%[0m
+        if !errorlevel! NEQ 0 (Call :Dil B 2 T0020&echo %R%[32m !LB2! %R%[0m
                                Dism /Online /Enable-Feature /FeatureName:NetFx4Extended-ASPNET45 /All /NoRestart)
 )
 REM DirectPlay'in yüklü olup olmadığını kontrol eder. Yüklü değil ise yükler
-FOR /F "tokens=3" %%g in ('findstr /C:"DirectPlay" %Konum%\Log\Features') do (
+FOR /F "tokens=3" %%g in ('Findstr /C:"DirectPlay" %Konum%\Log\Features 2^>NUL') do (
     echo %%g | Findstr /C:"Enabled" > NUL 2>&1
-        if !errorlevel! NEQ 0 (Call :Dil B 2 T0021&echo %R%[92m !LB2! %R%[0m
+        if !errorlevel! NEQ 0 (Call :Dil B 2 T0021&echo %R%[32m !LB2! %R%[0m
                                Dism /Online /Enable-Feature /FeatureName:DirectPlay /All /NoRestart)
 )
 REM Winget üzerinden All in One Runtimes bileşenlerinin tamamını indirir ve yükler
@@ -1243,14 +1255,6 @@ FOR /F "tokens=*" %%j in ('Findstr /i "%~1" %Konum%\Log\Appx_Info1') do (
         Call :RegKey "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Deprovisioned\!NonRemove2!"
         Dism /Online /Set-NonRemovableapppolicy /Packagefamily:!NonRemove1! /Nonremovable:0 > NUL 2>&1
         "%Konum%\Bin\NSudo.exe" -U:T -P:E -Wait -ShowWindowMode:hide Powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -C "Remove-AppxPackage -Package '!NonRemove1!' -allusers"
-        FOR /F "tokens=1" %%m in ('Findstr /i "!NonRemove2!" %Konum%\Log\Appx_Info3 2^>NUL') do (
-            FOR /F "tokens=*" %%n in ('Dir /AD /B "%ProgramFiles%\WindowsApps\%%m*" 2^>NUL') do (
-                echo Call :RD_Direct "%%ProgramFiles%%\WindowsApps\%%n" >> C:\Playbook.Reset.After.cmd
-                %NSudo% RD /S /Q "%ProgramFiles%\WindowsApps\%%n"
-            )
-        )
-        %NSudo% RD /S /Q "%Windir%\SystemApps\!NonRemove2!"
-        echo Call :RD_Direct "%%Windir%%\SystemApps\!NonRemove2!" >> C:\Playbook.Reset.After.cmd
         set NonRemove1=
         set NonRemove2=
     )
@@ -1262,6 +1266,18 @@ FOR /F "tokens=*" %%v in ('dir /b "%Windir%\SystemApps\*%~1*" 2^>NUL') do (
 FOR /F "tokens=*" %%v in ('dir /b "%ProgramFiles%\WindowsApps\*%~1*" 2^>NUL') do (
     echo Call :RD_Direct "%%ProgramFiles%%\WindowsApps\%%v" >> C:\Playbook.Reset.After.cmd
     %NSudo% RD /S /Q "%ProgramFiles%\WindowsApps\%%v"
+)
+FOR /F "tokens=*" %%v in ('dir /b "%ProgramData%\Microsoft\Windows\AppRepository\Packages\*%~1*" 2^>NUL') do (
+    echo Call :RD_Direct "%%ProgramData%%\Microsoft\Windows\AppRepository\Packages\%%v" >> C:\Playbook.Reset.After.cmd
+    %NSudo% RD /S /Q "%ProgramData%\Microsoft\Windows\AppRepository\Packages\%%v"
+)
+FOR /F "tokens=*" %%v in ('dir /b "C:\Users\All Users\Microsoft\Windows\AppRepository\Packages\*%~1*" 2^>NUL') do (
+    echo Call :RD_Direct "C:\Users\All Users\Microsoft\Windows\AppRepository\Packages\%%v" >> C:\Playbook.Reset.After.cmd
+    %NSudo% RD /S /Q "C:\Users\All Users\Microsoft\Windows\AppRepository\Packages\%%v"
+)
+FOR /F "tokens=*" %%v in ('dir /b "%LocalAppData%\Packages\*%~1*" 2^>NUL') do (
+    echo Call :RD_Direct "%LocalAppData%\Packages\%%v" >> C:\Playbook.Reset.After.cmd
+    %NSudo% RD /S /Q "%LocalAppData%\Packages\%%v"
 )
 goto :eof
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -1956,7 +1972,6 @@ Call :Playbook_Reader Component_Setting_1_
                              Call :Remove_!Value_C! "OGNI_2_"
                              Taskkill /f /im smartscreen.exe > NUL 2>&1
                              FOR %%a in (
-                             "%windir%\System32\CompatTelRunner.exe"
                              "%windir%\System32\drivers\MsSecFlt.sys"
                              "%windir%\System32\drivers\WdBoot.sys"
                              "%windir%\System32\drivers\WdFilter.sys"
@@ -2094,8 +2109,11 @@ cls
 REM Windows defender devre dışı bırak
 Call :Playbook_Reader Change_App_1_
     if "!Playbook!" EQU "1" (Call :Dil A 2 P2006&echo ►%R%[32m !LA2! %R%[0m
-                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\CompatTelRunner.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
+                             REM Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\CompatTelRunner.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
                              Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\smartscreen.exe" "Debugger" REG_SZ "%%%%windir%%%%\System32\taskkill.exe"
+                             Call :Check_Rename "%Windir%\System32\smartscreen.exe"
+                             %NSudo% taskkill /f /im "smartscreen.exe"
+                             %NSudo% rename "%Windir%\System32\smartscreen.exe" "smartscreen_OLD.exe"
                              Call :Defender_Regedit 4
 )
 REM Görev çubuğu arama bileşenini devre dışı bırak
@@ -2571,6 +2589,8 @@ REM Windows Hata raporlamayı devre dışı bırak
 Call :Playbook_Reader Privacy_Setting_58_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" "Disabled" REG_DWORD 1
                              Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" "DontSendAdditionalData" REG_DWORD 1
+                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\PCHealth\ErrorReporting" "ShowUI" REG_DWORD 0
+                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\PCHealth\ErrorReporting" "DoReport" REG_DWORD 0
                              Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" "DontShowUI" REG_DWORD 1
                              Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" "LoggingDisabled" REG_DWORD 1
                              Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" "MachineID" REG_SZ 0
@@ -2869,7 +2889,7 @@ Call :Playbook_Reader Search_Setting_5_
 REM Başlangıç ​​gecikmesini devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_1_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Serialize" "StartupDelayInMSec" REG_DWORD 0
-                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "DelayedDesktopSwitchTimeout" REG_DWORD 1
+                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "DelayedDesktopSwitchTimeout" REG_DWORD 5
 )
 REM Oyun modunu kapat
 Call :Playbook_Reader Optimization_Setting_2_
@@ -2893,6 +2913,7 @@ Call :Playbook_Reader Optimization_Setting_5_
 REM Otomatik bakım görevini devre dışı bırak
 Call :Playbook_Reader Optimization_Setting_6_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\ScheduledDiagnostics" "EnabledExecution" REG_DWORD 0
+                             Call :RegAdd "HKLM\System\CurrentControlSet\Control\Session Manager" "AutoChkTimeOut" REG_DWORD 5
                              Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoLowDiskSpaceChecks" REG_DWORD 1
                              Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "32" REG_DWORD 0
                              Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" "512" REG_DWORD 0
@@ -2935,7 +2956,7 @@ Call :Playbook_Reader Optimization_Setting_12_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" "AllowBlockingAppsAtShutdown" REG_DWORD 0
                              Call :RegAdd "HKCU\Control Panel\Desktop" "AutoEndTasks" REG_SZ 1 
                              Call :RegAdd "HKCU\Control Panel\Desktop" "HungAppTimeout" REG_SZ "3000"
-                             Call :RegAdd "HKCU\Control Panel\Desktop" "WaitToKillAppTime" REG_SZ "1000"
+                             Call :RegAdd "HKCU\Control Panel\Desktop" "WaitToKillAppTimeout" REG_SZ "5000"
                              Call :RegAdd "HKCU\Control Panel\Desktop" "LowLevelHooksTimeout" REG_SZ "4000"
                              Call :RegAdd_CCS "Control" "WaitToKillServiceTimeout" REG_SZ "2000"
 )
@@ -3035,6 +3056,30 @@ Call :Playbook_Reader Optimization_Setting_20_
                                 Call :RegDel "%%a" /v "DevicePriority"
                             )
 )
+REM Çakışmaları önlemek için Windows gezginini bağımsız olarak ayarla
+Call :Playbook_Reader Optimization_Setting_21_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "DesktopProcess" REG_DWORD 1
+)
+REM Dosya listesi yenileme politikasının optimizasyonu
+Call :Playbook_Reader Optimization_Setting_22_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoSimpleNetIDList" REG_DWORD 1
+)
+REM Küçük resimlerin hızlı görüntülenmesini sağlamak için Aero snap'i hızlandırın
+Call :Playbook_Reader Optimization_Setting_23_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ExtendedUIHoverTime" REG_DWORD 0
+)
+REM Simge önbelliğini arttır [Masaüstünü hızlandırır]
+Call :Playbook_Reader Optimization_Setting_24_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "Max Cached Icons" REG_SZ 4096
+)
+REM Ön plan programlarının hızını arttır
+Call :Playbook_Reader Optimization_Setting_25_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Desktop" "ForegroundLockTimeout" REG_DWORD 0
+)
+REM Görev çubuğu ön izleme penceresinin görüntülenme hızını arttır
+Call :Playbook_Reader Optimization_Setting_26_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "DesktopLivePreviewHoverTime" REG_DWORD 0
+)
 REM Dosya Gezgini hafıza sorununu gider
 Call :Playbook_Reader Fix_Setting_1_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell" "BagMRU Size" REG_DWORD "0x4e20"
@@ -3059,6 +3104,7 @@ Call :Playbook_Reader Security_Setting_2_
 REM Otomatik oynatma devre dışı bırak
 Call :Playbook_Reader Security_Setting_3_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" "DisableAutoplay" REG_DWORD 0
+                             Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoDriveTypeAutoRun" REG_DWORD 221
 )
 REM Uzak bağlantıyla komut dosyalı tanılamalıyı devre dışı bırak
 Call :Playbook_Reader Security_Setting_4_
@@ -3084,6 +3130,10 @@ REM VPN kullanırken DNS sızıntılarını engelle
 Call :Playbook_Reader Security_Setting_8_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" DisableSmartNameResolution REG_DWORD 1
                              Call :RegAdd_CCS "Services\Dnscache\Parameters" DisableParallelAandAAAA REG_DWORD 1
+)
+REM Uzak bilgisayardan regedit kayıt değişikliğini devre dışı bırak [Uzak masaüstü]
+Call :Playbook_Reader Security_Setting_9_
+    if "!Playbook!" EQU "1" (Call :RegAdd_CCS "Control\SecurePipeServers\winreg" remoteregaccess REG_DWORD 1
 )
 REM Yapışkan tuşları kapat
 Call :Playbook_Reader Feature_Setting_1_
@@ -3134,6 +3184,7 @@ Call :Playbook_Reader Feature_Setting_4_
 REM Kullanıcı hesap denetimi [UAC] devre dışı bırak
 Call :Playbook_Reader Feature_Setting_5_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "ConsentPromptBehaviorAdmin" REG_DWORD 0
+                             echo reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /f /v "ConsentPromptBehaviorAdmin" /t REG_DWORD /d 0 ^> NUL 2^>^&1
 )
 REM Güvenli masaüstü bildirimini kapat
 Call :Playbook_Reader Feature_Setting_6_
@@ -3206,8 +3257,8 @@ REM Sürücüleri otomatik güncellemeyi kapat
 Call :Playbook_Reader Update_Setting_3_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\DriverSearching" "SearchOrderConfig" REG_DWORD 0
                              Call :RegAdd "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" "ExcludeWUDriversInQualityUpdate" REG_DWORD 1
-							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" "ExcludeWUDrivers" REG_DWORD 1
-							 Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Device Metadata" "PreventDeviceMetadataFromNetwork" REG_DWORD 1
+                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" "ExcludeWUDrivers" REG_DWORD 1
+                             Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Device Metadata" "PreventDeviceMetadataFromNetwork" REG_DWORD 1
 )
 REM Konuşma modellerinin otomatik güncellemesini kapat
 Call :Playbook_Reader Update_Setting_4_
@@ -3379,6 +3430,22 @@ Call :Playbook_Reader Special_Setting_2_
 REM Fare ile bir öğenin üzerine gelindiğinde bilgi penceresi gösterim süresi [Varsayılan değer= 400]
 Call :Playbook_Reader Special_Setting_3_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Mouse" "MouseHoverTime" REG_SZ !PB_Value!
+)
+REM İşlemci çalışma önceliğini değiştirir. [Bu ayarı sisteminizi sunucu olarak kullanıyorsanız uygulamayın]
+REM 2A = Kısa, Sabit, Yüksek ön plan desteği.
+REM 29 = Kısa, Sabit, Orta ön plan güçlendirmesi.
+REM 28 = Kısa, Sabit, Ön plan desteği yok.
+REM 26 = Kısa, Değişken, Yüksek ön plan güçlendirmesi.
+REM 25 = Kısa, Değişken, Orta ön plan güçlendirmesi.
+REM 24 = Kısa, Değişken, Ön plan desteği yok.
+REM 1A = Uzun, Sabit, Yüksek ön plan desteği.
+REM 19 = Uzun, Sabit, Orta ön plan güçlendirmesi.
+REM 18 = Uzun, Sabit, Ön plan desteği yok.
+REM 16 = Uzun, Değişken, Yüksek ön plan güçlendirmesi.
+REM 15 = Uzun, Değişken, Orta ön plan güçlendirmesi.
+REM 14 = Uzun, Değişken, Ön plan desteği yok.
+Call :Playbook_Reader Special_Setting_4_
+    if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\System\CurrentControlSet\Control\PriorityControl" "Win32PrioritySeparation" REG_DWORD 0x!PB_Value!
 )
 REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 5/6 │ !LA2!

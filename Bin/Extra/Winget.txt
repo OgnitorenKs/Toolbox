@@ -61,10 +61,9 @@ Winget_60_>7zip.7zip>7-Zip>
 Winget_61_>Open-Shell.Open-Shell-Menu>OpenShell>
 Winget_62_>AnyDeskSoftwareGmbH.AnyDesk>AnyDesk>
 Winget_63_>Henry++.MemReduct>Mem Reduct>
-Winget_64_>Guru3D.Afterburner>MSI Afterburner>
-Winget_65_>LogMeIn.Hamachi>Hamachi>
-Winget_66_>GlassWire.GlassWire>Glasswire>
-Winget_67_>Safing.Portmaster>PortMaster>
-Winget_68_>voidtools.Everything>Everything>
-Winget_69_>Flow-Launcher.Flow-Launcher>Flow Launcher>
-Winget_70_>Stremio.Stremio>Stremio>
+Winget_64_>LogMeIn.Hamachi>Hamachi>
+Winget_65_>GlassWire.GlassWire>Glasswire>
+Winget_66_>Safing.Portmaster>PortMaster>
+Winget_67_>voidtools.Everything>Everything>
+Winget_68_>Flow-Launcher.Flow-Launcher>Flow Launcher>
+Winget_69_>Stremio.Stremio>Stremio>
