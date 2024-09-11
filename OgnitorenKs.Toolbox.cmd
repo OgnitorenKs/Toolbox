@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.4.9
+set Version=4.5.0
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -180,10 +180,8 @@ title 🤖 OgnitorenKs Toolbox 🤖
     if "!Value_M!" EQU "10" (Call :Windows_Repair)
     if "!Value_M!" EQU "11" (goto Playbook_Manager)
     if "!Value_M!" EQU "Z" (goto Language_Select)
-    if "!Value_M!" EQU "DEV" (goto Developer)
     if "!Value_M!" EQU "X" (exit)
     if "!Error!" EQU "X" (goto Main_Menu)
-Call :ProcessCompleted
 goto Main_Menu
 
 REM -------------------------------------------------------------
@@ -3056,30 +3054,6 @@ Call :Playbook_Reader Optimization_Setting_20_
                                 Call :RegDel "%%a" /v "DevicePriority"
                             )
 )
-REM Çakışmaları önlemek için Windows gezginini bağımsız olarak ayarla
-Call :Playbook_Reader Optimization_Setting_21_
-    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" "DesktopProcess" REG_DWORD 1
-)
-REM Dosya listesi yenileme politikasının optimizasyonu
-Call :Playbook_Reader Optimization_Setting_22_
-    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "NoSimpleNetIDList" REG_DWORD 1
-)
-REM Küçük resimlerin hızlı görüntülenmesini sağlamak için Aero snap'i hızlandırın
-Call :Playbook_Reader Optimization_Setting_23_
-    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "ExtendedUIHoverTime" REG_DWORD 0
-)
-REM Simge önbelliğini arttır [Masaüstünü hızlandırır]
-Call :Playbook_Reader Optimization_Setting_24_
-    if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" "Max Cached Icons" REG_SZ 4096
-)
-REM Ön plan programlarının hızını arttır
-Call :Playbook_Reader Optimization_Setting_25_
-    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Desktop" "ForegroundLockTimeout" REG_DWORD 0
-)
-REM Görev çubuğu ön izleme penceresinin görüntülenme hızını arttır
-Call :Playbook_Reader Optimization_Setting_26_
-    if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "DesktopLivePreviewHoverTime" REG_DWORD 0
-)
 REM Dosya Gezgini hafıza sorununu gider
 Call :Playbook_Reader Fix_Setting_1_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell" "BagMRU Size" REG_DWORD "0x4e20"
@@ -3184,7 +3158,7 @@ Call :Playbook_Reader Feature_Setting_4_
 REM Kullanıcı hesap denetimi [UAC] devre dışı bırak
 Call :Playbook_Reader Feature_Setting_5_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" "ConsentPromptBehaviorAdmin" REG_DWORD 0
-                             echo reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /f /v "ConsentPromptBehaviorAdmin" /t REG_DWORD /d 0 ^> NUL 2^>^&1
+                             echo reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /f /v "ConsentPromptBehaviorAdmin" /t REG_DWORD /d 0 ^> NUL 2^>^&1 >> C:\Playbook.Reset.After.cmd
 )
 REM Güvenli masaüstü bildirimini kapat
 Call :Playbook_Reader Feature_Setting_6_
@@ -3431,22 +3405,6 @@ REM Fare ile bir öğenin üzerine gelindiğinde bilgi penceresi gösterim süre
 Call :Playbook_Reader Special_Setting_3_
     if "!Playbook!" EQU "1" (Call :RegAdd "HKCU\Control Panel\Mouse" "MouseHoverTime" REG_SZ !PB_Value!
 )
-REM İşlemci çalışma önceliğini değiştirir. [Bu ayarı sisteminizi sunucu olarak kullanıyorsanız uygulamayın]
-REM 2A = Kısa, Sabit, Yüksek ön plan desteği.
-REM 29 = Kısa, Sabit, Orta ön plan güçlendirmesi.
-REM 28 = Kısa, Sabit, Ön plan desteği yok.
-REM 26 = Kısa, Değişken, Yüksek ön plan güçlendirmesi.
-REM 25 = Kısa, Değişken, Orta ön plan güçlendirmesi.
-REM 24 = Kısa, Değişken, Ön plan desteği yok.
-REM 1A = Uzun, Sabit, Yüksek ön plan desteği.
-REM 19 = Uzun, Sabit, Orta ön plan güçlendirmesi.
-REM 18 = Uzun, Sabit, Ön plan desteği yok.
-REM 16 = Uzun, Değişken, Yüksek ön plan güçlendirmesi.
-REM 15 = Uzun, Değişken, Orta ön plan güçlendirmesi.
-REM 14 = Uzun, Değişken, Ön plan desteği yok.
-Call :Playbook_Reader Special_Setting_4_
-    if "!Playbook!" EQU "1" (Call :RegAdd "HKLM\System\CurrentControlSet\Control\PriorityControl" "Win32PrioritySeparation" REG_DWORD 0x!PB_Value!
-)
 REM -------------------------------------------------------------
 cls&Call :Dil A 2 P1007&title OgnitorenKs Playbook │ 5/6 │ !LA2!
 REM Regedit kayıtlarının çıktılarını gizlemek için
@@ -3674,7 +3632,7 @@ Call :Playbook_Reader "Install_Application"
 )
 REM -------------------------------------------------------------
 REM İşlemler tamamlandı reset atıyoruz.
-shutdown -r -f -t 5
+REM shutdown -r -f -t 5
 goto Main_Menu
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■

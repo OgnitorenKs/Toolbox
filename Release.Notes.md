@@ -4,7 +4,14 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.4.9 ► 04.09.2024 - Playbook </B></summary>
+<details><B><summary> Versiyon 4.5.0 ► 11.09.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • Ana menüde boş girişlerde belli işlemlerin dönüşünde gösterilen işlem başarılı ekranı kaldırıldı.
+        • Playbook - "Optimization_Setting_21/22/23/24/25/26" ve "Special_Setting_4_" ayarları  araçtan kaldırıldı. "Feature_Setting_5_" ayarındaki dosya yolu hatası giderildi.
+        • Playbook - Kalıp ayar menüsünde yer alan önemli bazı ayarlar kalıp dosyasında üst bölüme taşındı.
+
+</details><details><B><summary> Versiyon 4.4.9 ► 04.09.2024 - Playbook </B></summary>
 
     ▼ Genel değişiklikler;
         • "Hizmetleri Yönet" bölümüde Wifi hizmetine Warp uygulaması için uyarı eklendi.
