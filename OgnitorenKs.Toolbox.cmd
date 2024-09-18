@@ -33,7 +33,7 @@ setlocal enabledelayedexpansion
 REM Başlık
 title 🤖 OgnitorenKs Toolbox 🤖
 REM Toolbox versiyon
-set Version=4.5.0
+set Version=4.5.1
 REM Pencere ayarı
 mode con cols=100 lines=23
 
@@ -3632,7 +3632,7 @@ Call :Playbook_Reader "Install_Application"
 )
 REM -------------------------------------------------------------
 REM İşlemler tamamlandı reset atıyoruz.
-REM shutdown -r -f -t 5
+shutdown -r -f -t 5
 goto Main_Menu
 
 REM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■

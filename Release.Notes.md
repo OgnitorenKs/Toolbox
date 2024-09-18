@@ -4,7 +4,12 @@
 -   Mail: ognitorenks@gmail.com
 -   Site: [https://ognitorenks.blospot.com](https://ognitorenks.blospot.com)
 
-<details><B><summary> Versiyon 4.5.0 ► 11.09.2024 </B></summary>
+<details><B><summary> Versiyon 4.5.1 ► 18.09.2024 </B></summary>
+
+    ▼ Genel değişiklikler;
+        • Playbook sonrası yeniden başlatma komutunu bir önceki güncellemede yorum satırı olarak bırakmıştım. Bu sorun giderilmiştir.
+
+</details><details><B><summary> Versiyon 4.5.0 ► 11.09.2024 </B></summary>
 
     ▼ Genel değişiklikler;
         • Ana menüde boş girişlerde belli işlemlerin dönüşünde gösterilen işlem başarılı ekranı kaldırıldı.
